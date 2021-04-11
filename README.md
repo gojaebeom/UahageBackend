@@ -15,4 +15,4 @@
 ### warning 💣
 - create, update, delete 와 같은 api는 보안에 관련된 설정이 필수입니다.<br/>(Security-related settings are required for api such as create, update, delete.)
 
-예를 들어 update, delete 의 경우 자기 자신만 자신의 정보를 수정하거나 삭제할 수 있습니다. 예전엔 session<->cookie 방식을 주로 사용하였지만, 지금은 javascript web token(JWT) 방식을 사용할 수도 있고, 어떤 것을 사용하던 수정 , 삭제 요청을 받을 경우 client의 정보를 확인하여 검증하는 미들웨어가 필요합니다. 이 부분도 이야기를 같이 해보면 좋을것 같습니다.
+예를 들어 update, delete 의 경우 자기 자신만 자신의 정보를 수정하거나 삭제할 수 있습니다. 예전엔 session<->cookie 방식을 주로 사용하였지만, 지금은 javascript web token(JWT) 방식을 사용할 수도 있고, 어떤 것을 사용하던 수정 , 삭제 요청을 받을 경우 client의 정보를 확인하여 검증하는 미들웨어가 필요합니다. 이 부분도 이야기를 같이 해보면 좋을것 같습니다. ( 로그인 API가 존재하지 않아 아직 인증 관련 미들웨어를 만들 수 없습니다 ..)
