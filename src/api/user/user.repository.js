@@ -1,3 +1,5 @@
+"use strict"
+
 const { query } = require("../../config/database");
 
 exports.findAll = async ( ) => {

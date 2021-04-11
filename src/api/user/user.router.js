@@ -1,3 +1,5 @@
+"use strict"
+
 // import router ✨
 const router = require("express").Router();
 const { index, show, create, update, _delete, findByOptions, updateByOptions } = require("./user.controller");

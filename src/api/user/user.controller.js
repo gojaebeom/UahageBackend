@@ -1,3 +1,5 @@
+"use strict"
+
 const { findAll , findOne, updateAll, store, findByOptions, updateByOptions, destroy } = require("./user.repository");
 
 exports.index = async ( req, res ) => {

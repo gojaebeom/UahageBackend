@@ -1,3 +1,5 @@
+"use strict"
+
 // import module or third-part-lib ✨
 require("dotenv").config();
 const express = require("express");

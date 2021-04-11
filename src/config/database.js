@@ -1,3 +1,5 @@
+"use strict"
+
 // import mysql module ✨
 const { createPool } = require("mysql");
 
