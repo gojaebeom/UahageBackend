@@ -1,9 +1,19 @@
-const { findAll , findOne, updateAll, store, findNickname } = require("./user.repository");
+const { findAll , findOne, updateAll, store, findByOptions, updateByOptions, destroy } = require("./user.repository");
 
 exports.index = async ( req, res ) => {
     const { success, message, data, error } = await findAll();
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
+    res.status(500).json({ message: message , error : error });
+}
+
+exports.findByOptions = async ( req, res ) => {
+    const querystring = req.query;
+    console.log(querystring);
+
+    const { success , message, data, error } = await findByOptions( querystring );
+    success === true ? 
+    res.status(200).json({ message: message , data : data }) : 
     res.status(500).json({ message: message , error : error });
 }
 
@@ -52,23 +62,27 @@ exports.update = async ( req, res ) => {
     res.status(500).json({ message: message , error : error });
 }
 
-exports._delete = async ( req, res ) => {
-    res.json({ result : true });
-}
+exports.updateByOptions = async ( req, res ) => {
+    const id = req.params.id;
+    const body = req.body;
 
-exports.findByOptions = async ( req, res ) => {
-    console.log('fintbyoptions');
-    console.log(req.query);
-    const querystring = req.query;
+    //id, email 은 수정금지
+    if(  body.id || body.email ) return res.status(403).json({ message: "is not allowed"  });
 
-
-    const success = true;
-    const message = "success";
-    const data = 1;
-    // const { success , message, data, error } = await findNickname( id );
-
+    const { success , message, data, error } = await updateByOptions( id,  body );
+    
     success === true ? 
-
     res.status(200).json({ message: message , data : data }) : 
     res.status(500).json({ message: message , error : error });
 }
+
+exports._delete = async ( req, res ) => {
+    const id = req.params.id;
+
+    const { success , message, data, error } = await destroy( id );
+    
+    success === true ? 
+    res.status(200).json({ message: message , data : data }) : 
+    res.status(500).json({ message: message , error : error });
+}
+
