@@ -36,12 +36,12 @@ exports.findByOptions = async ( options ) => {
 
     let SQL =`select ${select} from users`;
     if(whereColumn && whereData) SQL = `select ${select} from users where ${whereColumn} = ?;`;
-
+    console.log(SQL);
     return await query(SQL, [ whereData ])
         .then( data => { 
             if( selectType === "boolean" )
-                if( data.length === 0 ) return { success : true, message : "finded successfully", data : false};
-                else  return { success : true, message : "finded successfully", data : true};
+                if( data.length === 0 ) return { success : true, message : "사용가능한 닉네임", data : false};
+                else  return { success : true, message : "이미 존재하는 닉네임", data : true};
             else{
                 return { success : true, message : "finded successfully", data : data};
             }
@@ -60,7 +60,7 @@ exports.store = async ( body ) => {
     `;
     const { email, nickname, gender, birthday, age, URL } = body;
     return await query(SQL, 
-        [ nickname, gender, birthday, age, email, URL])
+        [ email, nickname, gender, birthday, age, URL])
         .then( data => { // query에서 resolve 반환됨
             console.log(data.affectedRows);
             if( data.affectedRows === 1 ) return {  success : true, message : "created successfully", data : data };
@@ -71,26 +71,19 @@ exports.store = async ( body ) => {
         });
 } 
 
-exports.updateAll = async ( nickname , body ) => {
-    const SQL = `
-    update users AS a, 
-    (select email from users where id = ? ) as b 
-    set a.nickname = ?, a.gender = ?, a.baby_birthday = ?, a.parent_age = ?, a.updated_at = now() 
-    where a.email = b.email;`;
-    /** 
-    * @README 💡
-    ------------------------------------------------------------------
-    sql 문을 단순히 
-    update users 
+exports.updateAll = async ( id , body ) => {
+    
+    const SQL = `update users 
     set nickname = ?, gender = ?, baby_birthday = ?, parent_age=?, updated_at = now()
-    where id = ? 
-    로 바꿔도 되는 부분일까요?
-    ------------------------------------------------------------------*/
-    const { userId, gender, birthday, age } = body;
-    console.log(userId, gender, birthday, age);
+    where id = ?  ;`;
+                
+    
+    
+    const { nickname, gender, birthday, age } = body;
+    console.log(nickname, gender, birthday, age);
     return await query(
         SQL,
-        [userId, nickname, gender, birthday, age])
+        [ nickname, gender, birthday, age , id])
         .then( data => { // query에서 resolve 반환됨
             return {  success : true, message : "Updated successfully", data : data };
         })
