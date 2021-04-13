@@ -4,8 +4,12 @@
 require("dotenv").config();
 const express = require("express");
 const userRouter = require("./src/api/user/user.router");
+<<<<<<< HEAD
 const awsRouter = require("./src/api/aws/aws.router");
 
+=======
+const spaceRouter = require("./src/api/space/space.router");
+>>>>>>> bd6292b09a4731d30d035abdf682e3c5739586ba
 // create express object and put into variable ✨
 const app = express();
 
@@ -21,6 +25,7 @@ app.use(express.json());
 // API router
 app.use("/s3", awsRouter);
 app.use("/users", userRouter);
+app.use("/spaces", spaceRouter);
 
 
 // export express app ✨
