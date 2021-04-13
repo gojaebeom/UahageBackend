@@ -33,7 +33,7 @@ whereData : 찾고자 하는 대상의 값을 입력
 - order by 역시 구현이 안되어있습니다.( 이부분은 추가만 해주면 되긴합니다 )
 - 이외에도 서브쿼리등을 사용하는 부분에 대해선 답도 없는 API 라는 점을 참고해주세용
 ( 더 좋은 로직이 생각난다면 무조건 수정해서 사용해주시길 바랍니다 , 
- 구현만 잘 되면 index, show, search api 를 따로 사용할 필요 없이 조회에 관한 api는 이거 하나로 끝낼 수 있을 것 같습니다.)
+구현만 잘 되면 index, show, search api 를 따로 사용할 필요 없이 조회에 관한 api는 이거 하나로 끝낼 수 있을 것 같습니다.)
 ------------------------------------------------------------------*/
 // GET /users/find-by-options?option=[value]
 router.get("/find-by-options", findByOptions);
