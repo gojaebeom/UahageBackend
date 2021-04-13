@@ -6,3 +6,5 @@ const { post, _delete } = require("./aws.controller");
 router.post("/images", post);
 router.delete("/images", _delete);
 
+module.exports = router;
+

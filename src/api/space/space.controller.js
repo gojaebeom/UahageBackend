@@ -1,6 +1,6 @@
 "use strict"
 
-const {   findOne } = require("./space.repository");
+const { findOne } = require("./space.repository");
 
 exports.show = async ( req, res ) => {
     const space_code = req.params.space_code;

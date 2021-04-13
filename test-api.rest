@@ -1,16 +1,16 @@
 ### ------------------- USER API ---------------------- ###
 
 ### find all user
-GET http://localhost:3000/users HTTP/1.1
+GET http://localhost:5000/users HTTP/1.1
 
 ### find one user  
-GET http://localhost:3000/users/2 HTTP/1.1
+GET http://localhost:5000/users/2 HTTP/1.1
 
 ### get user nickname
-GET http://localhost:3000/users/nickname?userId=2 HTTP/1.1 
+GET http://localhost:5000/users/nickname?userId=2 HTTP/1.1 
 
 ### create user
-POST http://localhost:3000/users HTTP/1.1
+POST http://localhost:5000/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### update user 
-# PUT http://localhost:3000/users/gojaebeom HTTP/1.1
+# PUT http://localhost:5000/users/gojaebeom HTTP/1.1
 # Content-Type: application/json
 
 # {
@@ -33,7 +33,7 @@ Content-Type: application/json
 #     "age":27
 # }
 
-PUT http://localhost:3000/users/54 HTTP/1.1
+PUT http://localhost:5000/users/54 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -43,25 +43,25 @@ Content-Type: application/json
     "age":28
 }
 ### find by options user data exam1 : 조건 없이 모든 유저를 조회
-GET http://localhost:3000/users/find-by-options?select=* HTTP/1.1
+GET http://localhost:5000/users/find-by-options?select=* HTTP/1.1
 
 ### find by options user data exam2 : 조건 없이 1명 이상의 유저가 존재하는지 조회
-GET http://localhost:3000/users/find-by-options?select=*&selectType=boolean HTTP/1.1
+GET http://localhost:5000/users/find-by-options?select=*&selectType=boolean HTTP/1.1
 
 ### find by options user data exam3 : 이메일 값을 통해 모든 데이터 조회
 GET 
 ### find by options user data exam4 : 닉네임 값을 통해 모든 데이터 조회
-GET http://localhost:3000/users/find-by-options?select=*&whereColumn=nickname&whereData=미현 HTTP/1.1
+GET http://localhost:5000/users/find-by-options?select=*&whereColumn=nickname&whereData=미현 HTTP/1.1
 
 ### find by options user data exam5 : 닉네임 값을 통해 해당하는 닉네임이 있는지 참, 거짓으로 조회
-GET http://localhost:3000/users/find-by-options?select=*&selectType=boolean&whereColumn=nickname&whereData=al HTTP/1.1
+GET http://localhost:5000/users/find-by-options?select=*&selectType=boolean&whereColumn=nickname&whereData=al HTTP/1.1
 
 ### find by options user data exam6 : id 값을 통해 닉네임, 이메일만 조회
-GET http://localhost:3000/users/find-by-options?select=nickname,email&whereColumn=id&whereData=1 HTTP/1.1
+GET http://localhost:5000/users/find-by-options?select=nickname,email&whereColumn=id&whereData=1 HTTP/1.1
 
 
 ### update by options exam1 : 유저의 프로필 url 수정
-PATCH http://localhost:3000/users/1 HTTP/1.1
+PATCH http://localhost:5000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -69,7 +69,7 @@ Content-Type: application/json
 }
 
 ### update by options exam2 : 유저의 닉네임 수정
-PATCH http://localhost:3000/users/1 HTTP/1.1
+PATCH http://localhost:5000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -77,7 +77,7 @@ Content-Type: application/json
 }
 
 ### update by options exam3 : 유저의 특정 정보들 업데이트
-PATCH http://localhost:3000/users/1 HTTP/1.1
+PATCH http://localhost:5000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -86,7 +86,7 @@ Content-Type: application/json
 }
 
 ### update by options exam4 : id, email 등의 변경되면 안되는 값에 접근 시
-PATCH http://localhost:3000/users/1 HTTP/1.1
+PATCH http://localhost:5000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -94,7 +94,7 @@ Content-Type: application/json
 }
 
 ### delete : 유저 삭제
-DELETE http://localhost:3000/users/2 HTTP/1.1
+DELETE http://localhost:5000/users/2 HTTP/1.1
 Content-Type: application/json
 
 ### ------------------- END USER API ----------------------###
@@ -102,5 +102,5 @@ Content-Type: application/json
 
 ### ------------------- SPACE API ---------------------- ###
 
-GET http://localhost:3000/spaces/2 HTTP/1.1
+GET http://localhost:5000/spaces/2 HTTP/1.1
 ### ------------------- END SPACE API ----------------------###
