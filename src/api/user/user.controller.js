@@ -29,6 +29,7 @@ exports.show = async ( req, res ) => {
 
 exports.create = async ( req, res ) => {
     const body = req.body;
+    console.log(body);
     const { success , message, data, error } = await store( body );
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
@@ -47,17 +48,18 @@ exports.update = async ( req, res ) => {
     내용은 전체 속성을 수정하는 것으로 보여 -> `PUT /users/:nickname` 으로 수정하였습니다. 
     ( id 를 param으로 가져오는 로직으로 바뀐다면 url name을 '/users/:id' 로 교체하는 등 sql 내용도 달라지게 되니, 상의를 해보는 것이 좋을것 같습니다. )
     ------------------------------------------------------------------*/
-    const nickname = req.params.nickname;
+    const id = req.params.id;
     const body = req.body;
     console.log(`
-        nickname : ${nickname}
+        id: ${id}
+        nickname : ${body.nickname}
         gender   : ${body.gender}
         baby birthday : ${body.birthday}
         parent age      : ${body.age}
-        userId   : ${body.userId}
+        
     `);
 
-    const { success , message, data, error } = await updateAll( nickname,  body );
+    const { success , message, data, error } = await updateAll( id,  body );
     
     success === true ? 
     res.status(200).json({ message: message , data : data }) : 
