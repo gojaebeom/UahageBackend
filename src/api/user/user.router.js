@@ -50,9 +50,5 @@ router.patch("/:id", /**@AUTH 보안 관련 미들웨어 필요 */ updateByOptio
 router.delete("/:id", /**@AUTH 보안 관련 미들웨어 필요 */ _delete);
 
 // export router ✨
-
-
-
-
 module.exports = router;
 

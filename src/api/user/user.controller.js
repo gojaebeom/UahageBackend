@@ -24,7 +24,9 @@ exports.show = async ( req, res ) => {
     const { success , message, data, error } = await findOne( id );
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
-    res.status(500).json({ message: message , error : error });
+    res.status(500).
+    
+    json({ message: message , error : error });
 }
 
 exports.create = async ( req, res ) => {
@@ -37,7 +39,6 @@ exports.create = async ( req, res ) => {
 }
 
 exports.update = async ( req, res ) => {
-
     /** 
     * @README 💡
     ------------------------------------------------------------------
@@ -58,9 +59,7 @@ exports.update = async ( req, res ) => {
         parent age      : ${body.age}
         
     `);
-
     const { success , message, data, error } = await updateAll( id,  body );
-    
     success === true ? 
     res.status(200).json({ message: message , data : data }) : 
     res.status(500).json({ message: message , error : error });
@@ -69,12 +68,9 @@ exports.update = async ( req, res ) => {
 exports.updateByOptions = async ( req, res ) => {
     const id = req.params.id;
     const body = req.body;
-
     //id, email 은 수정금지
-    if(  body.id || body.email ) return res.status(403).json({ message: "is not allowed"  });
-
+    if( body.id || body.email ) return res.status(403).json({ message: "is not allowed"  });
     const { success , message, data, error } = await updateByOptions( id,  body );
-    
     success === true ? 
     res.status(200).json({ message: message , data : data }) : 
     res.status(500).json({ message: message , error : error });
@@ -82,7 +78,6 @@ exports.updateByOptions = async ( req, res ) => {
 
 exports._delete = async ( req, res ) => {
     const id = req.params.id;
-
     const { success , message, data, error } = await destroy( id );
     
     success === true ? 
