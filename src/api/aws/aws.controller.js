@@ -41,7 +41,6 @@ exports._delete = ( req, res ) => {
     let data = fileName.split('/');
     let file = data[data.length - 1].replace("%40", "@"); //"1611718253052akobidov777%40gmail.comkakao.jpg"; //
     console.log(file);
-
     s3.deleteObject({
             Bucket: process.env.bucket,
             Key: file,

@@ -1,15 +1,10 @@
 "use strict"
-
 // import module or third-part-lib ✨
 require("dotenv").config();
 const express = require("express");
-const userRouter = require("./src/api/user/user.router");
-<<<<<<< HEAD
 const awsRouter = require("./src/api/aws/aws.router");
-
-=======
+const userRouter = require("./src/api/user/user.router");
 const spaceRouter = require("./src/api/space/space.router");
->>>>>>> bd6292b09a4731d30d035abdf682e3c5739586ba
 // create express object and put into variable ✨
 const app = express();
 
