@@ -1,6 +1,6 @@
-import { query } from "../../config/database.js";
+const { query } = require("../../config/database")
 
-export async function login( body ){
+exports.login = async ( body ) => {
     let sql = `select * from users`;
     return query(sql)
         .then( data => { 

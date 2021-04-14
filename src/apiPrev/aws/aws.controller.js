@@ -1,9 +1,9 @@
 "use strict"
-import aws from "aws-sdk";
-import multerS3 from "multer-s3";
-import multer from "multer";
-import path from "path";
-import url from "url";
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+const multer = require("multer");
+const path = require("path");
+const url = require("url");
 
 const s3 = new aws.S3({
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -11,7 +11,7 @@ const s3 = new aws.S3({
     // bucket: "uahage",
 });
 
-export const post = ( req, res ) => {
+exports.post = ( req, res ) => {
     profileImgUpload(req, res, (error) => {
         if (error) {
             console.log("errors", error);
@@ -34,7 +34,7 @@ export const post = ( req, res ) => {
         }
     });
 }
-export const _delete = ( req, res ) => {
+exports._delete = ( req, res ) => {
     const  fileName  = req.body.fileName;
     console.log("delete request");
     console.log(fileName);
@@ -42,7 +42,7 @@ export const _delete = ( req, res ) => {
     let file = data[data.length - 1].replace("%40", "@"); //"1611718253052akobidov777%40gmail.comkakao.jpg"; //
     console.log(file);
     s3.deleteObject({
-            Bucket: process.env.BUCKET,
+            Bucket: process.env.bucket,
             Key: file,
         },
         function (err, data) {

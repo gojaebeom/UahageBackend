@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const { post } = require("./ns.controller");
+import { Router } from "express";
+import { post } from "./ns.controller.js";
 
+const router = Router();
 router.post("/nursery-schools", post);
 
-module.exports = router;
+export default router;

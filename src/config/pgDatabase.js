@@ -1,6 +1,10 @@
-const { Client } = require("pg");
+// import pkg from "pg";
+// const { Client } = pkg;
+import pg from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 
-const client = new Client({
+const client = new pg.Client({
     host : process.env.PGSQL_HOST,
     user : process.env.PGSQL_USER,
     password : process.env.PGSQL_PASS,
@@ -11,17 +15,19 @@ const client = new Client({
     }
 });
 
-client.connect(err => { 
-    if (err) { 
-        console.log('Failed to connect db ' + err);
-    } else { 
-        console.log('Connect to pg-db done!');
-    } 
-});
+export default function postgreConnector(){
+    client.connect(err => { 
+        if (err) { 
+            console.log('Failed to connect db ' + err);
+        } else { 
+            console.log('Connect to pg-db done!');
+        } 
+    });
+}
 
-exports.query = function(query, params){
+export function query( query ){
     return new Promise((resolve, reject) => {
-        client.query(query, params, ( err, result ) => {
+        client.query( query, ( err, result ) => {
             if(err) reject(err);
             else resolve(result);
         });

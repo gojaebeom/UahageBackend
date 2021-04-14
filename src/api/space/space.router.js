@@ -1,8 +1,10 @@
 "use strict"
 // import router ✨
-const router = require("express").Router();
-const { show } = require("./space.controller");
+import { Router } from "express";
+import { show } from "./space.controller.js";
 
+const router = Router();
 //GET /spaces/:space_code
 router.get("/:space_code", show);
-module.exports = router;
+
+export default router;

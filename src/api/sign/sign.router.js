@@ -1,7 +1,7 @@
-const { login } = require("./sign.controller");
+import { Router } from "express";
+import { login } from "./sign.controller.js";
 
-const router = require("express").Router();
-
+const router = Router();
 router.post("/login", login);
 
-module.exports = router;
+export default router;

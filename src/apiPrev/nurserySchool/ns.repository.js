@@ -1,6 +1,6 @@
-import { query } from "../../config/database.js";
+const { query } = require("../../config/database")
 
-export async function store( body ){
+exports.store = async ( body ) => {
     /**
      *  space_code : 3
      *  space_name : 

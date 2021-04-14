@@ -1,8 +1,8 @@
 "use strict"
-import { store, destroy, findOne } from "./bookmark.repository.js";
-//const {   store, destroy, findOne } = require("./bookmark.repository");
+
+const {   store, destroy, findOne } = require("./bookmark.repository");
  
-export async function create( req, res ){
+exports.create = async ( req, res ) => {
     const body = req.body;
     console.log(body);
     const { success , message, data, error } = await store( body );
@@ -11,7 +11,7 @@ export async function create( req, res ){
     res.status(500).json({ message: message , error : error });
 }
 
-export async function _delete( req, res ){
+exports._delete = async ( req, res ) => {
     const id = req.query.user_id;
     const space_id= req.query.space_id;
 
@@ -23,7 +23,7 @@ export async function _delete( req, res ){
 }
  
 
-export async function show( req, res ){
+exports.show = async ( req, res ) => {
     const id = req.params.id;
     const { success , message, data, error } = await findOne( id );
     success === true ? 

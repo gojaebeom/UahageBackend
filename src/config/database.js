@@ -1,7 +1,7 @@
 "use strict"
 
 // import mysql module ✨
-const { createPool } = require("mysql");
+import { createPool } from "mysql";
 
 // connection or createPool description ✨
 // https://blog.naver.com/geguman/220549771473
@@ -19,7 +19,7 @@ const pool = createPool({
  * @param {*} params : ? 와 상응하는 데이터의 배열
  * @returns {promise} reject -> err code , resolve -> success data 
  */  
-exports.query = function(query, params){
+export function query (query, params){
     return new Promise((resolve, reject)=>{
         pool.query(query, params, (err, result) => {
             if(err) reject(err);

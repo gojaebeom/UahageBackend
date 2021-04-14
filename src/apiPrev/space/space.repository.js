@@ -1,7 +1,8 @@
 "use strict"
-import { query } from "../../config/database.js";
 
-export async function findOne( space_code ){
+const { query } = require("../../config/database");
+
+exports.findOne = async ( space_code ) => {
     let SQL = `select  space_name, addr, phone, lat, lon, `;
     switch(space_code) {
         case '1' : SQL += `

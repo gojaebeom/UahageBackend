@@ -1,14 +1,14 @@
-import { findByOptions } from "../user/user.repository.js";
-import { login as Rlogin } from "./sign.repository.js";
+const { findByOptions } = require("../user/user.repository");
+const { login } = require("./sign.repository");
 
-export async function login( req, res ){
+exports.login = async ( req, res ) => {
     const body = req.body;
     console.log("요청옴!!");
     console.log(body);
 
     // const { success, message, data, error } = await findByOptions( { selectType : "boolean",  } );
 
-    const { success, message, data, error } = await Rlogin( body );
+    const { success, message, data, error } = await login( body );
 
     success === true ? 
     res.status(200).json({ message, data}) :

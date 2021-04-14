@@ -1,8 +1,8 @@
-import xlsx from "xlsx";
-import multiparty from "multiparty";
-import { store } from "./ns.repository.js";
+const xlsx = require('xlsx');
+const multiparty = require('multiparty');
+const { store } = require('./ns.repository');
 
-export async function post( req, res ){
+exports.post = async ( req, res ) => {
 
     console.log("요청 옴!!");
 

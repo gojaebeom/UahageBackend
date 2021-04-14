@@ -1,7 +1,8 @@
 "use strict"
-import { query } from "../../config/database.js";
 
-export async function store( body ){
+const { query } = require("../../config/database");
+
+exports.store = async ( body ) => {
     const SQL = `
     insert into bookmarks(user_id,space_id) values(?,?);
     `;
@@ -19,7 +20,7 @@ export async function store( body ){
 } 
 
 
-export async function destroy( user_id , space_id  ){
+exports.destroy = async ( user_id , space_id  ) => {
     const SQL = `delete from bookmarks where user_id =?  and space_id = ? and id > 0 `;
     return query(SQL, [ user_id ,space_id])
         .then( data => { // query에서 resolve 반환됨
@@ -30,7 +31,7 @@ export async function destroy( user_id , space_id  ){
         });
 }
 
-export async function findOne( id ){
+exports.findOne = async ( id ) => {
     const SQL = `
     select * 
     from bookmarks 

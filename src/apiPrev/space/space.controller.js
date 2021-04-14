@@ -1,9 +1,12 @@
 "use strict"
-import { findOne } from "./space.repository.js";
 
-export async function show( req, res ){
+const {   findOne } = require("./space.repository");
+
+exports.show = async ( req, res ) => {
     const space_code = req.params.space_code;
     const { success , message, data, error } = await findOne( space_code );
+
+
     {
         data:[
             list
