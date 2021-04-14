@@ -2,6 +2,11 @@
 /**
  * PROFILE IMAGE STORING STARTS
  */
+ const aws = require("aws-sdk");
+ const multerS3 = require("multer-s3");
+ const multer = require("multer");
+ const path = require("path");
+ const url = require("url");
 
 const s3 = new aws.S3({
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -10,7 +15,6 @@ const s3 = new aws.S3({
 });
 
 exports.post = ( req, res ) => {
-    // let id = req.params.id;
     profileImgUpload(req, res, (error) => {
         if (error) {
             console.log("errors", error);
@@ -33,7 +37,6 @@ exports.post = ( req, res ) => {
         }
     });
 }
-
 exports._delete = ( req, res ) => {
     const  fileName  = req.body.fileName;
     console.log("delete request");
@@ -57,6 +60,7 @@ exports._delete = ( req, res ) => {
         }
     );
 }
+
 
 /**
  * Check File Type

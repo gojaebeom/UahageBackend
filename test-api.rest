@@ -49,7 +49,9 @@ GET http://localhost:3000/users/find-by-options?select=* HTTP/1.1
 GET http://localhost:3000/users/find-by-options?select=*&selectType=boolean HTTP/1.1
 
 ### find by options user data exam3 : 이메일 값을 통해 모든 데이터 조회
-GET 
+
+GET http://localhost:3000/users/find-by-options?select=*&whereColumn=email&whereData=akobidov777@gmail.comkakao 
+
 ### find by options user data exam4 : 닉네임 값을 통해 모든 데이터 조회
 GET http://localhost:3000/users/find-by-options?select=*&whereColumn=nickname&whereData=미현 HTTP/1.1
 
@@ -86,11 +88,11 @@ Content-Type: application/json
 }
 
 ### update by options exam4 : id, email 등의 변경되면 안되는 값에 접근 시
-PATCH http://localhost:3000/users/1 HTTP/1.1
+PATCH http://localhost:3000/users/60 HTTP/1.1
 Content-Type: application/json
 
 {
-    "email":"gojaebeom@gmail.com"
+    "profile_image":null
 }
 
 ### delete : 유저 삭제
@@ -102,5 +104,31 @@ Content-Type: application/json
 
 ### ------------------- SPACE API ---------------------- ###
 
-GET http://localhost:3000/spaces/2 HTTP/1.1
+GET http://localhost:3000/spaces/6 HTTP/1.1
 ### ------------------- END SPACE API ----------------------###
+
+
+### ------------------- ⭐BOOKMARK API⭐ ---------------------- ###
+ 
+### BOOMARK CLICK 
+
+POST http://localhost:3000/users/bookmark HTTP/1.1
+Content-Type: application/json
+{
+    "user_id":59,
+    "space_id":3
+}
+
+### BOOMARK UNCLICK
+DELETE http://localhost:3000/users/bookmark?user_id=59&space_id=4 HTTP/1.1
+Content-Type: application/json
+ 
+
+### BOOMARK ALL VIEW 
+GET  http://localhost:3000/bookmarks/59 HTTP/1.1
+ 
+ 
+### BOOMARK ONE VIEW 
+GET  http://localhost:3000/bookmarks/59?space_id=4 HTTP/1.1
+
+### ------------------- ⭐END BOOKMARK API⭐ ----------------------###
