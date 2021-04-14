@@ -1,14 +1,10 @@
 "use strict"
-
 const { query } = require("../../config/database");
 
 exports.findAll = async ( ) => {
-    const SQL = `
-    select * 
-    from users
-    `;
-    return query(SQL)
-        .then( data => { 
+    const SQL = `select * from users`;
+    return query(SQL) 
+        .then( data => {
             return { success : true, message : "finded successfully", data : data};
         })
         .catch( err => {
@@ -17,11 +13,7 @@ exports.findAll = async ( ) => {
 }
 
 exports.findOne = async ( id ) => {
-    const SQL = `
-    select * 
-    from users 
-    where id = ?
-    `;
+    const SQL = `select * from users where id = ?`;
     return query(SQL, [ id ])
         .then( data => { 
             return { success : true, message : "finded successfully", data : data};
@@ -33,8 +25,8 @@ exports.findOne = async ( id ) => {
 
 exports.findByOptions = async ( options ) => {
     const { select, selectType, whereColumn, whereData } = options;
-
     let SQL =`select ${select} from users`;
+
     if(whereColumn && whereData) SQL = `select ${select} from users where ${whereColumn} = ?;`;
     console.log(SQL);
     return await query(SQL, [ whereData ])

@@ -9,3 +9,5 @@ router.post("/images-delete", _delete);
 
 module.exports = router;
 
+module.exports = router;
+

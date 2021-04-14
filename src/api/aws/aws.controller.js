@@ -1,12 +1,9 @@
 "use strict"
-/**
- * PROFILE IMAGE STORING STARTS
- */
- const aws = require("aws-sdk");
- const multerS3 = require("multer-s3");
- const multer = require("multer");
- const path = require("path");
- const url = require("url");
+const aws = require("aws-sdk");
+const multerS3 = require("multer-s3");
+const multer = require("multer");
+const path = require("path");
+const url = require("url");
 
 const s3 = new aws.S3({
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -44,7 +41,6 @@ exports._delete = ( req, res ) => {
     let data = fileName.split('/');
     let file = data[data.length - 1].replace("%40", "@"); //"1611718253052akobidov777%40gmail.comkakao.jpg"; //
     console.log(file);
-
     s3.deleteObject({
             Bucket: process.env.bucket,
             Key: file,
