@@ -1,0 +1,11 @@
+### 레스토랑
+POST http://localhost:8000/api/prev-data/restaurants
+
+### 병원 
+POST http://localhost:8000/api/prev-data/hospitals
+
+### 키드 카페
+POST http://localhost:8000/api/prev-data/kid-cafes
+
+### 체험관
+POST http://localhost:8000/api/prev-data/experience-centers

@@ -1,27 +1,33 @@
-"use strict"
+// import pkg from "pg";
+// const { Client } = pkg;
+import pg from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 
-// import mysql module ✨
-import { createPool } from "mysql";
-
-// connection or createPool description ✨
-// https://blog.naver.com/geguman/220549771473
-const pool = createPool({
-    port : process.env.MYSQL_PORT,
-    host : process.env.MYSQL_HOST,
-    user : process.env.MYSQL_USER,
-    password : process.env.MYSQL_PASS,
-    database : process.env.APP_MODE === 'PORD' ? process.env.MYSQL_DB : process.env.MYSQL_DB_DEV
+const client = new pg.Client({
+    host : process.env.PGSQL_HOST,
+    user : process.env.PGSQL_USER,
+    password : process.env.PGSQL_PASS,
+    database : process.env.PGSQL_DB,
+    port : process.env.PGSQL_PORT,
+    ssl : {
+        rejectUnauthorized : false
+    }
 });
 
-/**
- * query reuse ✨
- * @param {*} query : sql 리터럴 
- * @param {*} params : ? 와 상응하는 데이터의 배열
- * @returns {promise} reject -> err code , resolve -> success data 
- */  
-export function query (query, params){
-    return new Promise((resolve, reject)=>{
-        pool.query(query, params, (err, result) => {
+export default function postgreConnector(){
+    client.connect(err => { 
+        if (err) { 
+            console.log('Failed to connect db ' + err);
+        } else { 
+            console.log('Connect to pg-db done!');
+        } 
+    });
+}
+
+export function query( query ){
+    return new Promise((resolve, reject) => {
+        client.query( query, ( err, result ) => {
             if(err) reject(err);
             else resolve(result);
         });

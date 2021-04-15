@@ -1,5 +1,5 @@
 "use strict"
-import { query } from "../../config/pgDatabase.js";
+import { query } from "../../config/database.js";
 
 export async function findAll ( ){
     let sql = `

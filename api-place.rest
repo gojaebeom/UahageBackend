@@ -1,0 +1,6 @@
+### ------------------- place API ---------------------- ###
+### index
+GET http://localhost:8000/api/places HTTP/1.1
+
+### show
+GET http://localhost:8000/api/places/5 HTTP/1.1

@@ -11,15 +11,15 @@ export async function store( body ){
      *  add_info
      */
     const space_code = 3;
-    let SQL = `
+    let sql = `
     insert into 
-    spaces( space_code, space_name, addr, phone, lat, lon, add_info )
+    places( place_code, name, address, phone, lat, lon, add_info )
     values
     `;
 
     for(let item of body) {
         //console.log(item);
-        SQL += `
+        sql += `
         ( 
             ${space_code},'${item["어린이집명"]}','${item["주소"]}','${item["어린이집전화번호"]}','${item["위도"]}','${item["경도"]}', 
             '{
@@ -28,12 +28,11 @@ export async function store( body ){
                 "rooms":"${item["보육실수"]}"
             }'),`;
     }
+    sql = sql.slice(0,-1);// 마지막 문자 , 제거
 
-    SQL = SQL.slice(0,-1);// 마지막 문자 , 제거
+    console.log(sql);
 
-    console.log(SQL);
-
-    await query( SQL )
+    await query( sql )
         .then( data => { 
             console.log( data );
             return { success : true, message : "created successfully", data : data};
