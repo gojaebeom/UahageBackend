@@ -33,11 +33,11 @@ export async function post( req, res ){
     });
     
     form.on('close', async ( ) => {
-        console.log(result);
         if(!result) return res.status(200).json({ 
             message : "xml 파일형식이 아닙니다." , 
             data : []
         });
+
         const { success, message, data, error } = await store( excel.data );
         success === true ? 
         res.status(200).json({ message , data }) : 

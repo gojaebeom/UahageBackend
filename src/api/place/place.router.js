@@ -4,7 +4,7 @@ import { Router } from "express";
 import { index, show, create} from "./place.controller.js";
 
 const router = Router();
-router.get("/", index)
+router.get("/", index);
 router.get("/:place_code", show);
 router.post("/", create);
 

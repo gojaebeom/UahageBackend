@@ -2,6 +2,6 @@ import { Router } from "express";
 import { post } from "./ns.controller.js";
 
 const router = Router();
-router.post("/nursery-schools", post);
+router.post("/", post);
 
 export default router;

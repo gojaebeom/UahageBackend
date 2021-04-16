@@ -3,14 +3,13 @@ import { query } from "../../config/database.js";
 
 export async function store( body ){
     const SQL = `
-    insert into bookmarks(user_id,space_id) values(?,?);
+    insert into bookmarks( user_id, place_id ) values( ${ user_id  } , ${ place_id } );
     `;
-    const { user_id , space_id } = body;
+    const { user_id , place_id } = body;
     console.log(body);
-    return await query(SQL, 
-        [ user_id, space_id ])
+    return await query( SQL )
         .then( data => { // query에서 resolve 반환됨
-         if( data.affectedRows === 1 ) return {  success : true, message : "created successfully", data : data };
+            if( data.affectedRows === 1 ) return {  success : true, message : "created successfully", data : data };
             else return {  success : false, message : "Could not create", error : err };
         })
         .catch( err => { // query에서 reject가 반환됨
@@ -19,9 +18,9 @@ export async function store( body ){
 } 
 
 
-export async function destroy( user_id , space_id  ){
-    const SQL = `delete from bookmarks where user_id =?  and space_id = ? and id > 0 `;
-    return query(SQL, [ user_id ,space_id])
+export async function destroy( user_id , place_id  ){
+    const SQL = `delete from bookmarks where user_id =?  and place_id = ? and id > 0 `;
+    return query(SQL, [ user_id ,place_id])
         .then( data => { // query에서 resolve 반환됨
             return {  success : true, message : "deleted successfully", data : data };
         })
