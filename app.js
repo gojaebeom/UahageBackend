@@ -7,13 +7,12 @@ import cors from "cors";
 import morgan from "morgan";
 
 // import api router ✨
-import awsRouter from "./src/api/aws/aws.router.js";
-import signRouter from "./src/api/sign/sign.router.js";
-import userRouter from "./src/api/user/user.router.js";
-import placeRouter from "./src/api/place/place.router.js";
-import bookmarkRouter from "./src/api/bookmark/bookmark.router.js";
-import crwRouter from "./src/api/nurserySchool/ns.router.js";
-import prevDataInsertRouter from "./src/api/place/dumps/prevDataInsert.js";
+import awsRouter from "./src/apis/aws/aws.router.js";
+import userRouter from "./src/apis/user/user.router.js";
+import placeRouter from "./src/apis/place/place.router.js";
+import bookmarkRouter from "./src/apis/placeBookmark/bookmark.router.js";
+import crwRouter from "./src/apis/nurserySchool/ns.router.js";
+import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
 dotenv.config();
@@ -43,7 +42,6 @@ app.use("/api/s3",        awsRouter);
 app.use("/api/users",     userRouter);
 app.use("/api/places",    placeRouter);
 app.use("/api/bookmarks", bookmarkRouter);
-app.use("/api/sign",      signRouter);
 app.use("/api/crw",       crwRouter);
 app.use("/api/prev-data", prevDataInsertRouter);
 

@@ -1,6 +1,6 @@
 ### ------------------- ⭐BOOKMARK API⭐ ---------------------- ###
 
-### BOOMARK CLICK 
+### BOOMARK CLICK
 POST http://localhost:8000/bookmarks HTTP/1.1
 Content-Type: application/json
 {

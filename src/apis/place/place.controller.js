@@ -11,7 +11,7 @@ export async function index( req, res ){
 } 
 
 export async function show( req, res ){
-    const space_code = req.params.place_code;
+    const space_code = req.params.id;
     const { success , message, data, error } = await findOne( space_code );
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 

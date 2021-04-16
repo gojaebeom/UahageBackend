@@ -5,7 +5,7 @@ import { index, show, create} from "./place.controller.js";
 
 const router = Router();
 router.get("/", index);
-router.get("/:place_code", show);
+router.get("/:id", show);
 router.post("/", create);
 
 export default router;
