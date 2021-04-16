@@ -17,6 +17,10 @@ export async function show( req, res ){
 }
 
 export async function create( req, res ) {
+    // console.log( " 요청 옴 ");
+    // console.log(req.body );
+    // console.log(req.files);
+
     const body = req.body;
     const { success , message, data, error } = await store( body );
     success === true ? 
