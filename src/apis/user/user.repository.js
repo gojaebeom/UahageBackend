@@ -21,8 +21,6 @@ export async function findOne ( id ){
     where id = ${ id }`;
     return query( sql )
         .then( data => { 
-            console.log(data.rows);
-            console.log(data.rowCount);
             return { success : true, message : "finded successfully", data : { count : data.rowCount, result : data.rows }};
         })
         .catch( err => {
@@ -92,7 +90,7 @@ export async function updateAll ( id , body ){
 
 export async function updateByOptions ( id, body ){
     let sql = `
-    update users 
+    update users
     set `;//끝에 공백 필요
     let values = Object.values(body);
     for(let key in body){
