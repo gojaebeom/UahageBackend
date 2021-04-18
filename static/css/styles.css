@@ -1,0 +1,35 @@
+.container {
+width: 100%;
+}
+.container #map {
+position: fixed;
+}
+.container .btn {
+    position: absolute;
+    top: 90%;
+    left: 1.8%;
+    background-color: rgba(255, 0, 0, 0);
+    border: none;
+    outline: none;
+
+}
+
+.container .btn>img {
+    width: 45px;
+    height: 45px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    margin: 7px 15px 0px 10px;
+    height: 100%;
+
+}
+div {
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+}
