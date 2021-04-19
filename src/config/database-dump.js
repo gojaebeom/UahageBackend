@@ -1,5 +1,4 @@
 "use strict"
-
 // import mysql module ✨
 import { createPool } from "mysql";
 
