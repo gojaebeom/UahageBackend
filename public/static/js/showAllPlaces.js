@@ -35,8 +35,11 @@ async function init() {
         });
 
     placeData.forEach((data) => {
-      console.log(data.lon);
-   // var distance = calcDist(lat, lon, data[i].lon, data[i].lat);
+     var distance = calcDist(lat, lon, data.lon, data.lat);
+     if (distance < 500) {
+      displayMarker(coords, data[i].store_name, storename, address, phone, menu, bed, tableware, meetingroom, diapers, playroom, carriage, nursingroom, chair, Examination_item, fare);
+        }
+
     });
 
  
