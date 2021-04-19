@@ -2,12 +2,12 @@
 
 const view = {
     index : (req, res) => {
-     console.log("map index");
-         res.render("index");
+        console.log("map index");
+        res.render("index");
     },
     showAllPlaces : (req, res) => {
-    console.log("map showAllPlace");
-    res.render("showAllPlaces");
+        console.log("map showAllPlace");
+        res.render("showAllPlaces");
     },
 };
 
