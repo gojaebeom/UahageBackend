@@ -33,7 +33,7 @@ export async function signin( req, res ) {
         });
     
     // 위의 유효성 검사들을 통과하면 토큰 발급 ( 토큰에는 유저의 id와 roles 가 들어감 )
-    const { id ,roles } = result[0];
+    const { id , roles } = result[0];
     console.log(id);
     const token = createToken( id );
     console.log(token);
