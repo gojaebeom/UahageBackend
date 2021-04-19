@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title> </title>
+</head>
+<style>
+    .container {
+        width: 100%;
+    }
+
+    .container #map {
+        position: fixed;
+    }
+
+    .container .btn {
+        position: absolute;
+        top: 90%;
+        left: 1.8%;
+        background-color: rgba(255, 0, 0, 0);
+        border: none;
+        outline: none;
+
+    }
+
+    .container .btn>img {
+        width: 45px;
+        height: 45px;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+        color: white;
+        margin: 7px 15px 0px 10px;
+        height: 100%;
+
+    }
+
+    div {
+        height: 35px;
+        text-align: center;
+        line-height: 35px;
+    }
+</style>
+<div class="container">
+    <div id="map" style="position: fixed;  width: 100%;  height: 100%;  left: 0;  top: 0;  background: rgba(51,51,51,0.7);  "></div><button class="btn" type="button" onclick="setCenter()"><img src="http://hohoco.dothome.co.kr/img/location.png"></button>
+</div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5a323567d193d1f90625406988f60389&amp;libraries=services&amp;libraries=services,clusterer,drawing"></script>
+<script src="/js/showAllPlaces.js"></script>
