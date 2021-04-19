@@ -2,8 +2,7 @@
 import { query } from "../../config/database.js";
  
 export async function findAll(place_code, lat, lon ,pageNumber ){
-    console.log("findAll");
-    console.log(pageNumber);
+    
     let SQL = `
     select name, address, phone,`;
     switch(place_code) {
