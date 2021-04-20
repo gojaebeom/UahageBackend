@@ -15,7 +15,7 @@ import placeRouter from "./src/apis/place/place.router.js";
 import bookmarkRouter from "./src/apis/placeBookmark/bookmark.router.js";
 import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
-import mapRouter from "./src/pages/map/map.router.js";
+//import mapRouter from "./src/pages/map/map.router.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
 const __dirname = path.resolve();
@@ -45,8 +45,17 @@ app.use(express.urlencoded({
 
 // set router ✨
 // Page router
-// Page router
-app.use("/maps",      mapRouter); // 맵
+// // Page router
+// app.use("/maps",      mapRouter); // 맵
+
+app.get("/maps/", ( req, res ) => {
+    console.log("map index");
+    res.render("index");
+});
+app.get("/maps/all-places", ( req, res ) => {
+    console.log("map showAllPlace");
+    res.render("showAllPlaces");
+});
 
 // API router V1
 app.use("/api/auth",      authRouter); // 로그인, 회원가입
