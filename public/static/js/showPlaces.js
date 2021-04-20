@@ -1,5 +1,6 @@
-  //이미지 설정 및 기타 설정
-  
+ 
+ "use strict"
+ //이미지 설정 및 기타 설정
   const imageSrc = 'http://hohoco.dothome.co.kr/img/path.gif'; 
   const imageSize = new kakao.maps.Size(34 , 34);
   const imageOption = {offset: new kakao.maps.Point(13, 34)};
