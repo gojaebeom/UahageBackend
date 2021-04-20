@@ -4,6 +4,7 @@ import multerS3 from "multer-s3";
 import multer from "multer";
 import path from "path";
 import url from "url";
+import {v4} from "uuid";
 
 const s3 = new aws.S3({
     accessKeyId: process.env.ACCESS_KEY_ID,
@@ -38,7 +39,9 @@ export const _delete = ( req, res ) => {
     const  fileName  = req.body.fileName;
     console.log("delete request");
     console.log(fileName);
-    let data = fileName.split('/');
+    let data =  fileName.split('/');//path.basename(fileName); 
+    console.log(data);
+    //
     let file = data[data.length - 1].replace("%40", "@"); //"1611718253052akobidov777%40gmail.comkakao.jpg"; //
     console.log(file);
     s3.deleteObject({
@@ -91,11 +94,11 @@ const profileImgUpload = multer({
                 null,
                 // path.basename(file.originalname, path.extname(file.originalname)) +
                 //   "-" +
-                Date.now() + req.params.id + path.extname(file.originalname)
+                Date.now()+"_" + v4() + path.extname(file.originalname)
             );
         },
     }),
-    limits: { fileSize: 3145728 }, // In bytes: 2000000 bytes = 2 MB
+    limits: { fileSize: 5145728 }, // In bytes: 2000000 bytes = 2 MB
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
     },
