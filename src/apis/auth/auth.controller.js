@@ -75,7 +75,7 @@ export async function signup(req, res) {
     // find id, email, password from email
     console.log(req.body);
     let resultObject = await findLoginInfo(email);
-
+    
     // query error 
     if (!resultObject.success)
         return res.status(500).json({
@@ -88,27 +88,41 @@ export async function signup(req, res) {
             message: "email duplicated",
             data: false
         });
-    const { id } = resultObject[0]
-    const token = createToken(id);
+    console.log(resultObject.result);
+
 
     // 비밀번호 암호화
     const hsPassword = await encryptedPassowrd(password);
     // 회원 저장
-    resultObject = await store(email, nickname,gender,birthday,age,URL, hsPassword);
+    resultObject = await store(email, nickname, gender, birthday, age, URL, hsPassword);
+    // create token : need id
 
+    //const { id } = resultObject.result[0];
+    //const token = createToken(id);
 
-    !resultObject.success ?
+    if (!resultObject.success) {
+
         res.status(500).json({
             message: "user store false",
-            data: {
-                result : resultObject.result,
-                token : token
-            }
-        }) :
+            data: resultObject.result,
+        })
+    } else {
+        const {
+            success,
+            result
+        } = await findLoginInfo(email);
+        console.log("result " + JSON.stringify(result));
+        const token = createToken(result[0].id)
         res.status(200).json({
             message: "user stored",
-            data: resultObject.result
+            data: {
+                result: resultObject.result,
+                token: token,
+                id: result[0].id
+            }
         });
+    }
+
 }
 
 export async function check(req, res) {
