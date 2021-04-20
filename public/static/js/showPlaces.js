@@ -10,8 +10,10 @@
   let clickedOverlay = null;
   const search = location.search.substring(1);
   const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-  let place_code = data["place_code"];
-  let lat  = data["lat"]; let lon = data["lon"]; let url = data["type"];
+  
+  let lat  = data["lat"];
+  let lon = data["lon"];
+  let url = data["type"];
   let menu= data["menu"];
   let bed = data["bed"];
   let tableware = data["tableware"];
@@ -21,19 +23,19 @@
   let carriage = data["carriage"];
   let nursingroom= data["nursingroom"];
   let chair= data["chair"];
-  
+  let place_code = data["place_code"];
 
 
-async function init() {
-   // 모든 데이터 받아오기 
-  if(url==='allsearch'){
-    url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
-    console.log(url);
-  }else{
-   // 필터에 해당하는 데이터 받아오기
-    url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
-    console.log(url);
-  }
+  async function init() {
+  // 모든 데이터 받아오기 
+    if(url==='allsearch'){
+      url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
+      console.log(url);
+    }else{
+  // 필터에 해당하는 데이터 받아오기
+      url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
+      console.log(url);
+     }
  
   const placeList = await fetch(url, {
       method: "GET",
