@@ -1,6 +1,6 @@
 ### ------------------- place API ---------------------- ###
 ### index
-GET http://localhost:8000/api/places/3 HTTP/1.1
+GET http://localhost:8000/api/places/test?place_code=1 HTTP/1.1
 
 ### show
 
