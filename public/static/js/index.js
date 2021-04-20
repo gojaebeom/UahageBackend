@@ -1,16 +1,5 @@
 "use strict"
-async function init() {
-    const placeList = await fetch("api/places?place_code=1&lat=35.1449589&lon=126.9216603&pageNumber=0", {
-        method: "GET",
-        headers: {
-          'Content-Type': "application/json",
-          "Authorization": ""
-        },
-    }).then(res => res.json())
-    
-    console.log(placeList);
-
-    //현재위치 파라미터로 받아오기
+   //현재위치 파라미터로 받아오기
     const search = location.search.substring(1);
     const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
     const lat = data["lat"];
@@ -33,6 +22,6 @@ async function init() {
             image: new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
             map:map
         });
-}
-init();
+    console.log()
+ 
 

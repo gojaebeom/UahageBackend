@@ -1,6 +1,65 @@
 "use strict"
 import { query } from "../../config/database.js";
- 
+
+//🥕
+export async function testAll( place_code ){
+    console.log("testALL");
+    console.log(place_code);
+    let SQL = `
+    select name, address, phone, lat, lon,`;
+    switch(place_code) {
+        case '1' : SQL += `
+            add_info -> 'carriage' AS carriage,
+            add_info -> 'bed' AS bed,
+            add_info -> 'tableware' AS tableware,
+            add_info -> 'nursingroom' AS nursingroom,
+            add_info -> 'meetingroom' AS meetingroom,
+            add_info -> 'diapers' AS diapers,
+            add_info -> 'playroom'AS playroom, 
+            add_info -> 'chair'AS chair,
+            add_info -> 'menu'AS menu
+            from places 
+            where place_code = 1;
+            `;
+            break;
+        case '2' : SQL += `
+            add_info -> 'examination'AS examination
+            from places 
+            where place_code = 2;
+            `;
+            break;
+        case '3' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 5;
+            `;
+            break;
+        case '5' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 5;
+            `;
+            break;
+        case '6' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 6;
+            `;
+            break;
+        default : null;
+    }
+    console.log(SQL);
+    return query(SQL)
+        .then( data => { 
+            return { success : true, message : "finded successfully", data : data};
+        })
+        .catch( err => {
+            return { success : false, message : "Could not find data", error : err };
+        });
+}
+//🥕
+
+
 export async function findAll(place_code, lat, lon ,pageNumber ){
     
     let SQL = `

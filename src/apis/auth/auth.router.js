@@ -1,9 +1,10 @@
 "use strict"
 import { Router } from "express";
-import { signin, signup } from "./auth.controller.js";
+import { signin, signup,check } from "./auth.controller.js";
 
 const router = Router();
 router.post("/signin", signin);
 router.post("/signup", signup);
+router.post("/check", check);
 
 export default router;
