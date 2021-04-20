@@ -53,8 +53,8 @@ app.get("/maps/", ( req, res ) => {
     res.render("index");
 });
 app.get("/maps/all-places", ( req, res ) => {
-    console.log("map showAllPlace");
-    res.render("showAllPlaces");
+    console.log("map showPlace");
+    res.render("showPlaces");
 });
 
 // API router V1

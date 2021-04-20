@@ -1,10 +1,10 @@
 "use strict"
+import { compareSync } from "bcrypt";
 import { query } from "../../config/database.js";
 
 //🥕
-export async function testAll( place_code ){
-    console.log("testALL");
-    console.log(place_code);
+export async function AllSearch( place_code ){
+    console.log("AllSearch");
     let SQL = `
     select name, address, phone, lat, lon,`;
     switch(place_code) {
@@ -28,12 +28,12 @@ export async function testAll( place_code ){
             where place_code = 2;
             `;
             break;
-        case '3' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
-            where place_code = 5;
-            `;
-            break;
+        // case '3' : SQL += `
+        //     add_info -> 'fare'AS fare
+        //     from places 
+        //     where place_code = 3;
+        //     `;
+        //     break;
         case '5' : SQL += `
             add_info -> 'fare'AS fare
             from places 
@@ -48,6 +48,93 @@ export async function testAll( place_code ){
             break;
         default : null;
     }
+  
+    console.log(SQL);
+    return query(SQL)
+        .then( data => { 
+            return { success : true, message : "finded successfully", data : data};
+        })
+        .catch( err => {
+            return { success : false, message : "Could not find data", error : err };
+        });
+}
+export async function PartialSearch( place_code , menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair ){
+    console.log("PartialSearch");
+    const option = [
+        'menu',
+        'bed',
+        'tableware',
+        'meetingroom',
+        'diapers',
+        'playroom',
+        'carriage',
+        'nursingroom',
+        'chair'
+    ];
+    const options = [
+        menu,
+        bed,
+        tableware,
+        meetingroom,
+        diapers,
+        playroom,
+        carriage,
+        nursingroom,
+        chair
+    ];
+   
+    let SQL = `
+    select name, address, phone, lat, lon,`;
+    switch(place_code) {
+        case '1' : SQL += `
+            add_info -> 'carriage' AS carriage,
+            add_info -> 'bed' AS bed,
+            add_info -> 'tableware' AS tableware,
+            add_info -> 'nursingroom' AS nursingroom,
+            add_info -> 'meetingroom' AS meetingroom,
+            add_info -> 'diapers' AS diapers,
+            add_info -> 'playroom'AS playroom, 
+            add_info -> 'chair'AS chair,
+            add_info -> 'menu'AS menu
+            from places 
+            where place_code = 1
+            `;
+            break;
+        case '2' : SQL += `
+            add_info -> 'examination'AS examination
+            from places 
+            where place_code = 2
+            `;
+            break;
+        case '3' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 5
+            `;
+            break;
+        case '5' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 5
+            `;
+            break;
+        case '6' : SQL += `
+            add_info -> 'fare'AS fare
+            from places 
+            where place_code = 6 
+            `;
+            break;
+        default : null;
+    }
+    let SQLADD = "";
+    for (let i = 0; i < options.length; i++) {
+        if (options[i] =='1') {
+            SQLADD = "and  add_info ->> '" + option[i] + "' = '1' ";
+            SQL += SQLADD;
+            }
+       
+    };
+    SQL+=";";
     console.log(SQL);
     return query(SQL)
         .then( data => { 

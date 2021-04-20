@@ -1,14 +1,26 @@
 "use strict"
 import { compareSync } from "bcrypt";
-import { findAll, findOne, testAll } from "./place.repository.js";
+import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.js";
 
 //🥕
  export async function test( req, res ){
     console.log('controller test');
-    const place_code = req.query.place_code;
- 
-    console.log(place_code );
-    const { success , message, data, error } = await testAll(place_code );
+    const {place_code,type, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair} = req.query;
+    let success , message, data, error;
+    if(type==="all"){
+        let resultOjbect = await AllSearch(place_code);
+        success = resultOjbect.success;
+        message = resultOjbect.message;
+        data = resultOjbect.data;
+        error = resultOjbect.error;
+    }else{
+        let resultOjbect = await PartialSearch(place_code, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair);
+        success = resultOjbect.success;
+        message = resultOjbect.message;
+        data = resultOjbect.data;
+        error = resultOjbect.error;
+    }
+   
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
     res.status(500).json({ message: message , error : error });
@@ -18,7 +30,6 @@ import { findAll, findOne, testAll } from "./place.repository.js";
 export async function index( req, res ){
     console.log('controller index');
     const { place_code , lat, lon , pageNumber } = req.query;
-     console.log(place_code , lat, lon , pageNumber);
     const { success , message, data, error } = await findAll(place_code, lat, lon, pageNumber);
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
