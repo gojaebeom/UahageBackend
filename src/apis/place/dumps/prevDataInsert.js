@@ -28,7 +28,7 @@ router.post("/restaurants", async (req, res)=> {
         insert into 
         places( place_code, name, address, phone, lat, lon, add_info )
         values( 
-            ${place_code}, '${store_name}', '${address}', '${phone}', '${lat}', '${lon}', 
+            ${place_code}, '${store_name}', '${address}', '${phone}', '${lon}', '${lat}', 
             '{
                 "carriage":"${carriage}",
                 "bed":"${bed}",
@@ -60,7 +60,7 @@ router.post("/hospitals", async (req, res) => {
         let _query = `
         insert into 
         places( place_code, name, address, phone, lat, lon, add_info )
-        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lat}', '${lon}', '{"examination":"${Examination_item}"}');`;
+        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lon}', '${lat}', '{"examination":"${Examination_item}"}');`;
         query(_query).then( data => console.log(data))
             .catch( err => console.log(err));
     }
@@ -79,12 +79,12 @@ router.post("/kid-cafes", async (req, res) => {
         let _query = `
         insert into 
         places( place_code, name, address, phone, lat, lon, add_info )
-        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lat}', '${lon}', '{"fare":"${fare}"}');`;
+        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lon}', '${lat}', '{"fare":"${fare}"}');`;
         query(_query).then( data => console.log(data))
             .catch( err => console.log(err));
     }
     res.json({"result":"ok"});
-})
+});
 
 // 체험관 import
 router.post("/experience-centers", async (req, res) => {
@@ -98,11 +98,13 @@ router.post("/experience-centers", async (req, res) => {
         let _query = `
         insert into 
         places( place_code, name, address, phone, lat, lon, add_info )
-        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lat}', '${lon}', '{"fare":"${fare}"}');`;
+        values( ${place_code}, '${store_name}', '${address}', '${phone}', '${lon}', '${lat}', '{"fare":"${fare}"}');`;
         query(_query).then( data => console.log(data))
             .catch( err => console.log(err));
     }
     res.json({"result":"ok"});
-})
+});
+
+
 
 export default router;

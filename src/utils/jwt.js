@@ -4,7 +4,7 @@ const secretKey = process.env.APP_SECRET;
 // jwt 토큰 발행
 export function createToken( userId ) {
     //return jwt.sign({ uid: userId }, secretKey, { expiresIn: '30s' });
-    return jwt.sign({ uid: userId }, secretKey);
+    return jwt.sign({ uid: userId }, secretKey); // not time setting
 }
 
 // jwt 토큰 해석

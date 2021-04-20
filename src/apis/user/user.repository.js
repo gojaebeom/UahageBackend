@@ -29,22 +29,36 @@ export async function findOne ( id ){
 }
 
 export async function findByOptions ( options ){
-    const { select, selectType, whereColumn, whereData } = options;
+    /**
+     *  @findKeyMatch
+     *  em : email 
+     *  nn : nickname
+     *  bg : baby_gender
+     *  bb : baby_birthday
+     *  pu : profile_url
+     *  pa : parent_age
+     *  ca : created_at
+     *  ua : updated_at
+     */
+    const {  em, nn, bg, bb, pu, pa, ca, ua } = options;
     
     let sql =`
-    select ${select} 
-    from users`;
+    select id, email, nickname, profile_url
+    from users
+    where`;
 
-    if(whereColumn && whereData) sql = `select ${select} from users where ${whereColumn} = ${whereData}`;
+    em && sql +` email = '${em}'`;
+    nn && sql +` nickname = '${nn}'`;
+    bg && sql +` baby_gender = '${bg}'`;
+    bb && sql +` baby_birthday = '${bb}'`;
+    pu && sql +` profile_url = '${pu}'`;
+    pa && sql +` parent_age = '${pa}'`;
+    ca && sql +` created_at = '${ca}'`;
+    ua && sql +` updated_at = '${ua}'`;
 
     return await query( sql )
         .then( data => { 
-            if( selectType === "boolean" )
-                if( data.length === 0 ) return { success : true, message : "사용가능한 닉네임", data : false};
-                else  return { success : true, message : "이미 존재하는 닉네임", data : true};
-            else{
-                return { success : true, message : "finded successfully", data : data};
-            }
+            return { success : true, message : "finded successfully", data : data};
         })
         .catch( err => {
             console.log(err.errno);

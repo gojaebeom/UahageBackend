@@ -2,6 +2,12 @@
 import { findAll , findOne, updateAll, store, findByOptions as RfindByOptions, updateByOptions as RupdateByOptions, destroy } from "./user.repository.js";
 
 export async function index( req, res ){
+    const querystring = req.query;
+
+    
+    console.log( querystring.length );
+    console.log( querystring );
+
     const { success, message, data, error } = await findAll();
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
