@@ -29,8 +29,8 @@ import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.
 
 export async function index( req, res ){
     console.log('controller index');
-    const { place_code , lat, lon , pageNumber } = req.query;
-    const { success , message, data, error } = await findAll(place_code, lat, lon, pageNumber);
+    const { place_code , lat, lon , pageNumber , user_id} = req.query;
+    const { success , message, data, error } = await findAll(place_code, lat, lon, pageNumber , user_id);
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
     res.status(500).json({ message: message , error : error });

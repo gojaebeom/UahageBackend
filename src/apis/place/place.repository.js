@@ -147,7 +147,7 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
 //🥕
 
 
-export async function findAll(place_code, lat, lon ,pageNumber ){
+export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
     
     let SQL = `
     select name, address, phone,`;
@@ -161,32 +161,41 @@ export async function findAll(place_code, lat, lon ,pageNumber ){
             add_info -> 'diapers' AS diapers,
             add_info -> 'playroom'AS playroom, 
             add_info -> 'chair'AS chair,
-            add_info -> 'menu'AS menu
-            from places 
-            where place_code = 1
+            add_info -> 'menu'AS menu,
+            b.id AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
+           where place_code = 1
             `;
             break;
         case '2' : SQL += `
-            add_info -> 'examination'AS examination
-            from places 
+            add_info -> 'examination'AS examination,
+            b.id AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 2
             `;
             break;
-        case '3' : SQL += `
-            add_info -> 'fare'AS fare
+       /* case '3' : SQL += `
+            add_info -> 'fare'AS fare,
+            b.id AS bookmark
             from places 
             where place_code = 5
             `;
-            break;
+            break; */
         case '5' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
+            add_info -> 'fare'AS fare,
+            b.id AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 5
             `;
             break;
         case '6' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
+            add_info -> 'fare'AS fare,
+            b.id AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 6
             `;
             break;

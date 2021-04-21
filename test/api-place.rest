@@ -2,10 +2,8 @@
 ### index
 GET http://localhost:8000/api/places/test?place_code=1 HTTP/1.1
 
-###   
+### LIST PAGE
  
 
-GET http://localhost:8000/api/places?place_code=1&lat=35.1449589&lon=126.9216603&pageNumber=0 HTTP/1.1
-
-GET http://localhost:8000/api/places/5 HTTP/1.1
+GET http://localhost:8000/api/places?place_code=1&lat=35.1449589&lon=126.9216603&pageNumber=0&user_id=59 HTTP/1.1
 
