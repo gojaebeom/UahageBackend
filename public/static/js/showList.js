@@ -4,8 +4,6 @@ const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&
 let keyword = data["keyword"];
 let lat  = data["lat"];
 let lon = data["lon"]; 
- 
- 
 
 function getResult(address) {
     var geocoder = new kakao.maps.services.Geocoder();
@@ -27,7 +25,7 @@ const infowindow = new kakao.maps.InfoWindow({
 });
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
-   if (!keyword.replace(/^\\s+|\s+$/g, '')) {
+    if (!keyword.replace(/^\\s+|\s+$/g, '')) {
         getResult('null');
         return false;
     }
@@ -44,7 +42,7 @@ function placesSearchCB(data, status, pagination) {
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출합니다
         displayPlaces(data);
-     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         getResult('null');
         return;
     } else if (status === kakao.maps.services.Status.ERROR) {
@@ -69,7 +67,6 @@ function displayPlaces(places) {
     // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
-      
 }
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
@@ -88,7 +85,7 @@ function getListItem(index, places) {
         '</div>';
     el.innerHTML = itemStr;
     el.className = 'item';
-      return el;
+    return el;
 
 }
 function removeAllChildNods(el) {
