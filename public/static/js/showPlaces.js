@@ -22,7 +22,7 @@
   // 모든 데이터 받아오기 
     if(type==='allsearch'){
       let place_code = data["place_code"];
-      url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
+      url = "/api/places/test?place_code="+place_code+"&type=all"
       console.log(url);
     }
     else if(type==='filter'){
@@ -35,20 +35,25 @@
       let carriage = data["carriage"];
       let nursingroom= data["nursingroom"];
       let chair= data["chair"];
-      url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
+      url = "/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
       console.log(url);
      }else{
-      url = "http://localhost:8000/api/places/test?place_code=1&type=all"
+      url = "/api/places/test?place_code=1&type=all"
       console.log(url);
      }
  
+
+  // show dump image file 
   const placeList = await fetch(url, {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
-        "Authorization": ""
+        "Authorization": "",
+        "Access-Control-Allow-Origin": "*",
       },
   }).then(res => res.json());
+
+  // delete dump image file
     const placeData = placeList["data"]["rows"];
    //지도 초기값 설정
     const mapContainer = document.getElementById('map');  
