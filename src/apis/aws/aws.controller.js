@@ -94,7 +94,7 @@ const profileImgUpload = multer({
                 null,
                 // path.basename(file.originalname, path.extname(file.originalname)) +
                 //   "-" +
-                Date.now()+"_" + v4() + path.extname(file.originalname)
+                Date.now()+"_" + req.params.id + path.extname(file.originalname)
             );
         },
     }),

@@ -8,7 +8,7 @@ import {
 export async function findLoginInfo(email, nickname) {
     console.log(email, nickname);
     let sql = email ? `
-    select id, email, password, nickname
+    select id, email, nickname
     from users 
     where email = '${email}'` : `select  nickname
     from users 
@@ -36,12 +36,12 @@ export async function findLoginInfo(email, nickname) {
 }
 
 // email, password 를 받아 유저 저장
-export async function store(email, nickname,gender,birthday,age,URL,  password) {
+export async function store(email, nickname,gender,birthday,age,URL) {
     age = Number(age);
     let sql = `
     insert into
-    users (password, profile_url, baby_gender, baby_birthday, parent_age,email,nickname)
-    values('${password}', '${URL}','${gender}','${birthday}','${age}','${email}','${nickname}');`;
+    users ( profile_url, baby_gender, baby_birthday, parent_age,email,nickname)
+    values( '${URL}','${gender}','${birthday}','${age}','${email}','${nickname}');`;
     console.log();
     return await query(sql)
         .then(data => {

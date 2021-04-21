@@ -70,7 +70,7 @@ export async function signup(req, res) {
         birthday,
         age,
         URL,
-        password
+        rf_token
     } = req.body;
     // find id, email, password from email
     console.log(req.body);
@@ -92,14 +92,13 @@ export async function signup(req, res) {
 
 
     // 비밀번호 암호화
-    const hsPassword = await encryptedPassowrd(password);
+    // const hsPassword = await encryptedPassowrd(password);
+    // const token = createToken(id);
     // 회원 저장
-    resultObject = await store(email, nickname, gender, birthday, age, URL, hsPassword);
+    resultObject = await store(email, nickname, gender, birthday, age, URL);
     // create token : need id
 
     //const { id } = resultObject.result[0];
-    //const token = createToken(id);
-
     if (!resultObject.success) {
 
         res.status(500).json({

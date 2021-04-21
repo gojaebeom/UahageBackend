@@ -26,7 +26,7 @@ export default function postgreConnector(){
 }
 
 export function query( query ){
-    console.log(query);
+    // console.log(query);
     return new Promise((resolve, reject) => {
         client.query( query, ( err, result ) => {
             if(err) reject(err);
