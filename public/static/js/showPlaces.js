@@ -1,4 +1,6 @@
-  //이미지 설정 및 기타 설정
+ 
+ "use strict"
+ //이미지 설정 및 기타 설정
   const imageSrc = 'http://hohoco.dothome.co.kr/img/path.gif'; 
   const imageSize = new kakao.maps.Size(34 , 34);
   const imageOption = {offset: new kakao.maps.Point(13, 34)};
@@ -6,11 +8,38 @@
   const imageSize1 = new kakao.maps.Size(23, 32);
   let placeMarkers = [];
   let clusterMarker = [];
-  let lat;
-  let lon;
   let clickedOverlay = null;
-async function init() {
-  const placeList = await fetch("http://localhost:8000/api/places/test?place_code=1", {
+  const search = location.search.substring(1);
+  const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+  
+  let lat  = data["lat"];
+  let lon = data["lon"];
+  let type = data["type"];
+  let url = "";
+
+
+  async function init() {
+  // 모든 데이터 받아오기 
+    if(type==='allsearch'){
+      let place_code = data["place_code"];
+      url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
+      console.log(url);
+    }else{
+  // 필터에 해당하는 데이터 받아오기
+      let menu= data["menu"];
+      let bed = data["bed"];
+      let tableware = data["tableware"];
+      let meetingroom = data["meetingroom"];
+      let diapers = data["diapers"];
+      let playroom = data["playroom"];
+      let carriage = data["carriage"];
+      let nursingroom= data["nursingroom"];
+      let chair= data["chair"];
+      url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
+      console.log(url);
+     }
+ 
+  const placeList = await fetch(url, {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
@@ -18,12 +47,7 @@ async function init() {
       },
   }).then(res => res.json());
     const placeData = placeList["data"]["rows"];
-    //현재위치 파라미터로 받아오기
-    const search = location.search.substring(1);
-    const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-     lat = data["lat"];  lon = data["lon"];
-  
-    //지도 초기값 설정
+   //지도 초기값 설정
     const mapContainer = document.getElementById('map');  
     const mapOption = {
             center: new kakao.maps.LatLng(lat, lon),  
@@ -69,36 +93,39 @@ async function init() {
 
  // 🍎 식당마커 찍어주기
     function displayMarker(placeData) {
-      console.log(lat);
       let placeMarker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(placeData.lat, placeData.lon),
-            image:  new kakao.maps.MarkerImage(imageSrc1, imageSize1),
-            map: map
-        });
-        placeMarkers.push(placeMarker);
-        clusterMarker.push(placeMarker);
-      
-        let content = '<div style="padding: 0px 28px 0px 15px; \
-        border-radius:20px;\
-        box-shadow:0px 3px 2px #888;\
-        background-color:#f06292;  \
-        background: #f06292  url(http://hohoco.dothome.co.kr/img/arrow.png) no-repeat right 4px center; ;\
-        background-size: 28px 28px\
-        <h1>' + 'placeData.name' + '</h1>' + '</div>';
+          position: new kakao.maps.LatLng(placeData.lat, placeData.lon),
+          image:  new kakao.maps.MarkerImage(imageSrc1, imageSize1),
+          map: map
+      });
+      placeMarkers.push(placeMarker);
+      clusterMarker.push(placeMarker);
+       console.log(placeData.bed);
+      let content = `
+      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}');"> 
+          <a>
+            <span class="title">${placeData.name}</span> 
+          </a> 
+      </div>`;
 
-        let CustomOverlay = new kakao.maps.CustomOverlay({
-          position:  new kakao.maps.LatLng(placeData.lat, placeData.lon),
-          content: content,
-          yAnchor: 2.4,
-          clickable: true,
-        });
-        kakao.maps.event.addListener(placeMarker, 'click', function() {
-          if (clickedOverlay != null) {
-              clickedOverlay.setMap(null);
-          }
-          CustomOverlay.setMap(map);
-          clickedOverlay = CustomOverlay;
- 
+      let CustomOverlay = new kakao.maps.CustomOverlay({
+        position:  new kakao.maps.LatLng(placeData.lat, placeData.lon),
+        content: content,
+        yAnchor: 2.4,
+        clickable: true,
+      });
+      
+      kakao.maps.event.addListener(placeMarker, 'click', function() {
+        if (clickedOverlay != null) {
+            clickedOverlay.setMap(null);
+        }
+        CustomOverlay.setMap(map);
+        clickedOverlay = CustomOverlay;
+      });
+      kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+        if (CustomOverlay != null) {
+        CustomOverlay.setMap(null);
+        }
       });
    };
     //클러스터 확대
@@ -108,39 +135,39 @@ async function init() {
                   anchor: cluster.getCenter()
               });
       });
-     //
+     // 현재위치로 이동
       const setCenterButton = document.querySelector(".btn");
       setCenterButton.addEventListener('click', function( e ){
         let moveLatLon = new kakao.maps.LatLng(lat,lon);
         map.panTo(moveLatLon);
       });
-      //
+      // 마커 클러스터 지우기
       function setMarkers() {
         placeMarkers.forEach(function(v, i) {
           placeMarkers[i].setMap(null);
         });
         clusterer.clear();
       }
-
+      // 드래그하여 이동한 중심좌표 기준으로 마커, 클러스터 다시 찍어주기
       kakao.maps.event.addListener(map, 'dragend', function() {
-       console.log("드래그 중입니다");
-        // 지도 중심좌표를 얻어옵니다 
+        setMarkers();
         var moveLatLon = map.getCenter();
-        setMarkers(); // 마커 and 클러스터 지우기
         placeMarkers = [];
         clusterMarker = [];
-
         placeData.forEach(function(v, i) {
-          let distance = calcDist(moveLatLon.lat, moveLatLon.lon, placeData[i].lat, placeData[i].lon);
-          console.log(distance);
+          let distance = calcDist(moveLatLon.Ma, moveLatLon.La, placeData[i].lat, placeData[i].lon);
           if(distance<1000){ displayMarker(placeData[i]);};
         });
         clusterer.addMarkers(clusterMarker);
       
     });
 }
+init();
 
-
+function getresult(result) {
+   console.log(result);
+  Print.postMessage(result);
+}
 
 // 거리계산 함수   
 function calcDist(lat1, lng1, lat2, lng2) {
@@ -154,5 +181,5 @@ function calcDist(lat1, lng1, lat2, lng2) {
   return ret.toFixed(2);
 }
 
-init();
+
 

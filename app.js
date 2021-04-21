@@ -52,10 +52,19 @@ app.get("/maps/", ( req, res ) => {
     console.log("map index");
     res.render("index");
 });
-app.get("/maps/all-places", ( req, res ) => {
-    console.log("map showAllPlace");
-    res.render("showAllPlaces");
+app.get("/maps/show-place", ( req, res ) => {
+    console.log("map showPlace");
+    res.render("showPlaces");
 });
+app.get("/maps/show-place-name", ( req, res ) => {
+    console.log("map showPlaceName");
+    res.render("showPlacesName");
+});
+app.get("/maps/show-list", ( req, res ) => {
+    console.log("map showList");
+    res.render("showList");
+});
+
 
 // API router V1
 app.use("/api/auth",      authRouter); // 로그인, 회원가입
