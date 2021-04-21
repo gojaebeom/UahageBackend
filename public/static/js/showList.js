@@ -14,7 +14,7 @@ function getResult(address) {
         if (status === kakao.maps.services.Status.OK) {
          //  result.La, result.Ma.
             console.log(result[0].x);
-            location.href="http://localhost:8000/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
+            location.href="/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
         }
     });
 }
