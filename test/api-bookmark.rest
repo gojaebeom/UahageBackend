@@ -1,20 +1,15 @@
 ### ------------------- ⭐BOOKMARK API⭐ ---------------------- ###
 
 ### BOOMARK CLICK
-POST http://localhost:8000/bookmarks HTTP/1.1
+POST http://localhost:8000/api/bookmarks HTTP/1.1
 Content-Type: application/json
+
 {
     "user_id":59,
-    "space_id":3
+    "place_id":4
 }
 
 ### BOOMARK UNCLICK
-DELETE http://localhost:8000/bookmarks?user_id=59&space_id=4 HTTP/1.1
+DELETE http://localhost:8000/api/bookmarks?user_id=59&place_id=2 HTTP/1.1
 Content-Type: application/json
 
-### BOOMARK ALL VIEW 
-GET  http://localhost:8000/bookmarks/59 HTTP/1.1
-
-
-### BOOMARK ONE VIEW 
-GET  http://localhost:8000/bookmarks/59?space_id=4 HTTP/1.1

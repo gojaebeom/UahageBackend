@@ -12,7 +12,7 @@ import authRouter from "./src/apis/auth/auth.router.js";
 import awsRouter from "./src/apis/aws/aws.router.js";
 import userRouter from "./src/apis/user/user.router.js";
 import placeRouter from "./src/apis/place/place.router.js";
-import bookmarkRouter from "./src/apis/placeBookmark/bookmark.router.js";
+import bookmarkRouter from "./src/apis/bookmark/bookmark.router.js";
 import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
 //import mapRouter from "./src/pages/map/map.router.js";
