@@ -3,7 +3,7 @@ const search = location.search.substring(1);
 const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 let placeAddress = data["placeAddress"];
 let placeName = data["placeName"];
-console.log(placeName);
+ 
  
  //지도 초기값 설정
  const mapContainer = document.getElementById('map');  

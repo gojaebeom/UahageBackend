@@ -24,8 +24,8 @@
       let place_code = data["place_code"];
       url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
       console.log(url);
-    }else{
-  // 필터에 해당하는 데이터 받아오기
+    }
+    else if(type==='filter'){
       let menu= data["menu"];
       let bed = data["bed"];
       let tableware = data["tableware"];
@@ -36,6 +36,9 @@
       let nursingroom= data["nursingroom"];
       let chair= data["chair"];
       url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
+      console.log(url);
+     }else{
+      url = "http://localhost:8000/api/places/test?place_code=1&type=all"
       console.log(url);
      }
  
@@ -77,11 +80,23 @@
               lineHeight: '50px',
            },   ]   });
     // 🍎 현재 위치 찍어주기                                  
-    const markerMain = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(lat, lon),
-          image:    new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-          map:      map
+    if(type=="destination"){
+      let destination = new kakao.maps.CustomOverlay({
+            content: `<div style="padding: 0px 15px 0px 15px;   border-radius:25px;  box-shadow:0px 3px 2px #888; background-color:#f06292;  background: #f06292      center;" >
+                             <h1> 목적지 </h1>
+                       </div>`,
+            map:map ,
+            position:new kakao.maps.LatLng(lat, lon),
+            yAnchor: 1.0,
+            xAnchor: 0.3,
         });
+    }else{
+      const markerMain = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(lat, lon),
+        image:    new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+        map:      map
+      });
+    }
    //거리에 해당하는 마커 찍어주기    
     placeData.forEach(function(v, i) {
       let distance = calcDist(lat, lon, placeData[i].lat, placeData[i].lon);
@@ -102,7 +117,7 @@
       clusterMarker.push(placeMarker);
        console.log(placeData.bed);
       let content = `
-      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}');"> 
+      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
           <a>
             <span class="title">${placeData.name}</span> 
           </a> 
