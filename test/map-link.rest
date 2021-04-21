@@ -1,0 +1,10 @@
+## showPlaceName ( placeName , placeAddress ) 
+GET http://localhost:8000/maps/show-place-name?placeName=%EC%86%94%EB%B9%9B%EB%A7%88%EB%A3%A8&placeAddress=%EA%B4%91%EC%A3%BC%20%EC%84%9C%EA%B5%AC%20%EC%83%81%EB%AC%B4%EC%9E%90%EC%9C%A0%EB%A1%9C%2024-2  HTTP/1.1
+
+## index ( lat , lon) : 현재위치 
+GET http://localhost:8000/maps?lat=35.1449589&lon=126.9216603  HTTP/1.1
+
+## showPlace ( lat , lon , type , place_code , menu , bed , tableware , meetingroom , dispers , playroom , carriage , nursingroom , chair )
+GET http://localhost:8000/maps/show-place?lat=35.1449589&lon=126.9216603&type=allsearch&menu=1&bed=0&tableware=0&meetingroom=0&diapers=0&playroom=0&carriage=0&nursingroom=0&chair=0&place_code=1  HTTP/1.1
+
+

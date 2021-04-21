@@ -60,6 +60,10 @@ app.get("/maps/show-place-name", ( req, res ) => {
     console.log("map showPlaceName");
     res.render("showPlacesName");
 });
+app.get("/maps/show-list", ( req, res ) => {
+    console.log("map showList");
+    res.render("showList");
+});
 
 
 // API router V1

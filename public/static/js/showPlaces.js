@@ -14,26 +14,27 @@
   
   let lat  = data["lat"];
   let lon = data["lon"];
-  let url = data["type"];
-  let menu= data["menu"];
-  let bed = data["bed"];
-  let tableware = data["tableware"];
-  let meetingroom = data["meetingroom"];
-  let diapers = data["diapers"];
-  let playroom = data["playroom"];
-  let carriage = data["carriage"];
-  let nursingroom= data["nursingroom"];
-  let chair= data["chair"];
-  let place_code = data["place_code"];
+  let type = data["type"];
+  let url = "";
 
 
   async function init() {
   // 모든 데이터 받아오기 
-    if(url==='allsearch'){
+    if(type==='allsearch'){
+      let place_code = data["place_code"];
       url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
       console.log(url);
     }else{
   // 필터에 해당하는 데이터 받아오기
+      let menu= data["menu"];
+      let bed = data["bed"];
+      let tableware = data["tableware"];
+      let meetingroom = data["meetingroom"];
+      let diapers = data["diapers"];
+      let playroom = data["playroom"];
+      let carriage = data["carriage"];
+      let nursingroom= data["nursingroom"];
+      let chair= data["chair"];
       url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
       console.log(url);
      }

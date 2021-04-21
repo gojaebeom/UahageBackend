@@ -1,16 +1,15 @@
 "use strict"
 const search = location.search.substring(1);
 const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-let lat  = data["lat"];
-let lon = data["lon"];
+let placeAddress = data["placeAddress"];
 let placeName = data["placeName"];
-
+console.log(placeName);
  
  //지도 초기값 설정
  const mapContainer = document.getElementById('map');  
  const mapOption = {
-         center: new kakao.maps.LatLng(lat, lon),  
-         level:5
+         center: new kakao.maps.LatLng(35.1449589, 126.9216603),  
+         level:2
      };
  //지도 생성
  const map = new kakao.maps.Map(mapContainer, mapOption);  
@@ -30,7 +29,7 @@ geocoder.addressSearch(placeAddress, function(result, status) {
             map: map,
             position: coords,
             content: content,
-            yAnchor: 2.0,
+            yAnchor: 1.0,
             xAnchor: 0.3,
         });
         map.setCenter(coords);
