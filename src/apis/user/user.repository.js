@@ -153,15 +153,16 @@ export async function updateAll(id, body) {
         nickname,
         gender,
         birthday,
-        age
+        age,
+        rf_token
     } = body;
 
     let sql = `
     update users 
-    set nickname = '${nickname}', baby_gender = '${gender}', baby_birthday = '${birthday}', parent_age=${age}, updated_at = current_timestamp
+    set nickname = '${nickname}', baby_gender = '${gender}', baby_birthday = '${birthday}', parent_age=${age}, rf_token = '${rf_token}', updated_at = current_timestamp
     where id = ${id};`;
 
-    console.log(nickname, gender, birthday, age);
+    console.log(nickname, gender, birthday, age, rf_token);
     return await query(
         sql
     )

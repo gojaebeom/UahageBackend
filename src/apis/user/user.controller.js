@@ -50,7 +50,7 @@ export async function update( req, res ){
         gender   : ${body.gender}
         baby birthday : ${body.birthday}
         parent age      : ${body.age}
-        
+        rf_token:     ${body.rf_token}
     `);
     const { success , message, data, error } = await updateAll( id,  body );
     success === true ? 
@@ -62,7 +62,7 @@ export async function updateByOptions( req, res ){
     const id = req.params.id;
     const body = req.body;
     //id, email 은 수정금지
-    // if( body.id || body.email || body.profile_url) return res.status(403).json({ message: "is not allowed"  });
+    if( body.id || body.email) return res.status(403).json({ message: "is not allowed"  });
     const { success , message, data, error } = await RupdateByOptions( id,  body );
     success === true ? 
     res.status(200).json({ message: message , data : data }) : 
