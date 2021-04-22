@@ -36,7 +36,9 @@ app.set("view engine" , "ejs");
 // app.use(express.static(`${__dirname}/static`));
 app.use(express.static(__dirname + '/public/static'));
 
-app.use(cors());
+app.use(cors({
+    origin:"*"
+}));
 app.use(express.json());
 app.use(express.urlencoded({
     limit: '150mb',

@@ -6,6 +6,7 @@ import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.
  export async function test( req, res ){
     console.log('controller test');
     const {place_code,type, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair} = req.query;
+    console.log(req.query);
     let success , message, data, error;
     if(type==="all"){
         let resultOjbect = await AllSearch(place_code);

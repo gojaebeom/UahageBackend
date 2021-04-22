@@ -150,7 +150,7 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
 export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
     
     let SQL = `
-    select name, address, phone,`;
+    select  s.id ,name, address, phone,`;
     switch(place_code) {
         case '1' : SQL += `
             add_info -> 'carriage' AS carriage,
@@ -162,7 +162,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             add_info -> 'playroom'AS playroom, 
             add_info -> 'chair'AS chair,
             add_info -> 'menu'AS menu,
-            b.id AS bookmark
+            COALESCE(b.id, 0) AS bookmark
             from places s left outer join (
                 select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
            where place_code = 1
@@ -170,7 +170,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             break;
         case '2' : SQL += `
             add_info -> 'examination'AS examination,
-            b.id AS bookmark
+            COALESCE(b.id, 0) AS bookmark
             from places s left outer join (
                 select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 2
@@ -185,7 +185,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             break; */
         case '5' : SQL += `
             add_info -> 'fare'AS fare,
-            b.id AS bookmark
+            COALESCE(b.id, 0) AS bookmark
             from places s left outer join (
                 select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 5
@@ -193,7 +193,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             break;
         case '6' : SQL += `
             add_info -> 'fare'AS fare,
-            b.id AS bookmark
+            COALESCE(b.id, 0) AS bookmark
             from places s left outer join (
                 select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 6
