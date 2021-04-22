@@ -1,12 +1,8 @@
 "use strict"
-import { compareSync } from "bcrypt";
 import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.js";
 
-//🥕
- export async function test( req, res ){
-    console.log('controller test');
+export async function search( req, res ){
     const {place_code,type, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair} = req.query;
-    console.log(req.query);
     let success , message, data, error;
     if(type==="all"){
         let resultOjbect = await AllSearch(place_code);
@@ -21,12 +17,10 @@ import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.
         data = resultOjbect.data;
         error = resultOjbect.error;
     }
-   
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 
     res.status(500).json({ message: message , error : error });
 } 
-//🥕
 
 export async function index( req, res ){
     console.log('controller index');

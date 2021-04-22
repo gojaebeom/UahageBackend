@@ -82,7 +82,6 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
         nursingroom,
         chair
     ];
-   
     let SQL = `
     select name, address, phone, lat, lon,`;
     switch(place_code) {
@@ -132,7 +131,7 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
             SQLADD = "and  add_info ->> '" + option[i] + "' = '1' ";
             SQL += SQLADD;
             }
-       
+    
     };
     SQL+=";";
     console.log(SQL);
@@ -165,7 +164,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             COALESCE(b.id, 0) AS bookmark
             from places s left outer join (
                 select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
-           where place_code = 1
+            where place_code = 1
             `;
             break;
         case '2' : SQL += `

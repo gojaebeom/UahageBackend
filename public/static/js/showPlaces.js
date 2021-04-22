@@ -22,8 +22,7 @@ let url = "";
   // 모든 데이터 받아오기 
     if(type==='allsearch'){
       let place_code = data["place_code"];
-      url = "/api/places/test?place_code="+place_code+"&type=all"
-      console.log(url);
+      url = "/api/places/search?place_code="+place_code+"&type=all"
     }
     else if(type==='filter'){
       let menu= data["menu"];
@@ -35,11 +34,9 @@ let url = "";
       let carriage = data["carriage"];
       let nursingroom= data["nursingroom"];
       let chair= data["chair"];
-      url = "/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
-      console.log(url);
+      url = "/api/places/search?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
     }else{
-      url = "/api/places/test?place_code=1&type=all"
-      console.log(url);
+      url = "/api/places/search?place_code=1&type=all";
     }
 
   // show dump image file 
