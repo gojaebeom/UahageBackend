@@ -48,7 +48,7 @@ export async function AllSearch( place_code ){
             break;
         default : null;
     }
-  
+
     console.log(SQL);
     return query(SQL)
         .then( data => { 
@@ -82,7 +82,7 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
         nursingroom,
         chair
     ];
-   
+
     let SQL = `
     select name, address, phone, lat, lon,`;
     switch(place_code) {

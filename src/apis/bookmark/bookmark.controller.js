@@ -1,5 +1,5 @@
 "use strict"
-import { store, destroy} from "./bookmark.repository.js";
+import { store, destroy } from "./bookmark.repository.js";
  
 export async function create( req, res ){
     const { user_id ,place_id} = req.body
