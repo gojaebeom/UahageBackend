@@ -1,5 +1,5 @@
 "use strict"
-import {view , store, destroy } from "./bookmark.repository.js";
+import {show , store, destroy } from "./bookmark.repository.js";
  
 export async function select( req, res ){
     const user_id = req.query.user_id;
