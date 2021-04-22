@@ -2,16 +2,19 @@
 import { findAll, findOne, AllSearch , PartialSearch } from "./place.repository.js";
 
 export async function search( req, res ){
-    const {place_code,type, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair} = req.query;
+
     let success , message, data, error;
+    const {type , place_code , menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair} = req.query;
     if(type==="all"){
+        //PLACE_CODE에 해당하는 모든 데이터를 가져움
         let resultOjbect = await AllSearch(place_code);
         success = resultOjbect.success;
         message = resultOjbect.message;
         data = resultOjbect.data;
         error = resultOjbect.error;
     }else{
-        let resultOjbect = await PartialSearch(place_code, menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair);
+        //PLACE_CODE=1이고 데이터를 FILTER하여 가져옴
+        let resultOjbect = await PartialSearch(menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair);
         success = resultOjbect.success;
         message = resultOjbect.message;
         data = resultOjbect.data;
@@ -23,7 +26,6 @@ export async function search( req, res ){
 } 
 
 export async function index( req, res ){
-    console.log('controller index');
     const { place_code , lat, lon , pageNumber , user_id} = req.query;
     const { success , message, data, error } = await findAll(place_code, lat, lon, pageNumber , user_id);
     success === true ? 

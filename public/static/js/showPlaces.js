@@ -1,28 +1,30 @@
-
-"use strict"
-//이미지 설정 및 기타 설정
-const imageSrc = 'http://hohoco.dothome.co.kr/img/path.gif'; 
-const imageSize = new kakao.maps.Size(34 , 34);
-const imageOption = {offset: new kakao.maps.Point(13, 34)};
-const imageSrc1 = 'http://hohoco.dothome.co.kr/img/marker.png';
-const imageSize1 = new kakao.maps.Size(23, 32);
-let placeMarkers = [];
-let clusterMarker = [];
-let clickedOverlay = null;
-const search = location.search.substring(1);
-const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-
-let lat  = data["lat"];
-let lon = data["lon"];
-let type = data["type"];
-let url = "";
+ 
+ "use strict"
+ //이미지 설정 및 기타 설정
+  const imageSrc = 'http://hohoco.dothome.co.kr/img/path.gif'; 
+  const imageSize = new kakao.maps.Size(34 , 34);
+  const imageOption = {offset: new kakao.maps.Point(13, 34)};
+  const imageSrc1 = 'http://hohoco.dothome.co.kr/img/marker.png';
+  const imageSize1 = new kakao.maps.Size(23, 32);
+  let placeMarkers = [];
+  let clusterMarker = [];
+  let clickedOverlay = null;
+  const search = location.search.substring(1);
+  const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+  
+  let lat  = data["lat"];
+  let lon = data["lon"];
+  let type = data["type"];
+  let user_id = data["user_id"];
+  let url = "";
 
 
   async function init() {
-  // 모든 데이터 받아오기 
+  
     if(type==='allsearch'){
       let place_code = data["place_code"];
-      url = "/api/places/search?place_code="+place_code+"&type=all"
+      url = `/api/places/search?type=all&place_code=${place_code}`;
+    
     }
     else if(type==='filter'){
       let menu= data["menu"];
@@ -34,10 +36,13 @@ let url = "";
       let carriage = data["carriage"];
       let nursingroom= data["nursingroom"];
       let chair= data["chair"];
-      url = "/api/places/search?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
-    }else{
-      url = "/api/places/search?place_code=1&type=all";
+      url = `/api/places/search?type=filter&menu=${menu}&bed=${bed}&tableware=${tableware}&meetingroom=${meetingroom}&diapers=${diapers}&playroom=${playroom}&carriage=${carriage}&nursingroom=${nursingroom}&chair=${chair}`;
     }
+      else{
+      url = `/api/places/search?place_code=1&type=all`;
+    
+    }
+
 
   // show dump image file 
   const placeList = await fetch(url, {
@@ -79,12 +84,15 @@ let url = "";
               textAlign: 'center',
               fontWeight: 'bold',
               lineHeight: '50px',
-      },   ]   });
+          },   
+        ]   
+      }
+      );
     // 🍎 현재 위치 찍어주기                                  
     if(type=="destination"){
       let destination = new kakao.maps.CustomOverlay({
             content: `<div style="padding: 0px 15px 0px 15px;   border-radius:25px;  box-shadow:0px 3px 2px #888; background-color:#f06292;  background: #f06292      center;" >
-                        <h1> 목적지 </h1>
+                            <h1> 목적지 </h1>
                       </div>`,
             map:map ,
             position:new kakao.maps.LatLng(lat, lon),
@@ -116,9 +124,8 @@ let url = "";
       });
       placeMarkers.push(placeMarker);
       clusterMarker.push(placeMarker);
-      console.log(placeData.bed);
       let content = `
-      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
+      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}|${placeData.bookmark}');"> 
           <a>
             <span class="title">${placeData.name}</span> 
           </a> 
@@ -143,7 +150,7 @@ let url = "";
         CustomOverlay.setMap(null);
         }
       });
-    };
+  };
     //클러스터 확대
       kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
       let level = map.getLevel() - 1;
@@ -181,7 +188,6 @@ let url = "";
 init();
 
 function getresult(result) {
-    console.log(result);
   Print.postMessage(result);
 }
 

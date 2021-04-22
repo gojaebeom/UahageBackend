@@ -5,12 +5,12 @@ GET http://localhost:8000/maps/show-place-name?placeName=%EC%86%94%EB%B9%9B%EB%A
 GET http://localhost:8000/maps?lat=35.1449589&lon=126.9216603  HTTP/1.1
 
 ## showPlace ( lat , lon , type , place_code , menu , bed , tableware , meetingroom , dispers , playroom , carriage , nursingroom , chair ) : db
-  ## type=allsearch 필터없이 모두 검색 * PLACE_CODE = 1 레스토랑.식당 , PLACE_CODE =2 병원 .... ( lat , lon , type , place_code)
+  ## type=allsearch 필터없이 모두 검색 * PLACE_CODE = 1 레스토랑.식당 , PLACE_CODE =2 병원 .... ( lat , lon , type , place_code , user_id)
 GET http://localhost:8000/maps/show-place?lat=35.1449589&lon=126.9216603&type=allsearch&place_code=1 
   ## type=filter 레스토랑.식당(레스토랑 식당만 필터 존재)에서 filter를 적용하여 검색 
 GET http://localhost:8000/maps/show-place?lat=35.1449589&lon=126.9216603&type=filter&menu=1&bed=0&tableware=0&meetingroom=0&diapers=0&playroom=0&carriage=0&nursingroom=0&chair=0
   ## type=destination 목적지 주변 레스토랑.식당 검색
-GET http://localhost:8000/maps/show-place?lat=35.1449589&lon=126.9216603&type=destination
+GET http://localhost:8000/maps/show-place?lat=35.1449589&lon=126.9216603&type=destination 
 
 
 ## showList : keyword 검색시 LIST 보여줌
