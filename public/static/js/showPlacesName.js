@@ -3,15 +3,15 @@ const search = location.search.substring(1);
 const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 let placeAddress = data["placeAddress"];
 let placeName = data["placeName"];
- 
- 
- //지도 초기값 설정
+
+
+//지도 초기값 설정
 const mapContainer = document.getElementById('map');  
 const mapOption = {
-        center: new kakao.maps.LatLng(35.1449589, 126.9216603),  
-        level:2
+    center: new kakao.maps.LatLng(35.1449589, 126.9216603),  
+    level:2
     };
- //지도 생성
+//지도 생성
 const map = new kakao.maps.Map(mapContainer, mapOption);  
 
 var geocoder = new kakao.maps.services.Geocoder();
@@ -25,6 +25,7 @@ geocoder.addressSearch(placeAddress, function(result, status) {
                         <h1 class=test>${placeName}</h1>
                     </div>
         `;
+
         var customOverlay = new kakao.maps.CustomOverlay({
             map: map,
             position: coords,
@@ -33,8 +34,5 @@ geocoder.addressSearch(placeAddress, function(result, status) {
             xAnchor: 0.3,
         });
         map.setCenter(coords);
-
-
-
     }
 });
