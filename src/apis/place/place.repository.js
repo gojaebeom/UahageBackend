@@ -148,7 +148,7 @@ export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
             where place_code = 2
             `;
             break;
-       /* case '3' : SQL += `
+        /* case '3' : SQL += `
             add_info -> 'fare'AS fare,
             b.id AS bookmark
             from places 
