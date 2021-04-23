@@ -99,3 +99,13 @@ Content-Type: application/json
 
 
 
+
+
+
+
+
+### FIND BY OPTION EAMIL
+GET http://localhost:8000/api/users/find-by-option?option=email&optionData=akobidov777@gmail.comkakao
+
+
+

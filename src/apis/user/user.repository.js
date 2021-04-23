@@ -1,4 +1,5 @@
 "use strict"
+import { compareSync } from "bcrypt";
 import {
     query
 } from "../../config/database.js";
@@ -25,12 +26,11 @@ export async function findAll() {
                 error: err
             };
         });
-}
-
+    }
 export async function findOne(id) {
     let sql = `
-    select id, email, nickname, profile_url, baby_gender,baby_birthday,parent_age
-    from public.users 
+    select *
+    from
     where id = ${id}`;
     return query(sql)
         .then(data => {
@@ -52,18 +52,36 @@ export async function findOne(id) {
         });
 }
 
-export async function findByOptions(options) {
-    /**
-     *  @findKeyMatch
-     *  em : email 
-     *  nn : nickname
-     *  bg : baby_gender
-     *  bb : baby_birthday
-     *  pu : profile_url
-     *  pa : parent_age
-     *  ca : created_at
-     *  ua : updated_at
-     */
+// 하나의 조건으로 정보 있는지 검사 🥕
+export async function findByOption(option, optionData) {
+    let sql = `
+    select *
+    from users
+    where ${option} = '${optionData}';`;
+    console.log(sql);
+    return query(sql)
+        .then(data => {
+            return {
+                success: true,
+                message: "finded successfully",
+                isdata: data.rowCount,
+                data: data.rows[0]
+                // 결과 존재하지않을때 isdata 0
+            };
+        })
+        .catch(err => {
+            // 쿼리 에러
+            return {
+                success: false,
+                message: "Could not find data",
+                error: err
+            };
+        });
+}
+//🥕
+
+/* export async function findByOptions(options) {
+ 
     const {
         em,
         nn,
@@ -111,12 +129,9 @@ export async function findByOptions(options) {
                 error: err
             };
         });
-}
+}*/
 
 export async function store(body) {
-    let sql = `
-    insert into users(email, nickname, gender, baby_birthday, parent_age, profile_image) 
-    values ('${email}', '${nickname}', ${gender}, ${birthday},${age},${URL})`;
     const {
         email,
         nickname,
@@ -125,19 +140,18 @@ export async function store(body) {
         age,
         URL
     } = body;
+    let sql = `
+    insert into users(email, nickname, baby_gender, baby_birthday, parent_age, profile_url) 
+    values ('${email}', ${nickname}, ${gender}, ${birthday},${age},${URL})`;
+ 
     return await query(sql)
         .then(data => { // query에서 resolve 반환됨
-            console.log(data.affectedRows);
-            if (data.affectedRows === 1) return {
+            return {
                 success: true,
                 message: "created successfully",
                 data: data
-            };
-            else return {
-                success: false,
-                message: "Could not create",
-                error: err
-            };
+            }
+            
         })
         .catch(err => { // query에서 reject가 반환됨
             return {

@@ -1,0 +1,15 @@
+
+### USER SIGN UP 
+POST http://localhost:8000/api/auth/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "sdwsdeasd@gmail.comkakoao",
+    "nickname": null,
+    "gender": null,
+    "birthday": null,
+    "age": null,
+    "URL": null,
+    "rf_token": null
+}
+
