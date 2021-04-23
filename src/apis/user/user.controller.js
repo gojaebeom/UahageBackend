@@ -18,10 +18,10 @@ export async function index( req, res ){
 export async function findByOption( req, res ){
     console.log("findbyoption");
     const {option , optionData} = req.query;
-    const { success , message, data, error } = await RfindByOption( option , optionData );
+    const { success , message, data, error , isdata } = await RfindByOption( option , optionData );
     success === true ? 
-    res.status(200).json({ message: message , data : data }) : 
-    res.status(500).json({ message: message , error : error });
+    res.status(200).json({ message: message , data : data , isdata: isdata }) : 
+    res.status(500).json({ message: message , error : error    });
 }
 //🥕
 

@@ -4,12 +4,13 @@ POST http://localhost:8000/api/auth/signup HTTP/1.1
 Content-Type: application/json
 
 {
-    "email": "sdwsdeasd@gmail.comkakoao",
-    "nickname": null,
-    "gender": null,
-    "birthday": null,
-    "age": null,
+    "email": "d5d1@gmail.comkakoao",
+    "nickname": "J",
+    "gender": "F",
+    "birthday": "null",
+    "age": 5,
     "URL": null,
     "rf_token": null
 }
 
+ 

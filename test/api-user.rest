@@ -105,7 +105,10 @@ Content-Type: application/json
 
 
 ### FIND BY OPTION EAMIL
-GET http://localhost:8000/api/users/find-by-option?option=email&optionData=akobidov777@gmail.comkakao
+GET http://localhost:8000/api/users/find-by-option?option=email&optionData='1@gmail.comkakoao'
+
+### FIND BY OPTION NICKNAME
+GET http://localhost:8000/api/users/find-by-option?option=nickname&optionData='assassooa'
 
 
 

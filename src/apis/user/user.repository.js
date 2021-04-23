@@ -57,7 +57,7 @@ export async function findByOption(option, optionData) {
     let sql = `
     select *
     from users
-    where ${option} = '${optionData}';`;
+    where ${option} = ${optionData};`;
     console.log(sql);
     return query(sql)
         .then(data => {
@@ -142,7 +142,7 @@ export async function store(body) {
     } = body;
     let sql = `
     insert into users(email, nickname, baby_gender, baby_birthday, parent_age, profile_url) 
-    values ('${email}', ${nickname}, ${gender}, ${birthday},${age},${URL})`;
+    values (${email}, ${nickname}, ${gender}, ${birthday},${age},${URL})`;
  
     return await query(sql)
         .then(data => { // query에서 resolve 반환됨
