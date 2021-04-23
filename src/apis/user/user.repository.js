@@ -6,7 +6,7 @@ import {
 
 export async function findAll() {
     let sql = `
-    select id, email, nickname, profile_url  
+    select *  
     from public.users`;
     return query(sql)
         .then(data => {
@@ -30,7 +30,7 @@ export async function findAll() {
 export async function findOne(id) {
     let sql = `
     select *
-    from
+    from users
     where id = ${id}`;
     return query(sql)
         .then(data => {
@@ -80,56 +80,6 @@ export async function findByOption(option, optionData) {
 }
 //🥕
 
-/* export async function findByOptions(options) {
- 
-    const {
-        em,
-        nn,
-        bg,
-        bb,
-        pu,
-        pa,
-        ca,
-        ua
-    } = options;
-
-    let sql = `
-    select id, email, nickname, profile_url
-    from users
-    where`;
-
-    em && sql + ` email = '${em}'`;
-    nn && sql + ` nickname = '${nn}'`;
-    bg && sql + ` baby_gender = '${bg}'`;
-    bb && sql + ` baby_birthday = '${bb}'`;
-    pu && sql + ` profile_url = '${pu}'`;
-    pa && sql + ` parent_age = '${pa}'`;
-    ca && sql + ` created_at = '${ca}'`;
-    ua && sql + ` updated_at = '${ua}'`;
-
-    return await query(sql)
-        .then(data => {
-            return {
-                success: true,
-                message: "finded successfully",
-                data: data
-            };
-        })
-        .catch(err => {
-            console.log(err.errno);
-            if (err.errno === 1054) return {
-                success: false,
-                message: err.sqlMessage,
-                error: err,
-                code: 404
-            };
-            return {
-                success: false,
-                message: "Could not find data",
-                error: err
-            };
-        });
-}*/
 
 export async function store(body) {
     const {
