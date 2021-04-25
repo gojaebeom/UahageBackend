@@ -24,3 +24,4 @@ is '
 -- from users as U
 -- left join places as P
 select * from managers;
+-- update managers set is_verified = 1 where id = 1;
