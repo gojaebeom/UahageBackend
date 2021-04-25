@@ -14,37 +14,47 @@
   
   let lat  = data["lat"];
   let lon = data["lon"];
-  let url = data["type"];
-  let menu= data["menu"];
-  let bed = data["bed"];
-  let tableware = data["tableware"];
-  let meetingroom = data["meetingroom"];
-  let diapers = data["diapers"];
-  let playroom = data["playroom"];
-  let carriage = data["carriage"];
-  let nursingroom= data["nursingroom"];
-  let chair= data["chair"];
-  let place_code = data["place_code"];
+  let type = data["type"];
+  let user_id = data["user_id"];
+  let url = "";
 
 
   async function init() {
-  // 모든 데이터 받아오기 
-    if(url==='allsearch'){
-      url = "http://localhost:8000/api/places/test?place_code="+place_code+"&type=all"
-      console.log(url);
-    }else{
-  // 필터에 해당하는 데이터 받아오기
-      url = "http://localhost:8000/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
-      console.log(url);
-     }
- 
+  
+    if(type==='allsearch'){
+      let place_code = data["place_code"];
+      url = `/api/places/search?type=all&place_code=${place_code}`;
+    
+    }
+    else if(type==='filter'){
+      let menu= data["menu"];
+      let bed = data["bed"];
+      let tableware = data["tableware"];
+      let meetingroom = data["meetingroom"];
+      let diapers = data["diapers"];
+      let playroom = data["playroom"];
+      let carriage = data["carriage"];
+      let nursingroom= data["nursingroom"];
+      let chair= data["chair"];
+      url = `/api/places/search?type=filter&menu=${menu}&bed=${bed}&tableware=${tableware}&meetingroom=${meetingroom}&diapers=${diapers}&playroom=${playroom}&carriage=${carriage}&nursingroom=${nursingroom}&chair=${chair}`;
+    }
+      else{
+      url = `/api/places/search?place_code=1&type=all`;
+    
+    }
+
+
+  // show dump image file 
   const placeList = await fetch(url, {
       method: "GET",
       headers: {
         'Content-Type': "application/json",
-        "Authorization": ""
+        "Authorization": "",
+        "Access-Control-Allow-Origin": "*",
       },
   }).then(res => res.json());
+
+  // delete dump image file
     const placeData = placeList["data"]["rows"];
    //지도 초기값 설정
     const mapContainer = document.getElementById('map');  
@@ -67,20 +77,35 @@
               height: '50px',
               background: ' #ff6e7f',
               background: '-webkit-linear-gradient(to right,#ff6e7f, #f06292)',
-               background: ' linear-gradient(to right, #ff6e7f, #f06292)',
-               opacity: '0.7',
+              background: ' linear-gradient(to right, #ff6e7f, #f06292)',
+              opacity: '0.7',
               borderRadius: '50%',
               color: 'white',
               textAlign: 'center',
               fontWeight: 'bold',
               lineHeight: '50px',
-           },   ]   });
+          },   
+        ]   
+      }
+      );
     // 🍎 현재 위치 찍어주기                                  
-    const markerMain = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(lat, lon),
-          image:    new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-          map:      map
+    if(type=="destination"){
+      let destination = new kakao.maps.CustomOverlay({
+            content: `<div style="padding: 0px 15px 0px 15px;   border-radius:25px;  box-shadow:0px 3px 2px #888; background-color:#f06292;  background: #f06292      center;" >
+                            <h1> 목적지 </h1>
+                      </div>`,
+            map:map ,
+            position:new kakao.maps.LatLng(lat, lon),
+            yAnchor: 1.0,
+            xAnchor: 0.3,
         });
+    }else{
+      const markerMain = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(lat, lon),
+        image:    new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+        map:      map
+      });
+    }
    //거리에 해당하는 마커 찍어주기    
     placeData.forEach(function(v, i) {
       let distance = calcDist(lat, lon, placeData[i].lat, placeData[i].lon);
@@ -88,7 +113,7 @@
     });
     
      //마커 -> 클러스터
-     clusterer.addMarkers(clusterMarker);
+    clusterer.addMarkers(clusterMarker);
 
  // 🍎 식당마커 찍어주기
     function displayMarker(placeData) {
@@ -99,9 +124,8 @@
       });
       placeMarkers.push(placeMarker);
       clusterMarker.push(placeMarker);
-       console.log(placeData.bed);
       let content = `
-      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}');"> 
+      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
           <a>
             <span class="title">${placeData.name}</span> 
           </a> 
@@ -126,7 +150,7 @@
         CustomOverlay.setMap(null);
         }
       });
-   };
+  };
     //클러스터 확대
       kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
       let level = map.getLevel() - 1;
@@ -164,7 +188,6 @@
 init();
 
 function getresult(result) {
-   console.log(result);
   Print.postMessage(result);
 }
 

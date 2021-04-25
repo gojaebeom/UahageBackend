@@ -4,9 +4,8 @@ import { query } from "../../config/database.js";
 
 //🥕
 export async function AllSearch( place_code ){
-    console.log("AllSearch");
     let SQL = `
-    select name, address, phone, lat, lon,`;
+    select id, name, address, phone, lat, lon,`;
     switch(place_code) {
         case '1' : SQL += `
             add_info -> 'carriage' AS carriage,
@@ -18,13 +17,13 @@ export async function AllSearch( place_code ){
             add_info -> 'playroom'AS playroom, 
             add_info -> 'chair'AS chair,
             add_info -> 'menu'AS menu
-            from places 
+            from places  
             where place_code = 1;
             `;
             break;
         case '2' : SQL += `
             add_info -> 'examination'AS examination
-            from places 
+            from places  
             where place_code = 2;
             `;
             break;
@@ -36,19 +35,20 @@ export async function AllSearch( place_code ){
         //     break;
         case '5' : SQL += `
             add_info -> 'fare'AS fare
-            from places 
+            from places  
+                
             where place_code = 5;
             `;
             break;
         case '6' : SQL += `
             add_info -> 'fare'AS fare
-            from places 
+            from places  
             where place_code = 6;
             `;
             break;
         default : null;
     }
-  
+
     console.log(SQL);
     return query(SQL)
         .then( data => { 
@@ -58,7 +58,7 @@ export async function AllSearch( place_code ){
             return { success : false, message : "Could not find data", error : err };
         });
 }
-export async function PartialSearch( place_code , menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair ){
+export async function PartialSearch( menu, bed,tableware,meetingroom,diapers,playroom,carriage,nursingroom,chair ){
     console.log("PartialSearch");
     const option = [
         'menu',
@@ -82,11 +82,9 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
         nursingroom,
         chair
     ];
-   
+
     let SQL = `
-    select name, address, phone, lat, lon,`;
-    switch(place_code) {
-        case '1' : SQL += `
+    select id, name, address, phone, lat, lon,
             add_info -> 'carriage' AS carriage,
             add_info -> 'bed' AS bed,
             add_info -> 'tableware' AS tableware,
@@ -96,43 +94,17 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
             add_info -> 'playroom'AS playroom, 
             add_info -> 'chair'AS chair,
             add_info -> 'menu'AS menu
-            from places 
+            from places
             where place_code = 1
-            `;
-            break;
-        case '2' : SQL += `
-            add_info -> 'examination'AS examination
-            from places 
-            where place_code = 2
-            `;
-            break;
-        case '3' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
-            where place_code = 5
-            `;
-            break;
-        case '5' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
-            where place_code = 5
-            `;
-            break;
-        case '6' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
-            where place_code = 6 
-            `;
-            break;
-        default : null;
-    }
+            `
+        
     let SQLADD = "";
     for (let i = 0; i < options.length; i++) {
         if (options[i] =='1') {
             SQLADD = "and  add_info ->> '" + option[i] + "' = '1' ";
             SQL += SQLADD;
             }
-       
+    
     };
     SQL+=";";
     console.log(SQL);
@@ -147,10 +119,10 @@ export async function PartialSearch( place_code , menu, bed,tableware,meetingroo
 //🥕
 
 
-export async function findAll(place_code, lat, lon ,pageNumber ){
+export async function findAll(place_code, lat, lon ,pageNumber,user_id ){
     
     let SQL = `
-    select name, address, phone,`;
+    select  s.id ,name, address, phone,`;
     switch(place_code) {
         case '1' : SQL += `
             add_info -> 'carriage' AS carriage,
@@ -161,32 +133,41 @@ export async function findAll(place_code, lat, lon ,pageNumber ){
             add_info -> 'diapers' AS diapers,
             add_info -> 'playroom'AS playroom, 
             add_info -> 'chair'AS chair,
-            add_info -> 'menu'AS menu
-            from places 
+            add_info -> 'menu'AS menu,
+            COALESCE(b.id, 0) AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 1
             `;
             break;
         case '2' : SQL += `
-            add_info -> 'examination'AS examination
-            from places 
+            add_info -> 'examination'AS examination,
+            COALESCE(b.id, 0) AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 2
             `;
             break;
-        case '3' : SQL += `
-            add_info -> 'fare'AS fare
+        /* case '3' : SQL += `
+            add_info -> 'fare'AS fare,
+            b.id AS bookmark
             from places 
             where place_code = 5
             `;
-            break;
+            break; */
         case '5' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
+            add_info -> 'fare'AS fare,
+            COALESCE(b.id, 0) AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 5
             `;
             break;
         case '6' : SQL += `
-            add_info -> 'fare'AS fare
-            from places 
+            add_info -> 'fare'AS fare,
+            COALESCE(b.id, 0) AS bookmark
+            from places s left outer join (
+                select * from users_places_bookmarks  where user_id =${user_id}) as b on s.id =b.place_id 
             where place_code = 6
             `;
             break;

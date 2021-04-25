@@ -22,6 +22,4 @@
             image: new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
             map:map
         });
-    console.log()
- 
 

@@ -1,13 +1,17 @@
 ### ------------------- place API ---------------------- ###
 ### index
-GET http://localhost:8000/api/places/test?place_code=1 HTTP/1.1
+ HTTP/1.1
 
-###   
  
 
-GET http://localhost:8000/api/places?place_code=1&lat=35.1449589&lon=126.9216603&pageNumber=0 HTTP/1.1
+ 
 
-GET http://localhost:8000/api/places/5 HTTP/1.1
+GET http://localhost:8000/api/places?place_code=1&lat=35.1449589&lon=126.9216603&pageNumber=0&user_id=59 HTTP/1.1
 
-http://localhost:8000/maps/all-places?lat=35.1449589&lon=126.9216603&type=earch&menu=1&bed=0&tableware=0&meetingroom=0&diapers=0&playroom=0&carriage=0&nursingroom=0&chair=0
+### SEARCH PAGE
+  ##type = all 
+GET http://localhost:8000/api/places/search?type=all&place_code=1   
 
+### SEARCH PAGE
+  ##type = filter 
+GET http://localhost:8000/api/places/search?type=filter&menu=0&bed=0&tableware=0&meetingroom=0&diapers=0&playroom=0&carriage=0&nursingroom=0&chair=1
