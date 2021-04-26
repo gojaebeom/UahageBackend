@@ -1,5 +1,5 @@
 "use strict"
-import { findAll , findOne, updateAll, store, findByOptions as RfindByOptions, updateByOptions as RupdateByOptions, destroy } from "./user.repository.js";
+import { findAll , findOne, updateAll, store, findByOption as RfindByOption, updateByOptions as RupdateByOptions, destroy } from "./user.repository.js";
 
 export async function index( req, res ){
     const querystring = req.query;
@@ -14,15 +14,16 @@ export async function index( req, res ){
     res.status(500).json({ message: message , error : error });
 }
 
-export async function findByOptions( req, res ){
-    const querystring = req.query;
-    console.log(querystring);
-
-    const { success , message, data, error } = await RfindByOptions( querystring );
+// 하나의 조건으로 정보 찾을 때 사용 🥕
+export async function findByOption( req, res ){
+    console.log("findbyoption");
+    const {option , optionData} = req.query;
+    const { success , message, data, error , isdata } = await RfindByOption( option , optionData );
     success === true ? 
-    res.status(200).json({ message: message , data : data }) : 
-    res.status(500).json({ message: message , error : error });
+    res.status(200).json({ message: message , data : data , isdata: isdata }) : 
+    res.status(500).json({ message: message , error : error    });
 }
+//🥕
 
 export async function show( req, res ){
     const id = req.params.id;

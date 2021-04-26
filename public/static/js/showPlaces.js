@@ -15,15 +15,16 @@
   let lat  = data["lat"];
   let lon = data["lon"];
   let type = data["type"];
+  let user_id = data["user_id"];
   let url = "";
 
 
   async function init() {
-  // 모든 데이터 받아오기 
+  
     if(type==='allsearch'){
       let place_code = data["place_code"];
-      url = "/api/places/test?place_code="+place_code+"&type=all"
-      console.log(url);
+      url = `/api/places/search?type=all&place_code=${place_code}`;
+    
     }
     else if(type==='filter'){
       let menu= data["menu"];
@@ -35,13 +36,13 @@
       let carriage = data["carriage"];
       let nursingroom= data["nursingroom"];
       let chair= data["chair"];
-      url = "/api/places/test?place_code=1&type=filter&menu="+menu+"&bed="+bed+"&tableware="+tableware+"&meetingroom="+meetingroom+"&diapers="+diapers+"&playroom="+playroom+"&carriage="+carriage+"&nursingroom="+nursingroom+"&chair="+chair+"";
-      console.log(url);
-     }else{
-      url = "/api/places/test?place_code=1&type=all"
-      console.log(url);
-     }
- 
+      url = `/api/places/search?type=filter&menu=${menu}&bed=${bed}&tableware=${tableware}&meetingroom=${meetingroom}&diapers=${diapers}&playroom=${playroom}&carriage=${carriage}&nursingroom=${nursingroom}&chair=${chair}`;
+    }
+      else{
+      url = `/api/places/search?place_code=1&type=all`;
+    
+    }
+
 
   // show dump image file 
   const placeList = await fetch(url, {
@@ -76,20 +77,23 @@
               height: '50px',
               background: ' #ff6e7f',
               background: '-webkit-linear-gradient(to right,#ff6e7f, #f06292)',
-               background: ' linear-gradient(to right, #ff6e7f, #f06292)',
-               opacity: '0.7',
+              background: ' linear-gradient(to right, #ff6e7f, #f06292)',
+              opacity: '0.7',
               borderRadius: '50%',
               color: 'white',
               textAlign: 'center',
               fontWeight: 'bold',
               lineHeight: '50px',
-           },   ]   });
+          },   
+        ]   
+      }
+      );
     // 🍎 현재 위치 찍어주기                                  
     if(type=="destination"){
       let destination = new kakao.maps.CustomOverlay({
             content: `<div style="padding: 0px 15px 0px 15px;   border-radius:25px;  box-shadow:0px 3px 2px #888; background-color:#f06292;  background: #f06292      center;" >
-                             <h1> 목적지 </h1>
-                       </div>`,
+                            <h1> 목적지 </h1>
+                      </div>`,
             map:map ,
             position:new kakao.maps.LatLng(lat, lon),
             yAnchor: 1.0,
@@ -109,7 +113,7 @@
     });
     
      //마커 -> 클러스터
-     clusterer.addMarkers(clusterMarker);
+    clusterer.addMarkers(clusterMarker);
 
  // 🍎 식당마커 찍어주기
     function displayMarker(placeData) {
@@ -120,9 +124,8 @@
       });
       placeMarkers.push(placeMarker);
       clusterMarker.push(placeMarker);
-       console.log(placeData.bed);
       let content = `
-      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
+      <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
           <a>
             <span class="title">${placeData.name}</span> 
           </a> 
@@ -147,7 +150,7 @@
         CustomOverlay.setMap(null);
         }
       });
-   };
+  };
     //클러스터 확대
       kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
       let level = map.getLevel() - 1;
@@ -185,7 +188,6 @@
 init();
 
 function getresult(result) {
-   console.log(result);
   Print.postMessage(result);
 }
 

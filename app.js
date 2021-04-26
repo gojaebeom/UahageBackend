@@ -15,6 +15,8 @@ import placeRouter from "./src/apis/place/place.router.js";
 import bookmarkRouter from "./src/apis/bookmark/bookmark.router.js";
 import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
+// import admin api router 🎇
+import adminAuthRouter from "./src/apis/admin/auth/auth.router.js";
 //import mapRouter from "./src/pages/map/map.router.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
@@ -49,7 +51,6 @@ app.use(express.urlencoded({
 // Page router
 // // Page router
 // app.use("/maps",      mapRouter); // 맵
-
 app.get("/maps/", ( req, res ) => {
     console.log("map index");
     res.render("index");
@@ -67,7 +68,6 @@ app.get("/maps/show-list", ( req, res ) => {
     res.render("showList");
 });
 
-
 // API router V1
 app.use("/api/auth",      authRouter); // 로그인, 회원가입
 app.use("/api/s3",        awsRouter); // 이미지 파일
@@ -77,8 +77,8 @@ app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크
 app.use("/api/crw",       crwRouter); // 크롤링 (임시)
 app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시)
 
-
-
+// // API admin router
+app.use("/api/admin/auth", adminAuthRouter);
 
 
 // export express app ✨

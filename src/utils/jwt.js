@@ -2,9 +2,10 @@ import jwt from "jsonwebtoken";
 const secretKey = process.env.APP_SECRET;
 
 // jwt 토큰 발행
-export function createToken( userId ) {
+export function createToken( userId, roles ) {
     //return jwt.sign({ uid: userId }, secretKey, { expiresIn: '30s' });
-    return jwt.sign({ uid: userId }, secretKey); // not time setting
+    // roles : 'SUPER' / 'MANAGER' / 'GENERAL' / 'USER'
+    return jwt.sign({ uid: userId, roles: roles }, secretKey); // not time setting
 }
 
 // jwt 토큰 해석
