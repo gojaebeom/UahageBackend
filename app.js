@@ -17,6 +17,7 @@ import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
 // import admin api router 🎇
 import adminAuthRouter from "./src/apis/admin/auth/auth.router.js";
+import adminManagerRouter from "./src/apis/admin/manager/manager.router.js";
 //import mapRouter from "./src/pages/map/map.router.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
@@ -79,6 +80,8 @@ app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임�
 
 // // API admin router
 app.use("/api/admin/auth", adminAuthRouter);
+app.use("/api/admin/managers", adminManagerRouter);
+
 
 // export express app ✨
 // this app used by ./bin/www.js

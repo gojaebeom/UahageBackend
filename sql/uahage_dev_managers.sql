@@ -23,5 +23,14 @@ is '
 -- select U.email, P.
 -- from users as U
 -- left join places as P
-select * from managers;
+select * from managers order by id desc;
 -- update managers set is_verified = 1 where id = 1;
+
+
+-- search
+select id, nickname, email, roles, is_verified, created_at
+from managers 
+where nickname like '고%'
+and is_verified = 0
+and roles = 'GENERAL'
+order by id asc;
