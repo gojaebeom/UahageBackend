@@ -1,17 +1,18 @@
 {
-  "name": "uahage_dev",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "dev": "nodemon --experimental-json-modules ./bin/www.js",
-    "start": "node --experimental-json-modules ./bin/www.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
+    "name": "uahage_dev",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "type":"module",
+    "scripts": {
+        "dev": "nodemon --experimental-json-modules ./bin/www.js",
+        "start": "node --experimental-json-modules ./bin/www.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+    "@std/esm": "^0.26.0",
     "aws-sdk": "^2.818.0",
     "bcrypt": "^5.0.1",
     "config": "^3.3.6",
@@ -33,8 +34,8 @@
     "url": "^0.11.0",
     "uuid": "^8.3.2",
     "xlsx": "^0.16.9"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
 }
