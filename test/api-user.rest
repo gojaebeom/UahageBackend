@@ -4,7 +4,7 @@
 GET http://localhost:8000/api/users HTTP/1.1
 
 ### find one user  
-GET http://localhost:8000/api/users/1 HTTP/1.1
+GET http://localhost:8000/api/users/73 HTTP/1.1
 
 ### get user nickname
 GET http://localhost:8000/api/users/nickname?userId=2 HTTP/1.1 
@@ -110,5 +110,7 @@ GET http://localhost:8000/api/users/find-by-option?option=email&optionData='1@gm
 ### FIND BY OPTION NICKNAME
 GET http://localhost:8000/api/users/find-by-option?option=nickname&optionData='assassooa'
 
+### FIND USERS
+GET http://localhost:8000/api/users/77
 
 

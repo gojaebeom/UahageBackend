@@ -2,8 +2,10 @@
 import {show , store, destroy } from "./bookmark.repository.js";
  
 export async function select( req, res ){
-    const user_id = req.query.user_id;
-    const place_id = req.query.place_id;
+    // const user_id = req.query.user_id;
+    // const place_id = req.query.place_id ;
+    const {user_id, place_id} = req.query;
+    console.log(req.query);
     const { success , message, data, error } = await show( user_id ,place_id );
     success === true ? 
     res.status(200).json({ message: message , data : data}) : 

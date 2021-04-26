@@ -11,6 +11,7 @@ router.get("/search", search);  // - type=all    ?place_code=[]
 //PLACES AND USER_BOOKMARK VIEW(ORDER BY distance)
 router.get("/", index);         
 router.get("/:id", show);
+// router.get("/placeName/:id", show);
 router.post("/", create);
 
 
