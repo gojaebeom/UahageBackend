@@ -14,7 +14,7 @@ import {
 
 //로그인
 export async function signin(req, res) {
-
+    const email = req.body.email;
     // 이메일이 존재하는지 검사
     let resultObject = await findByOption("email" , email);
     
@@ -26,13 +26,13 @@ export async function signin(req, res) {
         });
     // 회원가입이 되어있는경우 
     if (resultObject.isdata != 0){
-        const token = createToken(userData.data.id);
+        const token = createToken(resultObject.data.id);
         res.status(200).json({
             message: "user token ok",
             data: {
                 result: resultObject.result,
                 token: token,
-                id: userData.data.id
+                id: resultObject.data.id
             }
         });
     }else{
