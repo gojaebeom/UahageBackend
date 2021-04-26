@@ -7,6 +7,7 @@ const router = Router();
 router.get("/test", test); //🥕
 router.get("/", index);
 router.get("/:id", show);
+// router.get("/placeName/:id", show);
 router.post("/", create);
 
 
