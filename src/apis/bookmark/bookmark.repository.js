@@ -2,9 +2,11 @@
 import { query } from "../../config/database.js";
 
 export async function show(  user_id ,place_id ){
-const SQL = `
+let SQL;
+console.log(place_id);
+   SQL = place_id ?  `
     select * from users_places_bookmarks where user_id = ${ user_id  } and place_id = ${ place_id } ;
-    `;
+    ` : `select * from users_places_bookmarks where user_id = ${ user_id  };`;
     return  query( SQL )
     .then( data => { 
     return { success : true, message : "created successfully", data : data};
