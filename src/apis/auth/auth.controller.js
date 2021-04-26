@@ -12,7 +12,43 @@ import {
 } from "../user/user.repository.js"
 
 
-//create user
+//로그인
+export async function signin(req, res) {
+
+    // 이메일이 존재하는지 검사
+    let resultObject = await findByOption("email" , email);
+    
+    // query error 
+    if (!resultObject.success)
+        return res.status(500).json({
+            message: "sign-up false",
+            data: resultObject.result
+        });
+    // 회원가입이 되어있는경우 
+    if (resultObject.isdata != 0){
+        const token = createToken(userData.data.id);
+        res.status(200).json({
+            message: "user token ok",
+            data: {
+                result: resultObject.result,
+                token: token,
+                id: userData.data.id
+            }
+        });
+    }else{
+        res.status(200).json({
+            message: "user not"
+        })
+    }
+    
+
+    
+
+
+}
+
+
+//회원가입
 export async function signup(req, res) {
     console.log("sign up");
     const {
