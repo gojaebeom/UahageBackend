@@ -36,7 +36,7 @@ export async function isSuperuser( ){
 // email을 검색하여 email, password 반환( 없으면 false 반환 )
 export async function findLoginInfo(email, nickname) {
     let sql = email ? `
-    select id, email, nickname, password, roles
+    select id, email, nickname, password, roles, is_verified
     from managers 
     where email = '${email}'` : `select  nickname
     from managers 

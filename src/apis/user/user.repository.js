@@ -1,11 +1,12 @@
 "use strict"
+import { compareSync } from "bcrypt";
 import {
     query
 } from "../../config/database.js";
 
 export async function findAll() {
     let sql = `
-    select id, email, nickname, profile_url  
+    select *  
     from public.users`;
     return query(sql)
         .then(data => {
@@ -25,12 +26,11 @@ export async function findAll() {
                 error: err
             };
         });
-}
-
+    }
 export async function findOne(id) {
     let sql = `
-    select id, email, nickname, profile_url, baby_gender,baby_birthday,parent_age
-    from public.users 
+    select *
+    from users
     where id = ${id}`;
     return query(sql)
         .then(data => {
@@ -52,59 +52,25 @@ export async function findOne(id) {
         });
 }
 
-export async function findByOptions(options) {
-    /**
-     *  @findKeyMatch
-     *  em : email 
-     *  nn : nickname
-     *  bg : baby_gender
-     *  bb : baby_birthday
-     *  pu : profile_url
-     *  pa : parent_age
-     *  ca : created_at
-     *  ua : updated_at
-     */
-    const {
-        em,
-        nn,
-        bg,
-        bb,
-        pu,
-        pa,
-        ca,
-        ua
-    } = options;
-
+// 하나의 조건으로 정보 있는지 검사 🥕
+export async function findByOption(option, optionData) {
     let sql = `
-    select id, email, nickname, profile_url
+    select *
     from users
-    where`;
-
-    em && sql + ` email = '${em}'`;
-    nn && sql + ` nickname = '${nn}'`;
-    bg && sql + ` baby_gender = '${bg}'`;
-    bb && sql + ` baby_birthday = '${bb}'`;
-    pu && sql + ` profile_url = '${pu}'`;
-    pa && sql + ` parent_age = '${pa}'`;
-    ca && sql + ` created_at = '${ca}'`;
-    ua && sql + ` updated_at = '${ua}'`;
-
-    return await query(sql)
+    where ${option} = ${optionData};`;
+    console.log(sql);
+    return query(sql)
         .then(data => {
             return {
                 success: true,
                 message: "finded successfully",
-                data: data
+                isdata: data.rowCount,
+                data: data.rows[0]
+                // 결과 존재하지않을때 isdata 0
             };
         })
         .catch(err => {
-            console.log(err.errno);
-            if (err.errno === 1054) return {
-                success: false,
-                message: err.sqlMessage,
-                error: err,
-                code: 404
-            };
+            // 쿼리 에러
             return {
                 success: false,
                 message: "Could not find data",
@@ -112,11 +78,10 @@ export async function findByOptions(options) {
             };
         });
 }
+//🥕
+
 
 export async function store(body) {
-    let sql = `
-    insert into users(email, nickname, gender, baby_birthday, parent_age, profile_image) 
-    values ('${email}', '${nickname}', ${gender}, ${birthday},${age},${URL})`;
     const {
         email,
         nickname,
@@ -125,19 +90,18 @@ export async function store(body) {
         age,
         URL
     } = body;
+    let sql = `
+    insert into users(email, nickname, baby_gender, baby_birthday, parent_age, profile_url) 
+    values (${email}, ${nickname}, ${gender}, ${birthday},${age},${URL})`;
+ 
     return await query(sql)
         .then(data => { // query에서 resolve 반환됨
-            console.log(data.affectedRows);
-            if (data.affectedRows === 1) return {
+            return {
                 success: true,
                 message: "created successfully",
                 data: data
-            };
-            else return {
-                success: false,
-                message: "Could not create",
-                error: err
-            };
+            }
+            
         })
         .catch(err => { // query에서 reject가 반환됨
             return {

@@ -17,13 +17,13 @@ export async function signin(req, res) {
     if (!success)
         return res.status(500).json({
             message: "login false",
-            data: result
+            data: 0
         });
     // not found email
     if (!result)
         return res.status(400).json({
             message: "not found email",
-            data: false
+            data: -1
         });
 
     // not matched password
@@ -31,8 +31,16 @@ export async function signin(req, res) {
     if (!isMatched)
         return res.status(400).json({
             message: "not matched password",
-            data: false
+            data: -2
         });
+    // 관리자 승인 안됌
+    console.log(result);
+    if (result[0].is_verified !== 1){
+        return res.status(400).json({
+            message: "is not verified",
+            data: -3
+        });
+    }
 
     // 위의 유효성 검사들을 통과하면 토큰 발급 ( 토큰에는 유저의 id와 roles 가 들어감 )
     const { id, roles } = result[0];
