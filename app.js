@@ -50,17 +50,17 @@ app.use(express.urlencoded({
 // set router ✨
 // Page router
 // // Page router
-// app.use("/maps",      mapRouter); // 맵
+// app.use("/maps", mapRouter); // 맵
 app.get("/maps/", ( req, res ) => {
     console.log("map index");
     res.render("index");
 });
 app.get("/maps/show-place", ( req, res ) => {
     console.log("map showPlace");
-    res.render("showPlaces");
+    res.render("show Places");
 });
 app.get("/maps/show-place-name", ( req, res ) => {
-    console.log("map showPlaceName");
+    console.log("map show Place Name");
     res.render("showPlacesName");
 });
 app.get("/maps/show-list", ( req, res ) => {
@@ -79,7 +79,6 @@ app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임�
 
 // // API admin router
 app.use("/api/admin/auth", adminAuthRouter);
-
 
 // export express app ✨
 // this app used by ./bin/www.js
