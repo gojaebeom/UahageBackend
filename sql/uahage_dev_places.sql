@@ -17,4 +17,5 @@ is '유아 관련 장소 정보 제공 테이블
 - 유저가 즐겨찾기할 수 있음';
 
 select * from places;
-select * from places where place_code = 1;
+select id, name from places
+limit 10 offset (2-1)*10;

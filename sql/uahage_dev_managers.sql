@@ -27,10 +27,18 @@ select * from managers order by id desc;
 -- update managers set is_verified = 1 where id = 1;
 
 
--- search
-select id, nickname, email, roles, is_verified, created_at
+-- index filter
+select count(*) over() as total, id, nickname, email, roles, is_verified, created_at
 from managers 
 where nickname like '고%'
 and is_verified = 0
 and roles = 'GENERAL'
-order by id asc;
+order by id asc
+limit 10 offset 0;
+select * from managers;
+
+-- 관리자 인증
+update managers set is_verified = 1 where id = 2;
+
+-- 회원 삭제
+-- delete from managers where id = 12;

@@ -5,17 +5,17 @@ import { findAll, findOne, findbyOptions, store, edit, destory } from "./manager
 
 export async function index(req, res) {
     const querystring = req.query;
+    console.log( querystring );
     const keys = Object.keys(querystring);
 
     let success, result;
-
     if( keys.length === 0 ) {
-        console.log("보통 타입으로 넘어감");
+        console.log("default");
         const resultObj = await findAll();
         success = resultObj.success;
         result = resultObj.result;
     }else {
-        console.log("검색 타입으로 넘어감");
+        console.log("filter");
         const resultObj = await findbyOptions( querystring );
         success = resultObj.success;
         result = resultObj.result;
@@ -85,8 +85,8 @@ export async function update(req, res) {
 }
 
 export async function _delete(req, res) {
-    const { success , result } = await destory(); 
-
+    const id = req.params.id;
+    const { success , result } = await destory( id ); 
     ! success ?
     // err 
     res.status(500).json({
