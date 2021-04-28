@@ -69,6 +69,9 @@ app.get("/maps/show-list", ( req, res ) => {
     res.render("showList");
 });
 
+// API admin router
+app.use("/api/admin/auth", adminAuthRouter);
+app.use("/api/admin/managers", adminManagerRouter);
 // API router V1
 app.use("/api/auth",      authRouter); // 로그인, 회원가입
 app.use("/api/s3",        awsRouter); // 이미지 파일
@@ -78,9 +81,7 @@ app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크
 app.use("/api/crw",       crwRouter); // 크롤링 (임시)
 app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시)
 
-// // API admin router
-app.use("/api/admin/auth", adminAuthRouter);
-app.use("/api/admin/managers", adminManagerRouter);
+
 
 
 // export express app ✨

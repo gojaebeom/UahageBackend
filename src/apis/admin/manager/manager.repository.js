@@ -3,7 +3,7 @@ import { query } from "../../../config/database.js";
 
 export function findAll() {
     let sql = `
-    select id, nickname, email, is_verified, roles, created_at
+    select id, profile_path, nickname, email, is_verified, roles, created_at
     from managers
     order by id desc`;
     return query(sql)
@@ -18,13 +18,15 @@ export function findAll() {
 }
 export function findOne( id ) {
     let sql = `
-    select id, nickname, email, is_verified, roles, created_at
+    select id, profile_path, nickname, email, is_verified, roles, created_at
     from managers
     where id = ${ id }`;
     console.log(`최종 query ${ sql }`);
     return query(sql)
         .then( data => {
-            return { success : true , result : data.rows }
+            if(data.rowCount === 0) 
+                return { success : true , result : false }
+            return { success : true , result : data.rows[0] }
         })
         .catch( error => {
             return { success : false, result : error }
@@ -42,7 +44,7 @@ export async function findbyOptions( options ) {
      */
     const { search, page, sort, iv, ro } = options;
     let sql = `
-    select count(*) over() as total,  id, nickname, email, roles, is_verified, created_at
+    select count(*) over() as total,  id, profile_path, nickname, email, roles, is_verified, created_at
     from managers `;
 
     // search, is_verified, roles 는 where 절에 들어가기 때문에 셋중에 하나라도 존재하면 
@@ -108,17 +110,6 @@ export async function findbyOptions( options ) {
         });
 }
 
-export function totalUser( ) {
-    let sql = `select count(*) from managsers `;
-    return query(sql)
-        .then( data => {
-            return { success : true , result : data.rowCount }
-        })
-        .catch( error => {
-            return { success : false, result : error }
-        });
-}
-
 export function store() {
     let sql = ``;
     return query(sql)
@@ -130,8 +121,16 @@ export function store() {
         });
 }
 
-export function edit( id ) {
-    let sql = ``;
+export function edit( body, id ) {
+    let sql = `
+    update managers set `;
+    let values = Object.values(body);
+    let count = 0;
+    for (let key in body) {
+        sql += ` ${key} = '${values[count]}' ,`;
+        count++;
+    }
+    sql += ` updated_at = current_timestamp where id = ${id}`;
     return query(sql)
         .then( data => {
             return { success : true , result : data }

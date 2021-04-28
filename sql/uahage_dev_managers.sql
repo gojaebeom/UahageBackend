@@ -1,6 +1,6 @@
 -- ## 우아하게 애플리케이션 개발용 테이블 명세서 V1 ✨ ##
 
--- 즐겨찾기 ( 북마크 )
+-- 매니저
 create table managers(
 	id serial primary key, -- pk 
 	email varchar(50) unique not null, -- 이메일 
@@ -13,6 +13,8 @@ create table managers(
 	created_at timestamp default now(), -- 생성일
 	updated_at timestamp, -- 수정일
 );
+-- 컬럼 추가
+-- alter table managers add column profile_path varchar(200) default '';
 
 comment on table public.managers
 is '
@@ -38,7 +40,7 @@ limit 10 offset 0;
 select * from managers;
 
 -- 관리자 인증
-update managers set is_verified = 1 where id = 2;
+-- update managers set is_verified = 1 where id = 2;
 
 -- 회원 삭제
 -- delete from managers where id = 12;

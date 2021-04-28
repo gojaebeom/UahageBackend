@@ -69,7 +69,13 @@ export async function create(req, res) {
 }
 
 export async function update(req, res) {
-    const { success , result } = await edit(); 
+    const id = req.params.id;
+    const body = req.body;
+    console.log( id );
+    console.log( body );
+    //id, email 은 수정금지
+    if( body.id || body.email) return res.status(403).json({ message: "is not allowed"  });
+    const { success , result } = await edit( body, id );
 
     ! success ?
     // err 
