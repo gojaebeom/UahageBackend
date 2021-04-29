@@ -19,3 +19,18 @@ is '유아 관련 장소 정보 제공 테이블
 select * from places;
 select id, name from places
 limit 10 offset (2-1)*10;
+
+select 
+ 	count(*) over() as total, 
+	id, 
+	place_code, 
+	name, 
+	address, 
+	phone, 
+	lat, 
+	lon, 
+	add_info
+from places
+where
+	place_code = 1 and
+	name like '%9%' or address like '%9%';

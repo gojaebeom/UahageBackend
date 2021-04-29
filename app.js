@@ -18,6 +18,8 @@ import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
 // import admin api router 🎇
 import adminAuthRouter from "./src/apis/admin/auth/auth.router.js";
 import adminManagerRouter from "./src/apis/admin/manager/manager.router.js";
+import adminUserRouter from "./src/apis/admin/user/user.router.js";
+import adminPlaceRouter from "./src/apis/admin/place/place.router.js";
 //import mapRouter from "./src/pages/map/map.router.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
@@ -72,6 +74,8 @@ app.get("/maps/show-list", ( req, res ) => {
 // API admin router
 app.use("/api/admin/auth", adminAuthRouter);
 app.use("/api/admin/managers", adminManagerRouter);
+app.use("/api/admin/users", adminUserRouter);
+app.use("/api/admin/places", adminPlaceRouter);
 // API router V1
 app.use("/api/auth",      authRouter); // 로그인, 회원가입
 app.use("/api/s3",        awsRouter); // 이미지 파일
@@ -80,9 +84,6 @@ app.use("/api/places",    placeRouter); // 유아관련 장소
 app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크
 app.use("/api/crw",       crwRouter); // 크롤링 (임시)
 app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시)
-
-
-
 
 // export express app ✨
 // this app used by ./bin/www.js

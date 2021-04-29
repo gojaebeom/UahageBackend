@@ -15,6 +15,8 @@ create table managers(
 );
 -- 컬럼 추가
 -- alter table managers add column profile_path varchar(200) default '';
+-- 컬럼 삭제
+-- alter table managers drop column profile_path;
 
 comment on table public.managers
 is '
