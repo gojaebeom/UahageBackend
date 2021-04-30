@@ -18,6 +18,9 @@ create table managers(
 -- 컬럼 삭제
 -- alter table managers drop column profile_path;
 
+-- alter table managers add column is_deleted smallint default 0;
+-- alter table managers add column deleted_at timestamp;
+
 comment on table public.managers
 is '
 다른 데이터들을 관리할 수 있는 관리자 테이블
@@ -46,3 +49,5 @@ select * from managers;
 
 -- 회원 삭제
 -- delete from managers where id = 12;
+
+select * from managers where is_deleted = 1;
