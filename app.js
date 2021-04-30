@@ -60,7 +60,7 @@ app.get("/maps/", ( req, res ) => {
 });
 app.get("/maps/show-place", ( req, res ) => {
     console.log("map showPlace");
-    res.render("show Places");
+    res.render("showPlaces");
 });
 app.get("/maps/show-place-name", ( req, res ) => {
     console.log("map show Place Name");
