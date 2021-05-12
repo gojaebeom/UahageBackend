@@ -26,6 +26,7 @@ export async function store( body ){
                 '{"bus":"${item["통학차량운영여부"]}","teachers":"${item["보육교직원수"]}","rooms":"${item["보육실수"]}"}'),`;
         }
     }
+
     sql = sql.slice(0,-1);// 마지막 문자 , 제거
 
     console.log(sql);

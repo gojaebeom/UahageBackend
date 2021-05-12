@@ -83,3 +83,4 @@ export async function store( email, password, nickname, roles ) {
             };
         });
 }
+
