@@ -52,13 +52,14 @@ app.use(express.urlencoded({
 // Page router
 // // Page router
 // app.use("/maps", mapRouter); // 맵
+
 app.get("/maps/", ( req, res ) => {
     console.log("map index");
     res.render("index");
 });
 app.get("/maps/show-place", ( req, res ) => {
     console.log("map showPlace");
-    res.render("show Places");
+    res.render("showPlaces");
 });
 app.get("/maps/show-place-name", ( req, res ) => {
     console.log("map show Place Name");
