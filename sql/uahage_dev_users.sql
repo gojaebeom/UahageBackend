@@ -19,6 +19,9 @@ create table users(
 -- alter table users add column email varchar(50) unique;
 -- alter table users add column nickname varchar(20) unique;
 -- alter table users add column roles varchar(10) default "USER" -- "ADMIN"/"MANAGER"/"USER"
+
+-- alter table users add column is_deleted smallint default 0;
+-- alter table users add column deleted_at timestamp;
 comment on table public.users
 is '우아하게 사용자 정보 테이블';
 

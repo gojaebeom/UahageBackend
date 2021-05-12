@@ -61,8 +61,9 @@ export async function signup(req, res) {
         rf_token
     } = req.body;
     // 이메일이 존재하는지 검사
+    console.log(email)
+
     let resultObject = await findByOption("email" , email);
-    
     // query error 
     if (!resultObject.success)
         return res.status(500).json({

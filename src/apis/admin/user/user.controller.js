@@ -1,5 +1,5 @@
 "use strict"
-import { findAll, findOne, findbyOptions, store, edit, destory } from "./manager.repository.js";
+import { findAll, findOne, findbyOptions, store, edit, destory } from "./user.repository.js";
 
 export async function index(req, res) {
     const querystring = req.query;

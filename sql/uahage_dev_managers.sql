@@ -1,6 +1,6 @@
 -- ## 우아하게 애플리케이션 개발용 테이블 명세서 V1 ✨ ##
 
--- 즐겨찾기 ( 북마크 )
+-- 매니저
 create table managers(
 	id serial primary key, -- pk 
 	email varchar(50) unique not null, -- 이메일 
@@ -13,6 +13,13 @@ create table managers(
 	created_at timestamp default now(), -- 생성일
 	updated_at timestamp, -- 수정일
 );
+-- 컬럼 추가
+-- alter table managers add column profile_path varchar(200) default '';
+-- 컬럼 삭제
+-- alter table managers drop column profile_path;
+
+-- alter table managers add column is_deleted smallint default 0;
+-- alter table managers add column deleted_at timestamp;
 
 comment on table public.managers
 is '
@@ -27,10 +34,20 @@ select * from managers order by id desc;
 -- update managers set is_verified = 1 where id = 1;
 
 
--- search
-select id, nickname, email, roles, is_verified, created_at
+-- index filter
+select count(*) over() as total, id, nickname, email, roles, is_verified, created_at
 from managers 
 where nickname like '고%'
 and is_verified = 0
 and roles = 'GENERAL'
-order by id asc;
+order by id asc
+limit 10 offset 0;
+select * from managers;
+
+-- 관리자 인증
+-- update managers set is_verified = 1 where id = 2;
+
+-- 회원 삭제
+-- delete from managers where id = 12;
+
+select * from managers where is_deleted = 1;
