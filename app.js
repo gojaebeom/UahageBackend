@@ -54,6 +54,7 @@ app.use(express.urlencoded({
 // Page router
 // // Page router
 // app.use("/maps", mapRouter); // 맵
+
 app.get("/maps/", ( req, res ) => {
     console.log("map index");
     res.render("index");
