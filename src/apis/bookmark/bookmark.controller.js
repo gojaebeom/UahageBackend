@@ -1,7 +1,7 @@
 "use strict"
 //import { findAll } from "../user/user.repository.js";
 import {findOne ,findAll, store, destroy } from "./bookmark.repository.js";
- 
+
 export async function show( req, res ){
     const {user_id,place_id} = req.query;
     let success , message, data, error;

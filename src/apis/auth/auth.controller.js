@@ -1,16 +1,6 @@
 "use strict"
-
-import {
-    comparePassword,
-    encryptedPassowrd
-} from "../../utils/bcrypt.js";
-import {
-    createToken
-} from "../../utils/jwt.js";
-import {
-    findByOption , store
-} from "../user/user.repository.js"
-
+import { createToken } from "../../utils/jwt.js";
+import { findByOption , store } from "../user/user.repository.js"
 
 //로그인
 export async function signin(req, res) {
@@ -40,26 +30,13 @@ export async function signin(req, res) {
             message: "user not"
         })
     }
-    
-
-    
-
-
 }
 
 
 //회원가입
 export async function signup(req, res) {
     console.log("sign up");
-    const {
-        email,
-        nickname,
-        gender,
-        birthday,
-        age,
-        URL,
-        rf_token
-    } = req.body;
+    const { email, nickname, gender, birthday, age, URL, rf_token } = req.body;
     // 이메일이 존재하는지 검사
     console.log(email)
 
@@ -105,5 +82,4 @@ export async function signup(req, res) {
             }
         });
     }
-
 }

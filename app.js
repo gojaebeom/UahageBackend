@@ -12,6 +12,7 @@ import authRouter from "./src/apis/auth/auth.router.js";
 import awsRouter from "./src/apis/aws/aws.router.js";
 import userRouter from "./src/apis/user/user.router.js";
 import placeRouter from "./src/apis/place/place.router.js";
+import placeRestaurantRouter from "./src/apis/places/restaurants/restaurant.router.js";
 import bookmarkRouter from "./src/apis/bookmark/bookmark.router.js";
 import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
@@ -78,13 +79,13 @@ app.use("/api/admin/managers", adminManagerRouter);
 app.use("/api/admin/users", adminUserRouter);
 app.use("/api/admin/places", adminPlaceRouter);
 // API router V1
-app.use("/api/auth",      authRouter); // 로그인, 회원가입
-app.use("/api/s3",        awsRouter); // 이미지 파일
+app.use("/api/auth",      authRouter); // 로그인, 회원가입 API
+app.use("/api/s3",        awsRouter); // 이미지 파일 API 
 app.use("/api/users",     userRouter); // 유저
-app.use("/api/places",    placeRouter); // 유아관련 장소
-app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크
-app.use("/api/crw",       crwRouter); // 크롤링 (임시)
-app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시)
+app.use("/api/places",    placeRouter); // 장소 API
+app.use("/api/place/restaurants", placeRestaurantRouter); // 장소 - 음식점/카페 API
+app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크 API
+app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시) 
 
 // export express app ✨
 // this app used by ./bin/www.js
