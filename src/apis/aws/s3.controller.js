@@ -12,7 +12,7 @@ const s3 = new aws.S3({
     // bucket: "uahage",
 });
 
-export const post = ( req, res ) => {
+const post = ( req, res ) => {
     profileImgUpload(req, res, (error) => {
         if (error) {
             console.log("errors", error);
@@ -35,7 +35,7 @@ export const post = ( req, res ) => {
         }
     });
 }
-export const _delete = ( req, res ) => {
+const _delete = ( req, res ) => {
     const  fileName  = req.body.fileName;
     console.log("delete request");
     console.log(fileName);
@@ -103,3 +103,5 @@ const profileImgUpload = multer({
         checkFileType(file, cb);
     },
 }).single("profileImage");
+
+export default { post , profileImgUpload, _delete };

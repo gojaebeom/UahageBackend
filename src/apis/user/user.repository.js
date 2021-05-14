@@ -78,8 +78,6 @@ export async function findByOption(option, optionData) {
             };
         });
 }
-//🥕
-
 
 export async function store(body) {
     const {

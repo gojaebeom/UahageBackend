@@ -1,7 +1,7 @@
 "use strict"
 import { findAll , findOne, updateAll, store, findByOption as RfindByOption, updateByOptions as RupdateByOptions, destroy } from "./user.repository.js";
 
-export async function index( req, res ){
+async function index( req, res ){
     const querystring = req.query;
 
     console.log( querystring.length );
@@ -14,7 +14,7 @@ export async function index( req, res ){
 }
 
 // 하나의 조건으로 정보 찾을 때 사용 🥕
-export async function findByOption( req, res ){
+async function findByOption( req, res ){
     console.log("findbyoption");
     const {option , optionData} = req.query;
     const { success , message, data, error , isdata } = await RfindByOption( option , optionData );
@@ -23,7 +23,7 @@ export async function findByOption( req, res ){
     res.status(500).json({ message: message , error : error    });
 }
 
-export async function show( req, res ){
+async function show( req, res ){
     const id = req.params.id;
     const { success , message, data, error } = await findOne( id );
     success === true ? 
@@ -31,7 +31,7 @@ export async function show( req, res ){
     res.status(500).json({ message: message , error : error });
 }
 
-export async function create( req, res ){
+async function create( req, res ){
     const body = req.body;
     console.log(body);
     const { success , message, data, error } = await store( body );
@@ -40,7 +40,7 @@ export async function create( req, res ){
     res.status(500).json({ message: message , error : error });
 }
 
-export async function update( req, res ){
+async function update( req, res ){
     const id = Number(req.params.id);
     const body = req.body;
     console.log(`
@@ -57,7 +57,7 @@ export async function update( req, res ){
     res.status(500).json({ message: message , error : error });
 }
 
-export async function updateByOptions( req, res ){
+async function updateByOptions( req, res ){
     const id = req.params.id;
     const body = req.body;
     //id, email 은 수정금지
@@ -69,7 +69,7 @@ export async function updateByOptions( req, res ){
 }
 
 
-export async function _delete( req, res ){
+async function _delete( req, res ){
     const id = req.params.id;
     console.log(id);
     const { success , message, data, error } = await destroy( id );
@@ -78,4 +78,6 @@ export async function _delete( req, res ){
     res.status(200).json({ message: message , data : data }) : 
     res.status(500).json({ message: message , error : error });
 }
+
+export default { index, show, findByOption, create, update, updateByOptions,_delete };
 
