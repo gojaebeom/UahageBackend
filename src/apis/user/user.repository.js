@@ -57,7 +57,7 @@ export async function findByOption(option, optionData) {
     let sql = `
     select *
     from users
-    where ${option} = '${optionData}';`;
+    where ${option} = ${optionData};`;
     console.log(sql);
     return query(sql)
         .then(data => {
@@ -82,7 +82,7 @@ export async function findByOption(option, optionData) {
 
 
 export async function store(body) {
-    const {
+    let {
         email,
         nickname,
         gender,
@@ -90,10 +90,14 @@ export async function store(body) {
         age,
         URL
     } = body;
+    // if(age == null){
+    //     age = 0
+    //     gender = 'F'
+    // }
     let sql = `
     insert into users(email, nickname, baby_gender, baby_birthday, parent_age, profile_url) 
-    values ('${email}', '${nickname}', '${gender}', '${birthday}','${age}','${URL}')`;
- 
+    values (${email}, ${nickname}, ${gender}, ${birthday},${age},${URL})`;
+    console.log(sql);
     return await query(sql)
         .then(data => { // query에서 resolve 반환됨
             return {
