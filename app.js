@@ -14,13 +14,13 @@ import userRouter from "./src/apis/user/user.router.js";
 import placeRouter from "./src/apis/place/place.router.js";
 import placeRestaurantRouter from "./src/apis/places/restaurants/restaurant.router.js";
 import bookmarkRouter from "./src/apis/bookmark/bookmark.router.js";
-import crwRouter from "./src/apis/nurserySchool/ns.router.js";
 import prevDataInsertRouter from "./src/apis/place/dumps/prevDataInsert.js";
 // import admin api router 🎇
 import adminAuthRouter from "./src/apis/admin/auth/auth.router.js";
 import adminManagerRouter from "./src/apis/admin/manager/manager.router.js";
 import adminUserRouter from "./src/apis/admin/user/user.router.js";
 import adminPlaceRouter from "./src/apis/admin/place/place.router.js";
+import { jsonFileReader } from "./src/utils/jsonFileReader.js";
 //import mapRouter from "./src/pages/map/map.router.js";
 
 // config 설정 이후 process.env.[key] 를 통해 .env의 key 값에 접근 가능
@@ -83,7 +83,7 @@ app.use("/api/auth",      authRouter); // 로그인, 회원가입 API
 app.use("/api/s3",        awsRouter); // 이미지 파일 API 
 app.use("/api/users",     userRouter); // 유저
 app.use("/api/places",    placeRouter); // 장소 API
-app.use("/api/place/restaurants", placeRestaurantRouter); // 장소 - 음식점/카페 API
+// app.use("/api/place/restaurants",  );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ); // 장소 - 음식점/카페 API
 app.use("/api/bookmarks", bookmarkRouter); // 유아관련 장소 북마크 API
 app.use("/api/prev-data", prevDataInsertRouter); // 이전 데이터 저장(임시) 
 

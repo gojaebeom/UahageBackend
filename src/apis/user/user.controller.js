@@ -4,7 +4,6 @@ import { findAll , findOne, updateAll, store, findByOption as RfindByOption, upd
 export async function index( req, res ){
     const querystring = req.query;
 
-    
     console.log( querystring.length );
     console.log( querystring );
 
@@ -23,7 +22,6 @@ export async function findByOption( req, res ){
     res.status(200).json({ message: message , data : data , isdata: isdata }) : 
     res.status(500).json({ message: message , error : error    });
 }
-//🥕
 
 export async function show( req, res ){
     const id = req.params.id;
