@@ -27,6 +27,7 @@ const post = ( req, res ) => {
                 const imageName = req.file.key;
                 const imageLocation = req.file.location;
                 // Save the file name into database into profile model
+                console.log(`imageLocation ${imageLocation}`);
                 res.status(200).json({
                     image: imageName,
                     location: imageLocation,
@@ -40,6 +41,7 @@ const _delete = ( req, res ) => {
     console.log("delete request");
     console.log(fileName);
     let data =  fileName.split('/');//path.basename(fileName); 
+    console.log("printing");
     console.log(data);
     //
     let file = data[data.length - 1].replace("%40", "@"); //"1611718253052akobidov777%40gmail.comkakao.jpg"; //
@@ -94,7 +96,7 @@ const profileImgUpload = multer({
                 null,
                 // path.basename(file.originalname, path.extname(file.originalname)) +
                 //   "-" +
-                Date.now()+"_" + req.params.id + path.extname(file.originalname)
+                v4()+"_" + req.params.id + path.extname(file.originalname)
             );
         },
     }),

@@ -49,8 +49,10 @@ async function update( req, res ){
         gender   : ${body.gender}
         baby birthday : ${body.birthday}
         parent age      : ${body.age}
+        profile_url: ${body.profile_url}
         rf_token:     ${body.rf_token}
     `);
+    console.log(body);
     const { success , message, data, error } = await updateAll( id,  body );
     success === true ? 
     res.status(200).json({ message: message , data : data }) : 

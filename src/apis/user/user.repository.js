@@ -57,7 +57,7 @@ export async function findByOption(option, optionData) {
     let sql = `
     select *
     from users
-    where ${option} = ${optionData};`;
+    where ${option} = '${optionData}';`;
     console.log(sql);
     return query(sql)
         .then(data => {
@@ -94,7 +94,7 @@ export async function store(body) {
     // }
     let sql = `
     insert into users(email, nickname, baby_gender, baby_birthday, parent_age, profile_url) 
-    values (${email}, ${nickname}, ${gender}, ${birthday},${age},${URL})`;
+    values ('${email}', '${nickname}', ${gender}, '${birthday}',${age},'${URL}')`;
     console.log(sql);
     return await query(sql)
         .then(data => { // query에서 resolve 반환됨
@@ -120,13 +120,17 @@ export async function updateAll(id, body) {
         gender,
         birthday,
         age,
+        // profile_url,
         rf_token
     } = body;
+    console.log(`update ALL ${body}`);
 
     let sql = `
     update users 
-    set nickname = '${nickname}', baby_gender = '${gender}', baby_birthday = '${birthday}', parent_age=${age}, rf_token = '${rf_token}', updated_at = current_timestamp
-    where id = ${id};`;
+    set nickname = '${nickname}', baby_gender = '${gender}', \
+    baby_birthday = '${birthday}', parent_age=${age}, \
+    rf_token = '${rf_token}', \
+    updated_at = current_timestamp where id = ${id};`;
 
     console.log(nickname, gender, birthday, age, rf_token);
     return await query(
@@ -154,11 +158,11 @@ export async function updateByOptions(id, body) {
     let values = Object.values(body);
     let count = 0;
     for (let key in body) {
-        sql += ` ${key} = '${values[count]}' ,`;
+        sql += ` ${key} = '${values[count]}',`;
         count++;
     }
-    sql += ` updated_at = current_timestamp where id = ${id};`;
-
+    sql += ` updated_at = current_timestamp where id = '${id}';`;
+// console.log(sql);
     return await query(
         sql)
         .then(data => { // query에서 resolve 반환됨
