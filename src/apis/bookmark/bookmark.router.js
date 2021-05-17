@@ -1,10 +1,10 @@
 "use strict"
 import { Router } from "express";
-import { select , create, _delete } from "./bookmark.controller.js";
+import { show , create, _delete } from "./bookmark.controller.js";
 
  const router = Router();
 //BOOKMARK SELECT 
-router.get("/", /**@AUTH 보안 관련 미들웨어 필요 */ select);  //?user_id=[]&?place_id=[]
+router.get("/", /**@AUTH 보안 관련 미들웨어 필요 */ show);  //?user_id=[]&?place_id=[]
 //BOOKMARK INSERT ⭐
 router.post("/", /**@AUTH 보안 관련 미들웨어 필요 */ create);
 //BOOKMARK DELETE ⭐

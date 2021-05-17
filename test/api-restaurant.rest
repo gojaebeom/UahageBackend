@@ -1,0 +1,2 @@
+### create place_restaurants
+POST http://localhost:8000/api/place/restaurants HTTP/1.1
