@@ -3,7 +3,7 @@ import { createToken } from "../../utils/jwt.js";
 import { findByOption , store } from "../user/user.repository.js"
 
 //로그인
-export async function signin(req, res) {
+async function signin(req, res) {
     const email = req.body.email;
     // 이메일이 존재하는지 검사
     let resultObject = await findByOption("email" , email);
@@ -34,7 +34,7 @@ export async function signin(req, res) {
 
 
 //회원가입
-export async function signup(req, res) {
+async function signup(req, res) {
     console.log("sign up");
     const { email, nickname, gender, birthday, age, URL, rf_token } = req.body;
     // 이메일이 존재하는지 검사
@@ -83,3 +83,5 @@ export async function signup(req, res) {
         });
     }
 }
+
+export default { signin, signup };

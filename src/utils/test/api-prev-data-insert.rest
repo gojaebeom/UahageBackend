@@ -1,6 +1,9 @@
 ### 레스토랑
 POST http://localhost:8000/api/prev-data/restaurants
 
+### 레스토랑
+POST http://localhost:8000/api/prev-data/restaurants-v2
+
 ### 병원
 POST http://localhost:8000/api/prev-data/hospitals
 

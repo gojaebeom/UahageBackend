@@ -98,12 +98,12 @@ create table p_restaurant_review_images(
 
 -- 장소: 음식점/카페 리뷰 신고 카테고리
 create table p_restaurant_review_declaration_categories(
-  id serial primary key,
-  name varchar(50) not null unique,
-  created_at timestamp default now(),
-  updated_at timestamp,
-  deleted_at timestamp,
-  is_deleted boolean default false
+    id serial primary key,
+    name varchar(50) not null unique,
+    created_at timestamp default now(),
+    updated_at timestamp,
+    deleted_at timestamp,
+    is_deleted boolean default false
 );
 
 -- 장소: 음식점/카페 리뷰 신고
