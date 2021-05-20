@@ -3,8 +3,8 @@ const repository = require("./userRepository");
 
 // 회원가입
 exports.store = async (req, res) => { 
-    const body = req.body; 
-    const { success, result, error } = await repository.store( body ); 
+    const { email, token, nickname, ageGroupType, babyGender, babyBirthday } = req.body; 
+    const { success, result, error } = await repository.store( email, token, nickname, ageGroupType, babyGender, babyBirthday ); 
     success ? 
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 

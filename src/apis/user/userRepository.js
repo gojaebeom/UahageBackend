@@ -15,14 +15,14 @@ const { queryBuilder } = require("../../configs/database");
 // }
 
 // 회원가입
-exports.store = ({
+exports.store = (
     email, 
     token, 
-    nickname,
-    ageGroupType,
-    babyGender,
-    babyBirthday
-}) => {
+    nickname=false,
+    ageGroupType=1,
+    babyGender="",
+    babyBirthday=""
+) => {
     const query = `
     with users as (
         insert into users(
@@ -45,9 +45,9 @@ exports.store = ({
     )
     values (
         (select id from users), 
-        ${ageGroupType && ageGroupType+','} 
-        ${babyGender && '\''+ babyGender +'\','} 
-        ${babyBirthday && '\''+ babyBirthday +'\''} 
+        '${ageGroupType }',
+        '${babyGender }',
+        '${babyBirthday}'
     );
     `;
     console.log( query );
