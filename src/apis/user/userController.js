@@ -13,12 +13,17 @@ exports.store = async (req, res) => {
 // 회원 정보 수정
 exports.edit = async (req, res) => {
     const userId = req.params.id;
-    const imagePath = req.file.location;
+    
     const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
-
+    
+    let repoObject;
     // 이미지 저장
-    let repoObject = await repository.storeImage( userId, imagePath );
-    if( !repoObject.success ) return res.status(500).json({ message : "server error", data : false });
+    if( req.imagePath ) {
+        const imagePath = req.imagePath;
+        repoObject = await repository.storeImage( userId, imagePath );
+        if( !repoObject.success ) return res.status(500).json({ message : "server error", data : false });
+    }
+
 
     // 회원 정보 수정
     repoObject = await repository.edit( userId, nickname, ageGroupType, babyGender, babyBirthday ); 

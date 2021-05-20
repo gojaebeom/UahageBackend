@@ -22,7 +22,7 @@ router.get("/api/users/:id", auth, userController.show);
 router.get("/api/users/validate-nickname/:nickname", auth, userController.validateByNickname);
 router.get("/api/users/validate-email/:email", auth, userController.validateByEmail);
 router.post("/api/users", auth, userController.store);
-router.put("/api/users/:id", awsS3Upload.single("image"), userController.edit);
+router.put("/api/users/:id", s3, userController.edit);
 router.get("/api/users/logout", auth, userController.logout);
 router.delete("/api/users/:id", auth, userController.delete);
 
