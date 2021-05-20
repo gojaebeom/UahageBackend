@@ -84,6 +84,19 @@ exports.validateByNickname = ( nickname ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
+// 닉네임 중복 확인
+exports.validateByEmail = ( email ) => {
+    const query = `
+    select id
+    from users
+    where email = '${ email }';
+    `;
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : data.rowCount !== 0 ? false : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+
 // 회원 아이디로 image 여부확인
 exports.validateImageById = ( userId ) => {
     const query = `
