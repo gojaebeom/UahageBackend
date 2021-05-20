@@ -3,6 +3,7 @@ const { Router } = require("express");
 const router = Router();
 
 /**@Views 🎨*/
+router.get("/", ( req, res ) => res.render("test"));
 router.get("/maps", ( req, res ) => res.render("index"));
 router.get("/maps/show-place", ( req, res ) => res.render("showPlaces"));
 router.get("/maps/show-place-name", ( req, res ) => res.render("showPlacesName"));

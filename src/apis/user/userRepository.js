@@ -1,23 +1,10 @@
 const { queryBuilder } = require("../../configs/database");
 
-// 변경 전 store
-// exports.store = ( body ) => {
-//     const keys = Object.keys( body );
-//     const values = Object.values( body );
-//     let query = `
-//     insert into
-//     users(${keys.map(e => e)})
-//     values(${values.map(e => "\'"+e+"\'" )});
-//     `;
-//     return queryBuilder( query )
-//     .then( data => ({ success: true, result : data }))
-//     .catch( e => ({ success: false, error : e }));
-// }
-
 // 회원가입
 exports.store = (
     email, 
-    token, 
+    providerUserId, 
+    providerName,
     nickname=false,
     ageGroupType=1,
     babyGender="",
@@ -27,12 +14,14 @@ exports.store = (
     with users as (
         insert into users(
             email, 
-            token, 
+            provider_user_id, 
+            provider_name,
             nickname
         )
         values(
         '${email}',
-        '${token}',
+        '${providerUserId}',
+        '${providerName}',
         ${ nickname ? "'"+ nickname +"'" : null }
         )
         returning id
@@ -50,7 +39,6 @@ exports.store = (
         '${babyBirthday}'
     );
     `;
-    console.log( query );
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
@@ -103,7 +91,7 @@ exports.validateByNickname = ( nickname ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
-// 닉네임 중복 확인
+// 이메일 확인
 exports.validateByEmail = ( email ) => {
     const query = `
     select id
@@ -114,7 +102,6 @@ exports.validateByEmail = ( email ) => {
     .then( data => ({ success: true, result : data.rowCount !== 0 ? false : true }))
     .catch( error => ({ success: false, error : error }));
 }
-
 
 // 회원 아이디로 image 여부확인
 exports.validateImageById = ( userId ) => {
@@ -138,11 +125,9 @@ exports.findIdByEmail = ( email ) => {
     where email = '${email}';
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows[0].id }))
+    .then( data => ({ success: true, result : data.rows[0] }))
     .catch( error => ({ success: false, error : error }));
 }
-
-
 
 // 회원 상세정보
 exports.show = ( userId ) => {

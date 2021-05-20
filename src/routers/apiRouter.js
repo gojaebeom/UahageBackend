@@ -9,15 +9,16 @@ const placeKidCafeController = require("../apis/places/kidCafe/placeController")
 
 /**@ImportMiddlewares 🍇 */
 const { auth } = require("../middlewares/authMiddleware");
-
-const { awsS3Upload } = require("../configs/awsS3");
 const { s3 } = require("../middlewares/s3Middleware");
+const passport = require("../configs/kakao");
 
 const { Router } = require("express");
 const router = Router();
 
 /**@APIs 🍬*/
 // User Api
+// kakao login 🍩
+router.get('/api/auth/kakao/login', passport.authenticate('kakao'), userController.kakaoLogin);
 router.get("/api/users/:id", auth, userController.show);
 router.get("/api/users/validate-nickname/:nickname", auth, userController.validateByNickname);
 router.get("/api/users/validate-email/:email", auth, userController.validateByEmail);
@@ -42,6 +43,5 @@ router.get("/api/places/experience-centers/:id", placeExperienceCenterController
 // Place-kidCafe
 router.get("/api/places/kid-cafes", placeKidCafeController.findByOptions);
 router.get("/api/places/kid-cafes/:id", placeKidCafeController.show);
-
 
 module.exports = router;

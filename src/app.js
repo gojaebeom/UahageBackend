@@ -6,32 +6,33 @@ const cors = require("cors");
 const database = require("./configs/database"); 
 const apiRouter = require("./routers/apiRouter");
 const pageRouter = require("./routers/pageRouter");
-const session = require("express-session");
-const FileStore = require("session-file-store")(session);
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const passport = require("./configs/kakao");
 
 /**@InitSettings ✨ */
 // Database connect 🔌
 database.connector();
 // AWS s3 connect
 require("./configs/awsS3");
+
 // Express 객체화 및 할당
 const app = express();
 // Set Log
 const APP_MODE = process.env.APP_MODE || "DEV";
 APP_MODE === "DEV" && app.use(morgan("dev"));
 
-
 /**@MiddlewareConnectings ✨ */
 // Set viewengine : ejs 타입의 템플릿 앤진 사용 및 view, static 경로 설정
 app.set("views", path.resolve(__dirname, "../public/views"));
 app.set("view engine" , "ejs");
 app.use(express.static(path.resolve(__dirname, "../public/static")));
+
 // Set CORS : cors 개방 ( 배포시 변경 예정 )
 app.use(cors({
     origin:"*"
 }));
+
 // Use json : req 객체에서 json 타입의 body 받기 
 app.use(express.json());
 // Use form-urlencoded : req 객체에서 x-www-form-urlencoded 타입의 body 받기
@@ -39,16 +40,14 @@ app.use(express.urlencoded({
     limit: '150mb',
     extended: false,
 }));
+
 // Use cookieParser : req , res 객체에서 .cookie 사용
 app.use(cookieParser());
-// Use session : req 객체에서 session 사용 및 기타 옵션 
-// ( 소셜 로그인 토큰 인증방식 구현시 사용 안함 )
-app.use(session({ 
-    secret: process.env.APP_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    store: new FileStore(),
-}));
+
+// passport connection
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Set Router : router 연결
 app.use(pageRouter);
 app.use(apiRouter);

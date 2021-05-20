@@ -1,10 +1,39 @@
 "use strict";
+const { createToken } = require("../../utils/jwt");
 const repository = require("./userRepository");
+
+// 카카오 로그인
+exports.kakaoLogin = async (req, res) => {
+    // console.log(`액세스 토큰 : ${req.user.accessToken}`);
+    console.log(`유저 이메일 : ${req.user.profile.kakao_account.email}`);
+    console.log(`유저 아이디 : ${req.user.profile.id}`);
+    const email = req.user.profile.kakao_account.email;
+    const providerName = "KAKAO";
+    const providerUserId = req.user.profile.id;
+
+    // 이메일 존재 확인
+    let repoObject = await repository.findIdByEmail( email );
+
+
+    // 없으면 회원 가입 : 이메일, 프로바이더 유저 번호, 프로바이더 이름 
+    if( !repoObject.result ){
+        repoObject = await repository.store( email, providerUserId, providerName );
+        if(!repoObject.success) return res.statuss(500).json({ message : "store false"});
+        repoObject = await repository.findIdByEmail( email );
+    } 
+    // 이후 토큰 발급
+    const userId = repoObject.result.id;
+    let token = createToken(userId);
+
+    repoObject.success ? 
+    res.status(200).json({ message : "login ok",  data : { token : token } }) : 
+    res.status(500).json({ message : "server error", error : repoObject.error }); 
+}
 
 // 회원가입
 exports.store = async (req, res) => { 
-    const { email, token, nickname, ageGroupType, babyGender, babyBirthday } = req.body; 
-    const { success, result, error } = await repository.store( email, token, nickname, ageGroupType, babyGender, babyBirthday ); 
+    const { email, providerUserId,  nickname, ageGroupType, babyGender, babyBirthday } = req.body; 
+    const { success, result, error } = await repository.store( email, providerUserId,  nickname, ageGroupType, babyGender, babyBirthday ); 
     success ? 
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 
@@ -13,7 +42,6 @@ exports.store = async (req, res) => {
 // 회원 정보 수정
 exports.edit = async (req, res) => {
     const userId = req.params.id;
-    
     const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
     
     let repoObject;
@@ -23,7 +51,6 @@ exports.edit = async (req, res) => {
         repoObject = await repository.storeImage( userId, imagePath );
         if( !repoObject.success ) return res.status(500).json({ message : "server error", data : false });
     }
-
 
     // 회원 정보 수정
     repoObject = await repository.edit( userId, nickname, ageGroupType, babyGender, babyBirthday ); 
