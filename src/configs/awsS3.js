@@ -12,9 +12,8 @@ exports.awsS3Upload = multer({
         s3: s3,
         bucket: "uahage",
         key: function (req, file, cb) {
-            
             console.log( file );
-            
+            if( true ) return false;
             const extension = path.extname(file.originalname);
             cb(null, Date.now().toString() + extension);
         },

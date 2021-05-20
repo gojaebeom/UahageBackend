@@ -11,6 +11,7 @@ const placeKidCafeController = require("../apis/places/kidCafe/placeController")
 const { auth } = require("../middlewares/authMiddleware");
 
 const { awsS3Upload } = require("../configs/awsS3");
+const { s3 } = require("../middlewares/s3Middleware");
 
 const { Router } = require("express");
 const router = Router();

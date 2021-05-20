@@ -15,23 +15,42 @@ const { queryBuilder } = require("../../configs/database");
 // }
 
 // 회원가입
-exports.store = ( 
-    email="", 
-    token="", 
-    nickname="", 
-    ageGroupType=6, 
-    babyGender="", 
-    babyBirthday="" 
-) => {
+exports.store = ({
+    email, 
+    token, 
+    nickname,
+    ageGroupType,
+    babyGender,
+    babyBirthday
+}) => {
     const query = `
     with users as (
-        insert into users(email, token, nickname)
-        values('${email}','${token}','${nickname}')
+        insert into users(
+            email, 
+            token, 
+            nickname
+        )
+        values(
+        '${email}',
+        '${token}',
+        ${ nickname ? "'"+ nickname +"'" : null }
+        )
         returning id
     )
-    insert into user_details(user_id, age_group_type, baby_gender, baby_birthday)
-    values ((select id from users), ${ageGroupType}, '${babyGender}', '${babyBirthday}');
+    insert into user_details(
+        user_id, 
+        age_group_type, 
+        baby_gender, 
+        baby_birthday
+    )
+    values (
+        (select id from users), 
+        ${ageGroupType && ageGroupType+','} 
+        ${babyGender && '\''+ babyGender +'\','} 
+        ${babyBirthday && '\''+ babyBirthday +'\''} 
+    );
     `;
+    console.log( query );
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
