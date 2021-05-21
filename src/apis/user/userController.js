@@ -18,7 +18,7 @@ exports.kakaoLogin = async (req, res) => {
     // 없으면 회원 가입 : 이메일, 프로바이더 유저 번호, 프로바이더 이름 
     if( !repoObject.result ){
         repoObject = await repository.store( email, providerUserId, providerName );
-        if(!repoObject.success) return res.statuss(500).json({ message : "store false"});
+        if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
         repoObject = await repository.findIdByEmail( email );
     } 
     // 이후 토큰 발급

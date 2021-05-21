@@ -10,8 +10,7 @@ exports.store = (
     insert into users(
         email, 
         provider_user_id, 
-        provider_name,
-        nickname
+        provider_name
     )
     values(
     '${email}',
