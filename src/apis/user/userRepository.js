@@ -4,58 +4,26 @@ const { queryBuilder } = require("../../configs/database");
 exports.store = (
     email, 
     providerUserId, 
-    providerName,
-    nickname=false,
-    ageGroupType=1,
-    babyGender="",
-    babyBirthday=""
+    providerName
 ) => {
     const query = `
-    with users as (
-        insert into users(
-            email, 
-            provider_user_id, 
-            provider_name,
-            nickname
-        )
-        values(
-        '${email}',
-        '${providerUserId}',
-        '${providerName}',
-        ${ nickname ? "'"+ nickname +"'" : null }
-        )
-        returning id
+    insert into users(
+        email, 
+        provider_user_id, 
+        provider_name,
+        nickname
     )
-    insert into user_details(
-        user_id, 
-        age_group_type, 
-        baby_gender, 
-        baby_birthday
-    )
-    values (
-        (select id from users), 
-        '${ageGroupType }',
-        '${babyGender }',
-        '${babyBirthday}'
-    );
-    `;
+    values(
+    '${email}',
+    '${providerUserId}',
+    '${providerName}'
+    );`;
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
 }
 
-// 회원 프로필 이미지 생성
-exports.storeImage = ( userId, imagePath ) => {
-    const query = `
-    insert into user_images(user_id, image_path)
-    values( ${userId}, '${imagePath}' );
-    `;
-    return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
-    .catch( error => ({ success: false, error : error }));
-}
-
-// 회원 정보 수정
+// 회원 정보 수정 ( 첫 회원가입 이후 추가 정보 입력에도 사용 )
 exports.edit = ( 
     userId,
     nickname="", 
@@ -78,6 +46,19 @@ exports.edit = (
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
 }
+
+// 회원 프로필 이미지 생성
+exports.storeImage = ( userId, imagePath ) => {
+    const query = `
+    insert into user_images(user_id, image_path)
+    values( ${userId}, '${imagePath}' );
+    `;
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+
 
 // 닉네임 중복 확인
 exports.validateByNickname = ( nickname ) => {

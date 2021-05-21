@@ -11,7 +11,7 @@ exports.kakaoLogin = async (req, res) => {
     const providerName = "KAKAO";
     const providerUserId = req.user.profile.id;
 
-    // 이메일 존재 확인
+    // 이메일 존재 확인 email validation
     let repoObject = await repository.findIdByEmail( email );
 
 
@@ -28,15 +28,6 @@ exports.kakaoLogin = async (req, res) => {
     repoObject.success ? 
     res.status(200).json({ message : "login ok",  data : { token : token } }) : 
     res.status(500).json({ message : "server error", error : repoObject.error }); 
-}
-
-// 회원가입
-exports.store = async (req, res) => { 
-    const { email, providerUserId,  nickname, ageGroupType, babyGender, babyBirthday } = req.body; 
-    const { success, result, error } = await repository.store( email, providerUserId,  nickname, ageGroupType, babyGender, babyBirthday ); 
-    success ? 
-    res.status(200).json({ message : "status ok",  data : result }) : 
-    res.status(500).json({ message : "server error", error : error }); 
 }
 
 // 회원 정보 수정
