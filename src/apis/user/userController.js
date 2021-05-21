@@ -1,4 +1,5 @@
 "use strict";
+const axios = require("axios");
 const { createToken } = require("../../utils/jwt");
 const repository = require("./userRepository");
 
@@ -27,6 +28,44 @@ exports.kakaoLogin = async (req, res) => {
 
     repoObject.success ? 
     res.status(200).json({ message : "login ok",  data : { token : token } }) : 
+    res.status(500).json({ message : "server error", error : repoObject.error }); 
+}
+
+exports.store = async (req, res) => {
+    const token = req.headers['Authorization'];
+
+    let userInfo;
+    try{
+        userInfo = await axios.get("https://kapi.kakao.com/v2/user/me",{
+            headers: { 
+                'Authorization': `Bearer ${token}` ,
+                'Content-type' : 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+        })
+        .then( res => res.data );
+    }catch( e ) {
+        return res.status(500).json({ message:"server error" });
+    }
+
+    console.log(userInfo);
+
+    if(!userInfo) return res.status(500).json({ message:"server error" });
+    const email = userInfo.profile.kakao_account.email;
+    const providerUserId = userInfo.profile.id;
+    let repoObject = await repository.validateByEmail( email );
+
+    if(!repoObject.result){
+        // store!
+        const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
+        repoObject = await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
+    }
+
+    // 이후 토큰 발급
+    const userId = repoObject.result.id;
+    const jwtToken = createToken(userId);
+
+    repoObject.success ? 
+    res.status(200).json({ message : "login ok",  data : { token : jwtToken } }) : 
     res.status(500).json({ message : "server error", error : repoObject.error }); 
 }
 

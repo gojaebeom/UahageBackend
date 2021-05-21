@@ -4,19 +4,40 @@ const { queryBuilder } = require("../../configs/database");
 exports.store = (
     email, 
     providerUserId, 
-    providerName
+    providerName,
+    nickname=false,
+    babyGender="",
+    babyBirthday="",
+    ageGroupType=""
 ) => {
     const query = `
-    insert into users(
-        email, 
-        provider_user_id, 
-        provider_name
-    )
-    values(
-    '${email}',
-    '${providerUserId}',
-    '${providerName}'
-    );`;
+    with users as ( 
+        insert into users( 
+            email, 
+            provider_user_id, 
+            provider_name,
+            nickname 
+        ) 
+        values( 
+            '${email}', 
+            '${providerUserId}', 
+            '${providerName}', 
+            ${ nickname ? "'"+ nickname +"'" : null } ) 
+        returning id 
+    ) 
+    insert into user_details(
+        user_id, 
+        age_group_type, 
+        baby_gender, 
+        baby_birthday
+    ) 
+    values (
+        (select id from users), 
+        ${ageGroupType}, 
+        '${babyGender}', 
+        '${babyBirthday}'
+    );
+    `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
