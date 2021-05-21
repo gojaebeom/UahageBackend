@@ -53,13 +53,17 @@ exports.store = async (req, res) => {
 
     if(!userInfo) return res.status(500).json({ message:"server error" });
     const email = userInfo.kakao_account.email;
+    console.log(email);
     const providerUserId = userInfo.id;
     let repoObject = await repository.findIdByEmail( email );
-
-    if( !repoObject.result ){
+    console.log(repoObject);
+    if( repoObject.result === 0 ){
         // store!
+        console.log("doing");
         const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
-        repoObject = await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
+        repoObject =await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
+        if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
+        repoObject = await repository.findIdByEmail( email );
     }
 
     // 이후 토큰 발급

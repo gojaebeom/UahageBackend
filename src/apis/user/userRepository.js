@@ -6,9 +6,9 @@ exports.store = (
     providerUserId, 
     providerName,
     nickname=false,
+    ageGroupType="",
     babyGender="",
     babyBirthday="",
-    ageGroupType=""
 ) => {
     const query = `
     with users as ( 
@@ -22,7 +22,7 @@ exports.store = (
             '${email}', 
             '${providerUserId}', 
             '${providerName}', 
-            ${ nickname ? "'"+ nickname +"'" : null } ) 
+            ${ nickname ? nickname : null } ) 
         returning id 
     ) 
     insert into user_details(
@@ -34,10 +34,11 @@ exports.store = (
     values (
         (select id from users), 
         ${ageGroupType}, 
-        '${babyGender}', 
-        '${babyBirthday}'
+        ${babyGender}, 
+        ${babyBirthday}
     );
     `;
+    console.log(query);
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
@@ -126,7 +127,7 @@ exports.findIdByEmail = ( email ) => {
     where email = '${email}';
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows[0] }))
+    .then( data => ({ success: true, result : data.rowCount !== 0 ? data.rows[0] : 0 }))
     .catch( error => ({ success: false, error : error }));
 }
 
