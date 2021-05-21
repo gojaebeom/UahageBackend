@@ -50,9 +50,10 @@ router.get("/api/places/experience-centers/:id", placeExperienceCenterController
 router.get("/api/places/kid-cafes", placeKidCafeController.findByOptions);
 router.get("/api/places/kid-cafes/:id", placeKidCafeController.show);
 
+
+router.get("/api/auth/kakao/login", passport.authenticate('kakao'), userController.kakaoLogin);
 router.get("/api/test", async (req, res) => {
     const token = req.headers['authorization'];
-
     const response = await axios.get("https://kapi.kakao.com/v2/user/me",{
         headers: { 
             'Authorization': `Bearer ${token}` ,
@@ -60,7 +61,6 @@ router.get("/api/test", async (req, res) => {
         },
     }).then(res => res.data);
     console.log(response);
-
     res.json({result: true});
 });
 

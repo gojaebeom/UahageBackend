@@ -32,13 +32,15 @@ exports.kakaoLogin = async (req, res) => {
 }
 
 exports.store = async (req, res) => {
-    const token = req.headers['Authorization'];
-
+    console.log(req.headers);
+    const token = req.headers['authorization'];
+    console.log("왜 안보이는겨");
+    console.log(token);
     let userInfo;
     try{
         userInfo = await axios.get("https://kapi.kakao.com/v2/user/me",{
             headers: { 
-                'Authorization': `Bearer ${token}` ,
+                'Authorization': `Bearer ${token}`,
                 'Content-type' : 'application/x-www-form-urlencoded;charset=utf-8'
             },
         })
@@ -50,11 +52,11 @@ exports.store = async (req, res) => {
     console.log(userInfo);
 
     if(!userInfo) return res.status(500).json({ message:"server error" });
-    const email = userInfo.profile.kakao_account.email;
-    const providerUserId = userInfo.profile.id;
-    let repoObject = await repository.validateByEmail( email );
+    const email = userInfo.kakao_account.email;
+    const providerUserId = userInfo.id;
+    let repoObject = await repository.findIdByEmail( email );
 
-    if(!repoObject.result){
+    if( !repoObject.result ){
         // store!
         const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
         repoObject = await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
