@@ -23,3 +23,24 @@ exports.awsS3Upload = multer({
         acl: process.env.S3_ACL,
     })
 }).single("image");
+
+
+exports.awsS3Delete = ( imagePath ) => {
+    console.log("이미지 삭제 진입");
+    console.log(imagePath); 
+    const step1 = imagePath.split("com")[1];
+    const keyName = step1.split("/")[1];
+    console.log( keyName );
+    s3.deleteObject({
+        Bucket : process.env.S3_BUCKET,
+        key : keyName,
+    },
+    function (err, data){
+        if (err) {
+            console.log("에러발생");
+            console.log( err );
+        } else {
+            console.log("success");
+        }
+    });
+}

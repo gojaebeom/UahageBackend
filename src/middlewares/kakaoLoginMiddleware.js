@@ -1,7 +1,6 @@
 const axios = require("axios");
 
 exports.kakaoLoginMiddleware = async (req, res, next) => {
-    console.log("middle");
     try{
         const token = req.headers['authorization'];
         console.log(token);
@@ -12,7 +11,7 @@ exports.kakaoLoginMiddleware = async (req, res, next) => {
             },
         })
         .then( res => res.data );
-
+        
         // KAKAO.[이메일명]
         req.kakaoEmail = `KAKAO.${userInfo.kakao_account.email}`;
         next();
