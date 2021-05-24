@@ -36,11 +36,10 @@ exports.kakaoLogin = async (req, res) => {
         if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
         repoObject = await repository.findIdByEmail( email );
     }
-
     // 이후 토큰 발급
     const userId = repoObject.result.id;
     const jwtToken = createToken(userId);
-
+    
     repoObject.success ? 
     res.status(200).json({ message : "login ok",  data : { token : jwtToken } }) : 
     res.status(500).json({ message : "server error", error : repoObject.error }); 
