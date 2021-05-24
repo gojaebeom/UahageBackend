@@ -5,8 +5,7 @@ const repository = require("./userRepository");
 
 // 카카오 로그인
 exports.kakaoLogin = async (req, res) => {
-    const email = req.kakaoUserInfo.email;
-    const providerUserId = req.kakaoUserInfo.userId;
+    const email = req.kakaoEmail;
 
     // 이메일로 저장된 유저 아이디 확인 : 있으면 유저 아이디 반환, 없으면 0 반환
     let repoObject = await repository.findIdByEmail( email );
@@ -14,11 +13,9 @@ exports.kakaoLogin = async (req, res) => {
     // 이메일이 저장되지 않은 유저는 회원 정보 저장
     if( repoObject.result === 0 ){
         // store!
-        const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
+        const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
         repoObject =await repository.store( 
             email, 
-            providerUserId, 
-            providerName, 
             nickname, 
             ageGroupType, 
             babyGender, 

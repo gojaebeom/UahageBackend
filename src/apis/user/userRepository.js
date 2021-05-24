@@ -3,8 +3,6 @@ const { queryBuilder } = require("../../configs/database");
 // 회원가입
 exports.store = (
     email, 
-    providerUserId=null, 
-    providerName=null,
     nickname=null,
     ageGroupType=null,
     babyGender=null,
@@ -14,14 +12,10 @@ exports.store = (
     with users as ( 
         insert into users( 
             email, 
-            provider_user_id, 
-            provider_name,
             nickname 
         )
         values( 
             ${ email === null ? null : "'"+email+"'" }, 
-            ${ providerUserId }, 
-            ${ providerName === null ? null : "'"+providerName+"'"}, 
             ${ nickname === null ? null : "'"+nickname+"'"} 
         ) 
         returning id 
