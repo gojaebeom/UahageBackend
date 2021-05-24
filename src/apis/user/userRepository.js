@@ -3,12 +3,12 @@ const { queryBuilder } = require("../../configs/database");
 // 회원가입
 exports.store = (
     email, 
-    providerUserId, 
-    providerName,
-    nickname=false,
-    ageGroupType="",
-    babyGender="",
-    babyBirthday="",
+    providerUserId=null, 
+    providerName=null,
+    nickname=null,
+    ageGroupType=null,
+    babyGender=null,
+    babyBirthday=null,
 ) => {
     const query = `
     with users as ( 
@@ -19,10 +19,10 @@ exports.store = (
             nickname 
         ) 
         values( 
-            '${email}', 
-            '${providerUserId}', 
-            '${providerName}', 
-            ${ nickname ? nickname : null } ) 
+            ${email === null ? null : "'"+email+"'" }, 
+            ${providerUserId }, 
+            ${providerName === null ? null : "'"+providerName+"'"}, 
+            ${ nickname === null ? null : "'"+nickname+"'"} ) 
         returning id 
     ) 
     insert into user_details(
@@ -34,8 +34,8 @@ exports.store = (
     values (
         (select id from users), 
         ${ageGroupType}, 
-        ${babyGender}, 
-        ${babyBirthday}
+        ${babyGender === null ? null : "'"+babyGender+"'"}, 
+        ${babyBirthday === null ? null : "'"+babyBirthday+"'"}
     );
     `;
     console.log(query);
