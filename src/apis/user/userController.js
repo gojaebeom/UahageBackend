@@ -31,6 +31,7 @@ exports.kakaoLogin = async (req, res) => {
     console.log(repoObject);
     if( repoObject.result === 0 ){
         // store!
+        console.log(req.body);
         const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
         repoObject =await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
         if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
