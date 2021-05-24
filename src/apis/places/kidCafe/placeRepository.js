@@ -2,10 +2,12 @@
 const { queryBuilder } = require("../../../configs/database");
 
 // 모든 장소 보기
-exports.findByOptions = () => {
+exports.findByOptions = (pageNumber) => {
     const query = `
     select id, name, address, phone, admission_fee, lat, lon
-    from p_kid_cafes;
+    from p_kid_cafes
+    order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
+    limit 10 offset ${pageNumber};
     `;
 
     console.log(query);
@@ -15,11 +17,12 @@ exports.findByOptions = () => {
 }
 
 // 장소 상세보기
-exports.show = ( placeId ) => {
+exports.show = ( placeId   ) => {
     const query = `
     select id, name, address, phone, admission_fee, lat, lon
     from p_kid_cafes
     where id = ${placeId};
+    
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : data.rows }))

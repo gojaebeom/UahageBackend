@@ -2,10 +2,12 @@
 const { queryBuilder } = require("../../../configs/database");
 
 // 모든 장소 보기
-exports.findByOptions = () => {
+exports.findByOptions = (pageNumber,lat,lon) => {
     const query = `
     select id, name, address, phone, employees, rooms, type, lat, lon
-    from p_day_care_centers;
+    from p_day_care_centers
+    order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
+    limit 10 offset ${pageNumber};
     `;
 
     console.log(query);
