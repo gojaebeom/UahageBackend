@@ -71,6 +71,7 @@ exports.findByOptions = ({
         prf.nursing_room,
         prf.play_room,
         prf.parking
+        
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
@@ -87,7 +88,9 @@ exports.findByOptions = ({
         ${ meetingRoom && ' and prf.meeting_room = true' }
         ${ nursingRoom && ' and prf.nursing_room = true' }
         ${ playRoom && ' and prf.play_room = true' }
-        ${ parking && ' and prf.parking = true'};
+        ${ parking && ' and prf.parking = true'}
+        order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}));
+        ;
     `;
 
     console.log(query);
