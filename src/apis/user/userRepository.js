@@ -17,12 +17,13 @@ exports.store = (
             provider_user_id, 
             provider_name,
             nickname 
-        ) 
+        )
         values( 
-            ${email === null ? null : "'"+email+"'" }, 
-            ${providerUserId }, 
-            ${providerName === null ? null : "'"+providerName+"'"}, 
-            ${ nickname === null ? null : "'"+nickname+"'"} ) 
+            ${ email === null ? null : "'"+email+"'" }, 
+            ${ providerUserId }, 
+            ${ providerName === null ? null : "'"+providerName+"'"}, 
+            ${ nickname === null ? null : "'"+nickname+"'"} 
+        ) 
         returning id 
     ) 
     insert into user_details(

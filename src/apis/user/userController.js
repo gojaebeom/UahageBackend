@@ -5,42 +5,35 @@ const repository = require("./userRepository");
 
 // 카카오 로그인
 exports.kakaoLogin = async (req, res) => {
-    console.log(req.headers);
-    const token = req.headers['authorization'];
-    console.log(token);
-    let userInfo;
-    try{
-        userInfo = await axios.get("https://kapi.kakao.com/v2/user/me",{
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-type' : 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-        })
-        .then( res => res.data );
-    }catch( e ) {
-        return res.status(500).json({ message:"server error" });
-    }
+    const email = req.kakaoUserInfo.email;
+    const providerUserId = req.kakaoUserInfo.userId;
 
-    console.log(userInfo);
-
-    if(!userInfo) return res.status(500).json({ message:"server error" });
-    const email = userInfo.kakao_account.email;
-    console.log(email);
-    const providerUserId = userInfo.id;
+    // 이메일로 저장된 유저 아이디 확인 : 있으면 유저 아이디 반환, 없으면 0 반환
     let repoObject = await repository.findIdByEmail( email );
-    console.log(repoObject);
+
+    // 이메일이 저장되지 않은 유저는 회원 정보 저장
     if( repoObject.result === 0 ){
         // store!
-        console.log(req.body);
         const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
-        repoObject =await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
-        if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
+        repoObject =await repository.store( 
+            email, 
+            providerUserId, 
+            providerName, 
+            nickname, 
+            ageGroupType, 
+            babyGender, 
+            babyBirthday 
+        );
+        if(!repoObject.success) {
+            return res.status(500).json({ message : "user store false", error : repoObject.error});
+        }
         repoObject = await repository.findIdByEmail( email );
     }
+
     // 이후 토큰 발급
     const userId = repoObject.result.id;
     const jwtToken = createToken(userId);
-    
+
     repoObject.success ? 
     res.status(200).json({ message : "login ok",  data : { token : jwtToken } }) : 
     res.status(500).json({ message : "server error", error : repoObject.error }); 
