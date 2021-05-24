@@ -51,7 +51,8 @@ exports.findByOptions = ({
     meetingRoom,
     nursingRoom,
     playRoom,
-    parking
+    parking,
+    isBookmarked
 }) => {
     const query = `
     select
@@ -70,15 +71,15 @@ exports.findByOptions = ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking
-        
+        prf.parking,
+        coalesce(prb.id, 0) as bookmark
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
     ${ userId && 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id' }
     where
         pr.is_deleted = false
-        ${ userId && ' and prb.user_id = ' + userId }
+        ${ isBookmarked && ' and prb.user_id = ' + userId }
         ${ babyBed && ' and prf.baby_bed = true' }
         ${ babyChair && ' and prf.baby_chair = true' }
         ${ babyMenu && ' and prf.baby_menu = true' }
