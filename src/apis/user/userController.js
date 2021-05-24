@@ -5,36 +5,8 @@ const repository = require("./userRepository");
 
 // 카카오 로그인
 exports.kakaoLogin = async (req, res) => {
-    // console.log(`액세스 토큰 : ${req.user.accessToken}`);
-    console.log(`유저 이메일 : ${req.user.profile.kakao_account.email}`);
-    console.log(`유저 아이디 : ${req.user.profile.id}`);
-    const email = req.user.profile.kakao_account.email;
-    const providerName = "KAKAO";
-    const providerUserId = req.user.profile.id;
-
-    // 이메일 존재 확인 email validation
-    let repoObject = await repository.findIdByEmail( email );
-
-
-    // 없으면 회원 가입 : 이메일, 프로바이더 유저 번호, 프로바이더 이름 
-    if( !repoObject.result ){
-        repoObject = await repository.store( email, providerUserId, providerName );
-        if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});
-        repoObject = await repository.findIdByEmail( email );
-    } 
-    // 이후 토큰 발급
-    const userId = repoObject.result.id;
-    let token = createToken(userId);
-
-    repoObject.success ? 
-    res.status(200).json({ message : "login ok",  data : { token : token } }) : 
-    res.status(500).json({ message : "server error", error : repoObject.error }); 
-}
-
-exports.store = async (req, res) => {
     console.log(req.headers);
     const token = req.headers['authorization'];
-    console.log("왜 안보이는겨");
     console.log(token);
     let userInfo;
     try{
@@ -59,7 +31,6 @@ exports.store = async (req, res) => {
     console.log(repoObject);
     if( repoObject.result === 0 ){
         // store!
-        console.log("doing");
         const { nickname, providerName, ageGroupType, babyGender ,babyBirthday } = req.body;
         repoObject =await repository.store( email, providerUserId, providerName, nickname, ageGroupType, babyGender, babyBirthday ); 
         if(!repoObject.success) return res.status(500).json({ message : "store false", error : repoObject.error});

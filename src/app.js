@@ -8,7 +8,6 @@ const apiRouter = require("./routers/apiRouter");
 const pageRouter = require("./routers/pageRouter");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const passport = require("./configs/kakao");
 
 /**@InitSettings ✨ */
 // Database connect 🔌
@@ -43,10 +42,6 @@ app.use(express.urlencoded({
 
 // Use cookieParser : req , res 객체에서 .cookie 사용
 app.use(cookieParser());
-
-// passport connection
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Set Router : router 연결
 app.use(pageRouter);
