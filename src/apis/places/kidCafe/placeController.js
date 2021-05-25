@@ -3,6 +3,7 @@ const repository = require("./placeRepository");
 
 // 장소 리스트 보기
 exports.findByOptions = async (req, res) => {
+    console.log("kidcafe");
     const {pageNumber, lat, lon} = req.query;
     const { success, result, error } = await repository.findByOptions(pageNumber, lat, lon);
     success ? 
