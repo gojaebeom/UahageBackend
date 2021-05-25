@@ -114,6 +114,20 @@ exports.validateImageById = ( userId ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
+// 이미지 주소 최신꺼 하나 가져오기
+exports.findImagePath = ( userId ) => {
+    const query = `
+    select ui.image_path from users as u
+    left join user_images ui on u.id = ui.user_id
+    where u.id = ${ userId }
+    order by ui.created_at
+    limit 1 offset 0;
+    `;
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : data.rows }))
+    .catch( error => ({ success: false, error : error }));
+}
+
 // 이메일 값으로 id 찾기 ( 미사용 )
 exports.findIdByEmail = ( email ) => {
     const query = `

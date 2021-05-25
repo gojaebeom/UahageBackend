@@ -14,14 +14,14 @@ exports.kakaoLogin = async (req, res) => {
     if( repoObject.result === 0 ){
         // store!
         const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
-        repoObject =await repository.store( 
+        repoObject = await repository.store( 
             email, 
             nickname, 
             ageGroupType, 
             babyGender, 
             babyBirthday 
         );
-        if(!repoObject.success) {
+        if( !repoObject.success ) {
             return res.status(500).json({ message : "user store false", error : repoObject.error});
         }
         repoObject = await repository.findIdByEmail( email );
