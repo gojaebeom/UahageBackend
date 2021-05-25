@@ -74,6 +74,19 @@ exports.storeImage = ( userId, imagePath ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
+// 회원 프로필 이미지 수정
+exports.editImage = ( userId, imagePath ) => {
+    const query = `
+    update user_images
+    set image_path = ${ imagePath ? "'"+imagePath+"'" : null }
+    where user_id = ${userId};
+    `;
+    console.log(query);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
 
 
 // 닉네임 중복 확인
@@ -103,14 +116,18 @@ exports.validateByEmail = ( email ) => {
 // 회원 아이디로 image 여부확인
 exports.validateImageById = ( userId ) => {
     const query = `
-    select ui.id
+    select count(ui.id)
     from users as u
     left outer join user_images as ui
     on u.id = ui.user_id
-    where u.id = '${userId}';
+    where u.id = ${userId};
     `;
     return queryBuilder( query )
-    .then( data => ({ success: true, result : true }))
+    .then( data => {
+        console.log(data.rows[0].count);
+        console.log("count");
+        return { success: true, result : data.rows[0].count === '0' ? false : true }
+    })
     .catch( error => ({ success: false, error : error }));
 }
 
