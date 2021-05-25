@@ -4,7 +4,7 @@ const { queryBuilder } = require("../../../configs/database");
 // 모든 장소 보기
 exports.findByOptions = (pageNumber,lat,lon) => {
     const query = `
-    select id, name, address, phone, admission_fee 
+    select id, name, address, phone, admission_fee , lat ,lon
     from p_kid_cafes
     order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
     limit 10 offset ${pageNumber};

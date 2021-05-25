@@ -16,14 +16,17 @@ let lat  = data["lat"];
 let lon = data["lon"];
 let type = data["type"];
 let user_id = data["user_id"];
-let place_code = data["place_code"];
+ 
 let url = "";
 
 
 async function init() {
     if(type==='allsearch'){
-        let place_code = data["place_code"];
-        url = `/api/places/search?type=all&place_code=${place_code}`;
+        console.log("allsearch");
+        let placeName = data["placeName"];
+     //   let place_code = data["place_code"];
+     url = `/api/places/${placeName}?lat=${lat}&lon=${lat}`;
+      //  url = `/api/places/search?type=all&placeName=${placeName}`;
     }
     else if(type==='filter'){
         let menu= data["menu"];
