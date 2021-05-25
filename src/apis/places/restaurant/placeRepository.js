@@ -52,7 +52,8 @@ exports.findByOptions = ({
     nursingRoom,
     playRoom,
     parking,
-    isBookmarked
+    isBookmarked,
+    pageNumber,
 }) => {
     const query = `
     select
@@ -76,21 +77,22 @@ exports.findByOptions = ({
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
-    ${ userId && 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id' }
+    ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
     where
         pr.is_deleted = false
-        ${ isBookmarked && ' and prb.user_id = ' + userId }
-        ${ babyBed && ' and prf.baby_bed = true' }
-        ${ babyChair && ' and prf.baby_chair = true' }
-        ${ babyMenu && ' and prf.baby_menu = true' }
-        ${ babyTableware && ' and prf.baby_tableware = true' }
-        ${ stroller && ' and prf.stroller = true' }
-        ${ diaperChange && ' and prf.diaper_change = true' }
-        ${ meetingRoom && ' and prf.meeting_room = true' }
-        ${ nursingRoom && ' and prf.nursing_room = true' }
-        ${ playRoom && ' and prf.play_room = true' }
-        ${ parking && ' and prf.parking = true'}
-        order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}));
+        ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
+        ${ babyBed ? ' and prf.baby_bed = true' : '' }
+        ${ babyChair ? ' and prf.baby_chair = true' : '' }
+        ${ babyMenu ? ' and prf.baby_menu = true': '' }
+        ${ babyTableware ? ' and prf.baby_tableware = true': '' }
+        ${ stroller ? ' and prf.stroller = true': '' }
+        ${ diaperChange ? ' and prf.diaper_change = true': '' }
+        ${ meetingRoom ? ' and prf.meeting_room = true': '' }
+        ${ nursingRoom ? ' and prf.nursing_room = true' : ''}
+        ${ playRoom ? ' and prf.play_room = true': '' }
+        ${ parking ? ' and prf.parking = true': ''}
+        order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
+        limit 10 offset ${pageNumber};
         ;
     `;
 

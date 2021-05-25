@@ -16,14 +16,15 @@ let lat  = data["lat"];
 let lon = data["lon"];
 let type = data["type"];
 let user_id = data["user_id"];
-let place_code = data["place_code"];
 let url = "";
 
 
 async function init() {
     if(type==='allsearch'){
-        let place_code = data["place_code"];
-        url = `/api/places/search?type=all&place_code=${place_code}`;
+        console.log("allsearch");
+        let placeName = data["placeName"];
+    url = `/api/places/${placeName}?lat=${lat}&lon=${lon}`;
+    
     }
     else if(type==='filter'){
         let menu= data["menu"];
@@ -46,13 +47,11 @@ async function init() {
         method: "GET",
         headers: {
             'Content-Type': "application/json",
-            "Authorization": "",
-            "Access-Control-Allow-Origin": "*",
         },
     }).then(res => res.json());
 
   // delete dump image file
-    const placeData = placeList["data"]["rows"];
+    const placeData = placeList["data"]["data"];
    //지도 초기값 설정
     const mapContainer = document.getElementById('map');  
     const mapOption = {
@@ -104,6 +103,7 @@ async function init() {
     }
    //거리에 해당하는 마커 찍어주기    
     placeData.forEach(function(v, i) {
+        console.log(placeData);
         let distance = calcDist(lat, lon, placeData[i].lat, placeData[i].lon);
         if(distance<1000){ displayMarker(placeData[i]);};
     });
@@ -111,7 +111,7 @@ async function init() {
      //마커 -> 클러스터
     clusterer.addMarkers(clusterMarker);
 
- // 🍎 식당마커 찍어주기
+ // 🍎마커 찍어주기
     function displayMarker(placeData) {
         let placeMarker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(placeData.lat, placeData.lon),

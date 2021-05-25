@@ -3,10 +3,21 @@ const repository = require("./placeRepository");
 
 // 장소 리스트 보기
 exports.findByOptions = async (req, res) => {
-    console.log("findbyoptions");
-    console.log(req.query);
     const {pageNumber, lat, lon} = req.query;
-    const { success, result, error } = await repository.findByOptions( pageNumber ,lat,lon);
+    let success , result , error;
+    if(!pageNumber){
+       // console.log("전체보기");
+        const body = await repository.findAll();
+        success = body.success;
+        result = body.result;
+        error = body.error;}
+    else{
+        //console.log("10개씩 끊어서 보기");
+        const body = await repository.findByOptions(pageNumber,lat,lon);
+        success = body.success;
+        result = body.result;
+        error = body.error;
+    }
     success ? 
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 
