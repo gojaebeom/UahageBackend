@@ -13,7 +13,7 @@ exports.kakaoLoginMiddleware = async (req, res, next) => {
         .then( res => res.data );
         
         // KAKAO.[이메일명]
-        req.kakaoEmail = `KAKAO.${userInfo.kakao_account.email}`;
+        req.email = `KAKAO.${userInfo.kakao_account.email}`;
         next();
     }catch( e ) {
         return res.status(403).json({ message:"kakao access false" });
