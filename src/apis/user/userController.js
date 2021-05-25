@@ -41,16 +41,8 @@ exports.edit = async (req, res) => {
     const userId = req.params.id;
     const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
     
-    let repoObject;
-    // 이미지 저장
-    if( req.imagePath ) {
-        const imagePath = req.imagePath;
-        repoObject = await repository.storeImage( userId, imagePath );
-        if( !repoObject.success ) return res.status(500).json({ message : "server error", data : false });
-    }
-
     // 회원 정보 수정
-    repoObject = await repository.edit( userId, nickname, ageGroupType, babyGender, babyBirthday ); 
+    let repoObject = await repository.edit( userId, nickname, ageGroupType, babyGender, babyBirthday ); 
     repoObject.success ? 
     res.status(200).json({ message : "status ok",  data : repoObject.result }) : 
     res.status(500).json({ message : "server error", error : repoObject.error }); 
