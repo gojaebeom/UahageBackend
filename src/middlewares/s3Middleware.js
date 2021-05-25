@@ -46,7 +46,7 @@ exports.s3 = (req, res, next) => {
                     if(!repoObject.success) return res.status(500).json({ message : "image select error"});
                     const key = repoObject.result[0].image_path;
                     console.log( key );
-                    
+
                     awsS3Delete( key );
 
                     repoObject = await editImage( userId, imagePath );
@@ -57,7 +57,6 @@ exports.s3 = (req, res, next) => {
                     if(!repoObject.success) return res.status(500).json({ message : "image store error"});
                 }
             }
-
             next();
         }
     });
