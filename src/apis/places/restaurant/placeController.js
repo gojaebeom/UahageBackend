@@ -29,8 +29,30 @@ exports.bookmarkToogle = async (req, res) => {
 exports.findByOptions = async (req, res) => {
     console.log( req.query );
     const options = req.query;
-    console.log(options);
-    const { success, result, error } = await repository.findByOptions( options );
+    const {pageNumber, lat, lon} = req.query;
+    let success , result , error;
+    if(!pageNumber){
+        console.log("전체보기");
+        for(let option in options) {
+            if(options[option] === "0"){
+                options[option] = false;
+            }
+        }
+
+        console.log(options); 
+
+
+        const body = await repository.findAll(options);
+        success = body.success;
+        result = body.result;
+        error = body.error;}
+    else{
+        //console.log("10개씩 끊어서 보기");
+        const body = await repository.findByOptions(options);
+        success = body.success;
+        result = body.result;
+        error = body.error;
+    }
     success ? 
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 

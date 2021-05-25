@@ -15,7 +15,7 @@ const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&
 let lat  = data["lat"];
 let lon = data["lon"];
 let type = data["type"];
-let user_id = data["user_id"];
+let userId = data["userId"];
 let url = "";
 
 
@@ -27,18 +27,20 @@ async function init() {
     
     }
     else if(type==='filter'){
-        let menu= data["menu"];
-        let bed = data["bed"];
-        let tableware = data["tableware"];
-        let meetingroom = data["meetingroom"];
-        let diapers = data["diapers"];
-        let playroom = data["playroom"];
-        let carriage = data["carriage"];
-        let nursingroom= data["nursingroom"];
-        let chair= data["chair"];
-        url = `/api/places/search?type=filter&menu=${menu}&bed=${bed}&tableware=${tableware}&meetingroom=${meetingroom}&diapers=${diapers}&playroom=${playroom}&carriage=${carriage}&nursingroom=${nursingroom}&chair=${chair}`;
+        console.log("filder");
+        let babyMenu= data["babyMenu"];
+        let babyBed = data["babyBed"];
+        let babyTableware = data["babyTableware"];
+        let meetingRoom = data["meetingRoom"];
+        let diaperChange = data["diaperChange"];
+        let playRoom = data["playRoom"];
+        let stroller = data["stroller"];
+        let nursingRoom= data["nursingRoom"];
+        let babyChair= data["babyChair"];
+        url = `/api/places/restaurants?userId=${userId}&lat=${lat}&lon=${lon}&babyMenu=${babyMenu}&babyBed=${babyBed}&babyTableware=${babyTableware}&meetingRoom=${meetingRoom}&diaperChange=${diaperChange}&playRoom=${playRoom}&stroller=${stroller}&nursingRoom=${nursingRoom}&babyChair=${babyChair}`;
     }
     else{
+        console.log("filder");
         url = `/api/places/search?place_code=1&type=all`;
     }
 
@@ -103,7 +105,6 @@ async function init() {
     }
    //거리에 해당하는 마커 찍어주기    
     placeData.forEach(function(v, i) {
-        console.log(placeData);
         let distance = calcDist(lat, lon, placeData[i].lat, placeData[i].lon);
         if(distance<1000){ displayMarker(placeData[i]);};
     });
@@ -122,11 +123,18 @@ async function init() {
         clusterMarker.push(placeMarker);
         
         let content = `
-        <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
+        <div id="custom-overlay" class="customoverlay"> 
             <a>
                 <span class="title">${placeData.name}</span> 
             </a> 
         </div>`;
+
+        // let content = `
+        // <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
+        //     <a>
+        //         <span class="title">${placeData.name}</span> 
+        //     </a> 
+        // </div>`;
 
         let CustomOverlay = new kakao.maps.CustomOverlay({
             position:  new kakao.maps.LatLng(placeData.lat, placeData.lon),
