@@ -32,7 +32,8 @@ exports.s3Middleware = (req, res, next) => {
                     } else {
                         console.log("이미지 없음");
                     }
-                }     
+                }
+    
             } else {
                 // 이미지 파일이 올려진 경우
                 console.log("File Selected!");
