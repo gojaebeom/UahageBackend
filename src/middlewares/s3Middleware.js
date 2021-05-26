@@ -6,6 +6,7 @@ exports.s3 = (req, res, next) => {
         if( error ) {
             // 업로드 문제 발생
             console.log("Upload Error");
+            if(req.fileTypeError) return res.status(500).json({ message : "image filetype error" });
             return res.status(500).json({message:"image upload error"});
         } else {
             // 성공

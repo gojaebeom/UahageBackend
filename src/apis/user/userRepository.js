@@ -88,7 +88,6 @@ exports.editImage = ( userId, imagePath ) => {
 }
 
 
-
 // 닉네임 중복 확인
 exports.validateByNickname = ( nickname ) => {
     const query = `
