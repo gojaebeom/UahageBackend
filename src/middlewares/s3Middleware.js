@@ -1,7 +1,7 @@
 const { findImagePath, validateImageById, storeImage, editImage } = require("../apis/user/userRepository");
 const { awsS3Upload, awsS3Delete } = require("../configs/awsS3")
 
-exports.s3 = (req, res, next) => {
+exports.s3Middleware = (req, res, next) => {
     awsS3Upload(req, res, async ( error )=> {
         if( error ) {
             // 업로드 문제 발생
