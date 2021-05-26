@@ -13,7 +13,7 @@
     //지도 생성
     const map = new kakao.maps.Map(mapContainer, mapOption);  
     //이미지 설정
-    const imageSrc = 'http://hohoco.dothome.co.kr/img/path.gif'; 
+    const imageSrc = 'https://uahage.s3.ap-northeast-2.amazonaws.com/map/path.gif'; 
     const imageSize = new kakao.maps.Size(34 , 34);
     const imageOption = {offset: new kakao.maps.Point(13, 34)};  
     //현재위치 마커 생성
