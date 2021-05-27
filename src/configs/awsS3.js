@@ -17,27 +17,27 @@ exports.awsS3Upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: process.env.S3_BUCKET,
-        key: (req, file, cb) => {
+        key: (req, file, callback) => {
             const extension = path.extname(file.originalname);
             extension.split(".")[1];
             console.log("파일 확장자");
             console.log(extension);
 
-            cb(null, Date.now().toString() + extension);
+            callback(null, Date.now().toString() + extension);
         },
         acl: process.env.S3_ACL,
     }),
-    fileFilter : (req, file, cb) => {
+    fileFilter : (req, file, callback) => {
         const fileTypes = /jpeg|jpg|png|gif/;
         console.log( "파일 검사" );
         const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
 
         if( extName ) {
             console.log( extName );
-            return cb(null, true); 
+            return callback(null, true); 
         } else {
             req.fileTypeError = true;
-            cb("Error : Images Only!");
+            callback("Error : Images Only!");
         }
     }
 }).single("image");

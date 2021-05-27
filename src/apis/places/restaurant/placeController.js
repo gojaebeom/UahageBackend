@@ -44,3 +44,14 @@ exports.show = async (req, res) => {
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 
 }
+
+// 장소 리뷰 달기
+exports.storeReview = async (req, res) => {
+    const body = req.body;
+    console.log(body);
+    const repoObject = await repository.storeReview( body );
+
+    repoObject.success ? 
+    res.status(200).json({ message : "status ok",  data : repoObject.result }) : 
+    res.status(500).json({ message : "server error", error : repoObject.error }); 
+}

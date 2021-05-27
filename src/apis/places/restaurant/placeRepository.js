@@ -133,3 +133,47 @@ exports.show = ( placeId ) => {
     .then( data => ({ success: true, result : data.rows }))
     .catch( error => ({ success: false, error : error }));
 }
+
+// 리뷰 저장
+exports.storeReview = ({
+    images,
+    userId, 
+    placeId,
+    desc,
+    totalRating,
+    tasteRating,
+    costRating,
+    serviceRating
+}) => {
+    const query = `
+    with review as (
+        insert into p_restaurant_reviews(
+            user_id,
+            restaurant_id,
+            description,
+            total_rating,
+            taste_rating,
+            cost_rating,
+            service_rating
+        )
+        values ( 
+            ${userId}, 
+            ${placeId}, 
+            '${desc}', 
+            ${totalRating}, 
+            ${tasteRating}, 
+            ${costRating}, 
+            ${serviceRating}
+        )
+        returning id
+    )
+    insert into p_restaurant_review_images( review_id, image_path, preview_image_path )
+    values
+    ${ images.map((item)=>{
+        return "( review.id, '"+ item.imagePath +"', '"+ item.previewImagePath +"')"
+    })};
+    `; 
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}

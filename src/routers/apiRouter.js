@@ -84,6 +84,11 @@ router.get(
     defaultAuthMiddlware,
     placeRestaurantController.show
 );
+router.post(
+    "/api/places/restaurants/reviews",
+    defaultAuthMiddlware,
+    placeRestaurantController.storeReview
+)
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 
