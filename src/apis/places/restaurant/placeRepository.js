@@ -145,8 +145,9 @@ exports.storeReview = ({
     costRating,
     serviceRating
 }) => {
+
     const query = `
-    with review as (
+    with reviews as (
         insert into p_restaurant_reviews(
             user_id,
             restaurant_id,
@@ -170,9 +171,10 @@ exports.storeReview = ({
     insert into p_restaurant_review_images( review_id, image_path, preview_image_path )
     values
     ${ images.map((item)=>{
-        return "( review.id, '"+ item.imagePath +"', '"+ item.previewImagePath +"')"
+        return "( (select id from reviews), '"+ item.imagePath +"', '"+ item.previewImagePath +"')"
     })};
     `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));

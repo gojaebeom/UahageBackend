@@ -14,6 +14,7 @@ const { s3Middleware } = require("../middlewares/s3Middleware");
 const { Router } = require("express");
 const { kakaoLoginMiddleware } = require("../middlewares/kakaoLoginMiddleware");
 const { naverLoginMiddleware } = require("../middlewares/naverLoginMiddleware");
+const { awsS3Upload } = require("../configs/awsS3");
 const router = Router();
 
 /**@APIs 🍬*/
@@ -49,7 +50,7 @@ router.get(
     userController.validateByEmail
 );
 // 회원 수정 ( 첫 회원가입 이후 추가정보 입력에도 사용 )
-router.patch(
+router.put(
     "/api/users/:id", 
     userAuthMiddleware,
     s3Middleware, 
@@ -87,6 +88,7 @@ router.get(
 router.post(
     "/api/places/restaurants/reviews",
     defaultAuthMiddlware,
+    s3Middleware,
     placeRestaurantController.storeReview
 )
 // Place-dayCareCenter
