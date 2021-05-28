@@ -89,7 +89,12 @@ router.post(
     defaultAuthMiddlware,
     s3MultiFileMiddleware,
     placeRestaurantController.storeReview
-)
+);
+router.delete(
+    "/api/places/restaurants/reviews/:id",
+    defaultAuthMiddlware,
+    placeRestaurantController.deleteReview
+);
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 

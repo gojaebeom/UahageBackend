@@ -8,6 +8,7 @@ const apiRouter = require("./routers/apiRouter");
 const pageRouter = require("./routers/pageRouter");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const { infoLog } = require("./utils/log");
 
 /**@InitSettings ✨ */
 // Database connect 🔌
@@ -49,4 +50,4 @@ app.use(apiRouter);
 
 /**@AppListening : 8000 포트에서 서버 실행 */
 const PORT = process.env.APP_PORT || 8000;
-app.listen(PORT, () => console.log(`Server is running on : ${PORT}`));
+app.listen(PORT, () => infoLog(`Server is running on : ${PORT}`));

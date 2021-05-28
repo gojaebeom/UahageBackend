@@ -175,13 +175,10 @@ exports.show = ( userId ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
-// 회원 탈퇴 ( is_delete 컬럼만 true 로 업데이트 )
-// 실제 삭제는 관리자홈페이지에서 휴지통에서 삭제하도록 구현하기
+// 회원 탈퇴
 exports.deleteStepOne = ( userId ) => {
     const query = `
-    update users
-    set is_deleted = true
-    where id = ${userId};
+    delete from users where id = ${userId};
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
