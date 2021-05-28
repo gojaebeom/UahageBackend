@@ -80,6 +80,7 @@ exports.findAll =  ({
     on pr.id = prf.restaurant_id
     ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
     where
+        pr.created_at is not null
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
         ${ babyBed ? ' and prf.baby_bed = true' : '' }
         ${ babyChair ? ' and prf.baby_chair = true' : '' }
@@ -144,6 +145,7 @@ exports.findByOptions = ({
     on pr.id = prf.restaurant_id
     ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
     where
+        pr.created_at is not null
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
         ${ babyBed ? ' and prf.baby_bed = true' : '' }
         ${ babyChair ? ' and prf.baby_chair = true' : '' }
@@ -155,12 +157,12 @@ exports.findByOptions = ({
         ${ nursingRoom ? ' and prf.nursing_room = true' : ''}
         ${ playRoom ? ' and prf.play_room = true': '' }
         ${ parking ? ' and prf.parking = true': ''}
-        order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
-        limit 10 offset ${pageNumber};
+    order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
+    limit 10 offset ${pageNumber};
         ;
     `;
 
-    console.log(query);
+    infoLog(query);
     return queryBuilder( query )
     .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows} }))
     .catch( error => ({ success: false, error : error }));
