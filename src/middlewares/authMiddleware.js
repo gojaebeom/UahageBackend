@@ -5,6 +5,7 @@ const { verifyToken } = require("../utils/jwt");
 // API 자원 호출 시 기본적으로 사용되는 미들웨어
 // 유효한 토큰인지만 확인
 exports.defaultAuthMiddlware = (req, res, next) => {
+    console.log( "미들웨어" );
     const token = req.headers['authorization'];
 
     const result = verifyToken( token );
