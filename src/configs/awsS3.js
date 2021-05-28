@@ -3,7 +3,6 @@ const AWS = require("aws-sdk");
 const path = require("path");
 const multer = require("multer");
 const multerS3 = require('multer-s3');
-const axios = require("axios");
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -12,6 +11,7 @@ const s3 = new AWS.S3({
 });
 console.log("Create Aws S3 instance");
 
+// 단일 이미지 처리
 exports.awsS3Upload = multer({
     storage: multerS3({
         s3: s3,
@@ -49,6 +49,38 @@ exports.awsS3Upload = multer({
     }
 }).single("image");
 
+// 한개 이상의 이미지 처리
+exports.awsS3ArrayUpload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.S3_BUCKET,
+        key: (req, files, callback) => {
+            console.log(req.file);
+            console.log(files);
+            const extension = path.extname(files.originalname);
+            extension.split(".")[1];
+            console.log("파일 확장자");
+            console.log(extension);
+
+            callback(null, Date.now().toString() + extension);
+        },
+        acl: process.env.S3_ACL,
+    }),
+    fileFilter : (req, file, callback) => {
+        const fileTypes = /jpeg|jpg|png|gif/;
+        console.log( "파일 검사" );
+        const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
+
+        if( extName ) {
+            console.log("이미지 파일 확인 완료");
+            console.log( extName );
+            return callback(null, true); 
+        } else {
+            req.fileTypeError = true;
+            callback("Error : Images Only!");
+        }
+    }
+}).array("images", 5);
 
 exports.awsS3Delete = ( fullUrlKey ) => {
     if( fullUrlKey ){

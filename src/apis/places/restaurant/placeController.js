@@ -48,10 +48,35 @@ exports.show = async (req, res) => {
 // 장소 리뷰 달기
 exports.storeReview = async (req, res) => {
     const body = req.body;
-    console.log(body);
-    const repoObject = await repository.storeReview( body );
+
+    console.log( req.files);
+    const tasteRating = Number(body.tasteRating);
+    const costRating = Number(body.costRating);
+    const serviceRating = Number(body.serviceRating);
+    const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+
+    const images = [
+        {
+            imagePath :"fff",
+            previewImagePath :"dfsakfjlsadf"
+        },
+        {
+            imagePath :"ffdddf",
+            previewImagePath :"dfsakffefefefefefjlsadf"
+        },
+    ];
+    const repoObject = await repository.storeReview({
+        images : images,
+        userId : body.userId,
+        placeId : body.placeId,
+        desc : body.desc,
+        totalRating : totalRating,
+        tasteRating : tasteRating,
+        costRating : costRating,
+        serviceRating :serviceRating
+    });
 
     repoObject.success ? 
     res.status(200).json({ message : "status ok",  data : repoObject.result }) : 
-    res.status(500).json({ message : "server error", error : repoObject.error }); 
+    res.status(500).json({ message : "review store false", error : repoObject.error }); 
 }
