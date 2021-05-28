@@ -80,7 +80,6 @@ exports.findAll =  ({
     on pr.id = prf.restaurant_id
     ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
     where
-        pr.is_deleted = false
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
         ${ babyBed ? ' and prf.baby_bed = true' : '' }
         ${ babyChair ? ' and prf.baby_chair = true' : '' }
@@ -145,7 +144,6 @@ exports.findByOptions = ({
     on pr.id = prf.restaurant_id
     ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
     where
-        pr.is_deleted = false
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
         ${ babyBed ? ' and prf.baby_bed = true' : '' }
         ${ babyChair ? ' and prf.baby_chair = true' : '' }
@@ -192,8 +190,7 @@ exports.show = ( placeId ) => {
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
     where
-    pr.is_deleted = false
-    and pr.id = ${ placeId };
+        pr.id = ${ placeId };
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : data.rows }))
@@ -257,13 +254,10 @@ exports.storeReview = ({
 // 리뷰 삭제 
 exports.deleteReviewStepOne = ( reviewId ) => {
     const query = `
-    update p_restaurant_reviews
-    set is_deleted = true, deleted_at = now()
+    delete from p_restaurant_reviews
     where id = ${ reviewId }
     `;
-    infoLog("=== Query ===");
-    infoLog(query);
-    infoLog("=== End Query");
+    infoLog(`=== Query ===\nquery\n=== End Query ===`);
 
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))

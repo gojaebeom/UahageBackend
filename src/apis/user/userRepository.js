@@ -106,8 +106,7 @@ exports.validateByEmail = ( email ) => {
     const query = `
     select id
     from users
-    where email = '${ email }'
-    and is_deleted = false;
+    where email = '${ email }';
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : data.rowCount !== 0 ? false : true }))
@@ -168,7 +167,6 @@ exports.show = ( userId ) => {
     left outer join user_images as ui
     on u.id = ui.user_id
     where u.id = ${userId}
-    and u.is_deleted = false
     order by  ui.created_at desc
     limit 1 offset 0;
     `;
