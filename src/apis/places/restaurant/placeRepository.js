@@ -200,33 +200,56 @@ exports.show = ( placeId ) => {
 }
 
 // 리뷰 리스트 보기
-exports.findReview = ( placeId ) => {
+exports.findReviewsByOption = ( placeId, option ) => {
     const query = `
     select
         prr.id,
-        prr.restaurant_id,
-        prr.user_id,
+        u.nickname,
+        ui.image_path as profile,
         prr.description,
         prr.total_rating,
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
+        prr.created_at,
         STRING_AGG(prri.image_path , ',' ) as image_path
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
     on prr.id = prri.review_id
+    left join users as u
+    on prr.user_id = u.id
+    left join user_images ui
+    on u.id = ui.user_id
     where prr.restaurant_id = ${ placeId }
-    group by prr.id;
+    group by prr.id, u.id, ui.id
+    ${ option === "DATE" ? 'order by prr.created_at desc' : '' }
+    ${ option === "TOP" ? 'order by prr.total_rating desc' : '' }
+    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };
     `;
     infoLog(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, result : data.rows }))
+    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
     .catch( error => ({ success: false, error : error }));
 }
 
+// 사진 리뷰 모아보기
+exports.findReviewImages = ( placeId ) => {
+    const query = `
+    select prr.id, prri.image_path
+    from p_restaurant_reviews as prr
+    left join p_restaurant_review_images as prri
+    on prr.id = prri.review_id
+    where prr.restaurant_id = ${ placeId }
+    and prri.image_path is not null
+    order by prr.created_at desc;
+    `;
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
+    .catch( error => ({ success: false, error : error }));
+}
 
-// 리뷰 저장
-exports.storeReview = ({
+// 리뷰 저장 (이미지가 있는 경우)
+exports.storeReviewWithImages = ({
     images,
     userId, 
     placeId,
@@ -262,8 +285,45 @@ exports.storeReview = ({
     insert into p_restaurant_review_images( review_id, image_path )
     values
     ${ images.map((item)=>{
-        return "( (select id from reviews), '"+ item.location +"')"
+            return "( (select id from reviews), '"+ item.location +"')"
     })};
+    `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+// 리뷰 저장
+exports.storeReview = ({
+    userId, 
+    placeId,
+    desc,
+    totalRating,
+    tasteRating,
+    costRating,
+    serviceRating
+}) => {
+
+    const query = `
+        insert into p_restaurant_reviews(
+            user_id,
+            restaurant_id,
+            description,
+            total_rating,
+            taste_rating,
+            cost_rating,
+            service_rating
+        )
+        values ( 
+            ${userId}, 
+            ${placeId}, 
+            '${desc}', 
+            ${totalRating}, 
+            ${tasteRating}, 
+            ${costRating}, 
+            ${serviceRating}
+        );
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )

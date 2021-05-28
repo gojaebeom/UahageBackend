@@ -84,6 +84,12 @@ router.get(
     defaultAuthMiddlware,
     placeRestaurantController.show
 );
+
+router.get(
+    "/api/places/restaurants/:id/reviews", 
+    defaultAuthMiddlware,
+    placeRestaurantController.findReviews
+);
 router.post(
     "/api/places/restaurants/reviews",
     defaultAuthMiddlware,

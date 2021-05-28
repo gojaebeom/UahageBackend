@@ -1,4 +1,5 @@
 "use strict";
+const { infoLog, warningLog } = require("../../../utils/log");
 const repository = require("./placeRepository");
 
 // 북마크 관계 생성, 또는 제거
@@ -67,26 +68,62 @@ exports.show = async (req, res) => {
     res.status(500).json({ message : "Get place detail false", error : error }); 
 }
 
+// 장소 리뷰 보기
+exports.findReviews = async (req, res) => {
+    const placeId = req.params.id;
+
+    let type = req.query.type || null; // 없거나, img 
+    type = type !== null && type.toUpperCase();
+    let repoObj;
+    if( type === "IMG"){
+        console.log("이미지 확인");
+        repoObj = await repository.findReviewImages( placeId );
+    }else {
+        const order = req.query.order || "DATE"; // desc, top, low
+        const option = order.toUpperCase();
+        repoObj = await repository.findReviewsByOption( placeId, option );
+    }
+
+    repoObj.success ? 
+    res.status(200).json({ message : "get reviews success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "get reviews false", error : repoObj.error }); 
+}
+
 // 장소 리뷰 달기
 exports.storeReview = async (req, res) => {
     const body = req.body;
 
-    const images = req.files; // images[n].location -> imagePath
+    let images = req.files; // images[n].location -> imagePath
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
     const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
 
-    const repoObj = await repository.storeReview({
-        images : images,
-        userId : body.userId,
-        placeId : body.placeId,
-        desc : body.desc,
-        totalRating : totalRating,
-        tasteRating : tasteRating,
-        costRating : costRating,
-        serviceRating :serviceRating
-    });
+    let repoObj;
+    if(!images.length){
+        infoLog("이미지 없음, 리뷰만 저장");
+        repoObj = await repository.storeReview({
+            userId : body.userId,
+            placeId : body.placeId,
+            desc : body.desc,
+            totalRating : totalRating,
+            tasteRating : tasteRating,
+            costRating : costRating,
+            serviceRating :serviceRating
+        });
+    } else {
+        infoLog("이미지 있음, 리뷰, 이미지 저장");
+        repoObj = await repository.storeReviewWithImages({
+            images : images,
+            userId : body.userId,
+            placeId : body.placeId,
+            desc : body.desc,
+            totalRating : totalRating,
+            tasteRating : tasteRating,
+            costRating : costRating,
+            serviceRating :serviceRating
+        });
+    }
 
     repoObj.success ? 
     res.status(200).json({ message : "review store success",  data : repoObj.result }) : 

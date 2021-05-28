@@ -27,9 +27,9 @@ exports.connector = () => {
 }
 
 // 재사용성 쿼리빌더 : repository 에서 사용
-exports.queryBuilder = ( query ) => {
+exports.queryBuilder = ( query, values ) => {
     return new Promise((resolve, reject) => {
-        client.query( query, ( err, result ) => {
+        client.query( query, values, ( err, result ) => {
             if(err) reject(err);
             else resolve(result);
         });
