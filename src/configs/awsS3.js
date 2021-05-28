@@ -5,7 +5,6 @@ const multer = require("multer");
 const multerS3 = require('multer-s3');
 const axios = require("axios");
 
-
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey : process.env.S3_SECRET_ACCESS_KEY,
@@ -18,6 +17,10 @@ exports.awsS3Upload = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET,
         key: (req, file, callback) => {
+
+            console.log( "파일 정보!!");
+            console.log( file );
+
             const extension = path.extname(file.originalname);
             extension.split(".")[1];
             console.log("파일 확장자");
@@ -28,6 +31,10 @@ exports.awsS3Upload = multer({
         acl: process.env.S3_ACL,
     }),
     fileFilter : (req, file, callback) => {
+
+        console.log("파일 정보 확인");
+        console.log(file);
+
         const fileTypes = /jpeg|jpg|png|gif/;
         console.log( "파일 검사" );
         const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
@@ -56,8 +63,7 @@ exports.awsS3Delete = ( fullUrlKey ) => {
             if(err) console.log(`이미지 삭제 에러 : ${ err }`);
             else console.log("이미지 삭제 성공");
         });
-    }else {
+    } else {
         console.log("이미지 id는 있지만, null 값으로 존재");
     }
- 
 }

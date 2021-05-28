@@ -49,7 +49,7 @@ router.get(
     userController.validateByEmail
 );
 // 회원 수정 ( 첫 회원가입 이후 추가정보 입력에도 사용 )
-router.patch(
+router.put(
     "/api/users/:id", 
     userAuthMiddleware,
     s3Middleware, 

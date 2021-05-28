@@ -2,7 +2,10 @@ const { findImagePath, validateImageById, storeImage, editImage } = require("../
 const { awsS3Upload, awsS3Delete } = require("../configs/awsS3")
 
 exports.s3Middleware = (req, res, next) => {
+
     awsS3Upload(req, res, async ( error )=> {
+        console.log("파일 채크!!");
+        console.log( req.file );
         if( error ) {
             // 업로드 문제 발생
             console.log("Upload Error");
@@ -15,7 +18,7 @@ exports.s3Middleware = (req, res, next) => {
                 // image 파일을 올리지 않을 경우
                 console.log("No File Selected!");
                 // 이미지 삭제 요청
-                if( req.body.imgInit === "y" ) {
+                if( req.body.imgInit === "Y" ) {
                     
                     let repoObject = await validateImageById( userId );
                     if(!repoObject.success) return res.status(500).json({ message : "image validate error"});
@@ -47,7 +50,6 @@ exports.s3Middleware = (req, res, next) => {
                     repoObject = await findImagePath( userId );
                     if(!repoObject.success) return res.status(500).json({ message : "image select error"});
                     const key = repoObject.result[0].image_path;
-                    console.log( key );
 
                     awsS3Delete( key );
 
