@@ -14,8 +14,9 @@ exports.s3Middleware = (req, res, next) => {
             if ( req.file === undefined ){
                 // image 파일을 올리지 않을 경우
                 console.log("No File Selected!");
+                console.log(req.body.imgInit);
                 // 이미지 삭제 요청
-                if( req.body.imgInit === "y" ) {
+                if( req.body.imgInit === "Y" ) {
                     
                     let repoObject = await validateImageById( userId );
                     if(!repoObject.success) return res.status(500).json({ message : "image validate error"});

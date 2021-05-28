@@ -14,11 +14,12 @@ const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&
 
 let lat  = data["lat"];
 let lon = data["lon"];
+
 let type = data["type"];
+let option ;
 let userId = data["userId"];
 let url = "";
-
-
+option = data["option"]==null? "" : data["option"];
 async function init() {
     if(type==='allsearch'){
         console.log("allsearch");
@@ -27,7 +28,6 @@ async function init() {
     
     }
     else if(type==='filter'){
-        console.log("filder");
         let babyMenu= data["babyMenu"];
         let babyBed = data["babyBed"];
         let babyTableware = data["babyTableware"];
@@ -40,8 +40,7 @@ async function init() {
         url = `/api/places/restaurants?userId=${userId}&lat=${lat}&lon=${lon}&babyMenu=${babyMenu}&babyBed=${babyBed}&babyTableware=${babyTableware}&meetingRoom=${meetingRoom}&diaperChange=${diaperChange}&playRoom=${playRoom}&stroller=${stroller}&nursingRoom=${nursingRoom}&babyChair=${babyChair}`;
     }
     else{
-        console.log("filder");
-        url = `/api/places/search?place_code=1&type=all`;
+        url = `/api/places/restaurants?lat=${lat}&lon=${lon}`;
     }
 
     // show dump image file 
@@ -86,7 +85,7 @@ async function init() {
         ]   
     });
     // 🍎 현재 위치 찍어주기                                  
-    if(type=="destination"){
+    if(type=="filter"&&option!=""){
         let destination = new kakao.maps.CustomOverlay({
             content: `<div style="padding: 0px 15px 0px 15px;   border-radius:25px;  box-shadow:0px 3px 2px #888; background-color:#f06292;  background: #f06292      center;" >
                         <h1> 목적지 </h1>
@@ -122,19 +121,14 @@ async function init() {
         placeMarkers.push(placeMarker);
         clusterMarker.push(placeMarker);
         
+      
+
         let content = `
-        <div id="custom-overlay" class="customoverlay"> 
+        <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.stroller}|${placeData.baby_bed}|${placeData.baby_tableware}|${placeData.nursing_room}|${placeData.meeting_room}|${placeData.diaper_change}|${placeData.play_room}|${placeData.baby_chair}|${placeData.baby_menu}|${placeData.parking}|${placeData.examination_items}|${placeData.admission_fee}}');"> 
             <a>
                 <span class="title">${placeData.name}</span> 
             </a> 
         </div>`;
-
-        // let content = `
-        // <div id="custom-overlay" class="customoverlay" onclick="getresult('${placeData.id}|${placeData.name}|${placeData.address}|${placeData.phone}|${placeData.carriage}|${placeData.bed}|${placeData.tableware}|${placeData.nursingroom}|${placeData.meetingroom}|${placeData.diapers}|${placeData.playroom}|${placeData.chair}|${placeData.menu}|${placeData.examination}|${placeData.fare}');"> 
-        //     <a>
-        //         <span class="title">${placeData.name}</span> 
-        //     </a> 
-        // </div>`;
 
         let CustomOverlay = new kakao.maps.CustomOverlay({
             position:  new kakao.maps.LatLng(placeData.lat, placeData.lon),

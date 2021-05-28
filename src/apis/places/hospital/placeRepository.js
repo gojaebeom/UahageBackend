@@ -1,6 +1,7 @@
 "use strict";
 const { queryBuilder } = require("../../../configs/database");
 
+// 모든 장소 보기
 exports.findAll = () => {
     const query = `
     select id, name, address, phone, examination_items , lat ,lon
@@ -13,7 +14,7 @@ exports.findAll = () => {
     .catch( error => ({ success: false, error : error }));
 }
 
-// 모든 장소 보기
+// 모든 장소 보기(10개 씩)
 exports.findByOptions = (pageNumber,lat,lon) => {
     const query = `
     select id, name, address, phone, examination_items , lat ,lon

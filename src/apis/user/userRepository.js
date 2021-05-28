@@ -58,6 +58,7 @@ exports.edit = (
     set age_group_type = ${ageGroupType}, baby_gender= '${babyGender}', baby_birthday = '${babyBirthday}'
     where ud.user_id = (select id from users);
     `;
+    console.log(query);
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
@@ -105,7 +106,8 @@ exports.validateByEmail = ( email ) => {
     const query = `
     select id
     from users
-    where email = '${ email }';
+    where email = '${ email }'
+    and is_deleted = false;
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : data.rowCount !== 0 ? false : true }))
