@@ -200,8 +200,26 @@ exports.show = ( placeId ) => {
 // 리뷰 리스트 보기
 exports.findReview = ( placeId ) => {
     const query = `
-    
+    select
+        prr.id,
+        prr.restaurant_id,
+        prr.user_id,
+        prr.description,
+        prr.total_rating,
+        prr.taste_rating,
+        prr.cost_rating,
+        prr.service_rating,
+        STRING_AGG(prri.image_path , ',' ) as image_path
+    from p_restaurant_reviews as prr
+    left join p_restaurant_review_images as prri
+    on prr.id = prri.review_id
+    where prr.restaurant_id = ${ placeId }
+    group by prr.id;
     `;
+    infoLog(`=== Query ===\n${query}\n=== End Query ===`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : data.rows }))
+    .catch( error => ({ success: false, error : error }));
 }
 
 
