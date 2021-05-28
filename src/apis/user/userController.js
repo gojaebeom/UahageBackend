@@ -5,6 +5,7 @@ const repository = require("./userRepository");
 
 // 카카오, 네이버 소셜 로그인 ( 인증 미들웨어가 카카오, 네이버로 구분되어 각각 다른 Email 값을 반환)
 exports.oAuthLogin = async (req, res) => {
+    console.log("oAuthLogin");
     const email = req.email;
 
     // 이메일로 저장된 유저 아이디 확인 : 있으면 유저 아이디 반환, 없으면 0 반환

@@ -8,8 +8,8 @@ const placeExperienceCenterController = require("../apis/places/experienceCenter
 const placeKidCafeController = require("../apis/places/kidCafe/placeController");
 
 /**@ImportMiddlewares 🍇 */
-const { defaultAuthMiddlware } = require("../middlewares/authMiddleware");
-const { s3Middleware } = require("../middlewares/s3Middleware");
+const { defaultAuthMiddlware, userAuthMiddleware } = require("../middlewares/authMiddleware");
+const { s3Middleware, s3MultiFileMiddleware } = require("../middlewares/s3Middleware");
 
 const { Router } = require("express");
 const { kakaoLoginMiddleware } = require("../middlewares/kakaoLoginMiddleware");
@@ -51,7 +51,7 @@ router.get(
 // 회원 수정 ( 첫 회원가입 이후 추가정보 입력에도 사용 )
 router.put(
     "/api/users/:id", 
-    defaultAuthMiddlware,
+    userAuthMiddleware,
     s3Middleware, 
     userController.edit
 );
@@ -64,56 +64,78 @@ router.get(
 // 회원 탈퇴
 router.delete(
     "/api/users/:id", 
-    defaultAuthMiddlware, 
+    userAuthMiddleware, 
     userController.delete
 );
 
 // Place-restaurant Api
 router.post(
     "/api/places/restaurants/bookmarks", 
+    defaultAuthMiddlware,
     placeRestaurantController.bookmarkToogle
 );
 router.get(
     "/api/places/restaurants", 
+    defaultAuthMiddlware,
     placeRestaurantController.findByOptions
 );
 router.get(
     "/api/places/restaurants/:id", 
+    defaultAuthMiddlware,
     placeRestaurantController.show
+);
+router.post(
+    "/api/places/restaurants/reviews",
+    defaultAuthMiddlware,
+    s3MultiFileMiddleware,
+    placeRestaurantController.storeReview
+);
+router.delete(
+    "/api/places/restaurants/reviews/:id",
+    defaultAuthMiddlware,
+    placeRestaurantController.deleteReview
 );
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 
+    defaultAuthMiddlware,
     placeDayCareCenterController.findByOptions
 );
 router.get(
     "/api/places/day-care-centers/:id", 
+    defaultAuthMiddlware,
     placeDayCareCenterController.show
 );
 // Place-hospital
 router.get(
     "/api/places/hospitals", 
+    defaultAuthMiddlware,
     placeHospitalController.findByOptions
 );
 router.get(
     "/api/places/hospitals/:id", 
+    defaultAuthMiddlware,
     placeHospitalController.show);
 // Place-experienceCenter
 router.get(
     "/api/places/experience-centers", 
+    defaultAuthMiddlware,
     placeExperienceCenterController.findByOptions
 );
 router.get(
     "/api/places/experience-centers/:id", 
+    defaultAuthMiddlware,
     placeExperienceCenterController.show
 );
 // Place-kidCafe
 router.get(
     "/api/places/kid-cafes", 
+    defaultAuthMiddlware,
     placeKidCafeController.findByOptions
 );
 router.get(
     "/api/places/kid-cafes/:id", 
+    defaultAuthMiddlware,
     placeKidCafeController.show
 );
 

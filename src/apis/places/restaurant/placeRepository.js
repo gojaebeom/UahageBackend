@@ -1,5 +1,6 @@
 "use strict";
 const { queryBuilder } = require("../../../configs/database");
+const { infoLog } = require("../../../utils/log");
 
 // 북마크 관계 확인 : 있다면 id 리턴
 exports.validateBookmark = ( userId, placeId ) => {
@@ -196,5 +197,75 @@ exports.show = ( placeId ) => {
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : data.rows }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+// 리뷰 리스트 보기
+exports.findReview = ( placeId ) => {
+    const query = `
+    
+    `;
+}
+
+
+// 리뷰 저장
+exports.storeReview = ({
+    images,
+    userId, 
+    placeId,
+    desc,
+    totalRating,
+    tasteRating,
+    costRating,
+    serviceRating
+}) => {
+
+    const query = `
+    with reviews as (
+        insert into p_restaurant_reviews(
+            user_id,
+            restaurant_id,
+            description,
+            total_rating,
+            taste_rating,
+            cost_rating,
+            service_rating
+        )
+        values ( 
+            ${userId}, 
+            ${placeId}, 
+            '${desc}', 
+            ${totalRating}, 
+            ${tasteRating}, 
+            ${costRating}, 
+            ${serviceRating}
+        )
+        returning id
+    )
+    insert into p_restaurant_review_images( review_id, image_path )
+    values
+    ${ images.map((item)=>{
+        return "( (select id from reviews), '"+ item.location +"')"
+    })};
+    `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+// 리뷰 삭제 
+exports.deleteReviewStepOne = ( reviewId ) => {
+    const query = `
+    update p_restaurant_reviews
+    set is_deleted = true, deleted_at = now()
+    where id = ${ reviewId }
+    `;
+    infoLog("=== Query ===");
+    infoLog(query);
+    infoLog("=== End Query");
+
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
 }

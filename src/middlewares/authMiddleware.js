@@ -9,18 +9,41 @@ exports.defaultAuthMiddlware = (req, res, next) => {
 
     const result = verifyToken( token );
     console.log( result );
+    // if( result === "INVALID" ){
+    //     return res.status(403).json({
+    //         message :"invalid token",
+    //         data : false
+    //     });
+    // }else if( result === "EXPIRED"){
+    //     return res.status(403).json({
+    //         message :"expired token",
+    //         data : false
+    //     });
+    // }
     next();
 }
 
 // API 자원 호출 시 UPDATE , DELETE , POST 요청에 대한 인증 처리
-exports.AuthMiddleware = (req, res, next) => {
+exports.userAuthMiddleware = (req, res, next) => {
     const token = req.headers['authorization'];
-    const result = verifyToken( token );
 
-    if( result === "VERIFY" ){
-        console.log( result );
-        next();
-    }else {
-        res.json({"message":false});
-    }
+    const result = verifyToken( token );
+    console.log( result );
+    // if( result === "INVALID" ){
+    //     return res.status(403).json({
+    //         message :"invalid token",
+    //         data :false
+    //     });
+    // }else if( result === "EXPIRED"){
+    //     return res.status(403).json({
+    //         message :"expired token",
+    //         data :false
+    //     });
+    // }else if( result.uId !== req.params.id ){
+    //     return res.status(403).json({
+    //         message :"not matched user info",
+    //         data :false
+    //     })
+    // }
+    next();
 }
