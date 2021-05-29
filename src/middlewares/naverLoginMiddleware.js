@@ -14,7 +14,7 @@ exports.naverLoginMiddleware = async (req, res, next) => {
         .then( res => res.data );
         console.log(userInfo);
         // NAVER.[이메일명]
-        req.email = `NAVER.${userInfo.kakao_account.email}`;
+        req.email = `NAVER.${userInfo.response.email}`;
         next();
     }catch( e ) {
         return res.status(403).json({ message:"naver access false" });

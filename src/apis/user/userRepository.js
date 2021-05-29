@@ -58,6 +58,7 @@ exports.edit = (
     set age_group_type = ${ageGroupType}, baby_gender= '${babyGender}', baby_birthday = '${babyBirthday}'
     where ud.user_id = (select id from users);
     `;
+    console.log(query);
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
@@ -166,7 +167,6 @@ exports.show = ( userId ) => {
     left outer join user_images as ui
     on u.id = ui.user_id
     where u.id = ${userId}
-    and u.is_deleted = false
     order by  ui.created_at desc
     limit 1 offset 0;
     `;
@@ -175,13 +175,10 @@ exports.show = ( userId ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
-// 회원 탈퇴 ( is_delete 컬럼만 true 로 업데이트 )
-// 실제 삭제는 관리자홈페이지에서 휴지통에서 삭제하도록 구현하기
+// 회원 탈퇴
 exports.deleteStepOne = ( userId ) => {
     const query = `
-    update users
-    set is_deleted = true
-    where id = ${userId};
+    delete from users where id = ${userId};
     `;
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))

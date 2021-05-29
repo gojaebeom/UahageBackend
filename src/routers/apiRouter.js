@@ -9,12 +9,11 @@ const placeKidCafeController = require("../apis/places/kidCafe/placeController")
 
 /**@ImportMiddlewares 🍇 */
 const { defaultAuthMiddlware, userAuthMiddleware } = require("../middlewares/authMiddleware");
-const { s3Middleware } = require("../middlewares/s3Middleware");
+const { s3Middleware, s3MultiFileMiddleware } = require("../middlewares/s3Middleware");
 
 const { Router } = require("express");
 const { kakaoLoginMiddleware } = require("../middlewares/kakaoLoginMiddleware");
 const { naverLoginMiddleware } = require("../middlewares/naverLoginMiddleware");
-const { awsS3Upload } = require("../configs/awsS3");
 const router = Router();
 
 /**@APIs 🍬*/
@@ -85,12 +84,23 @@ router.get(
     defaultAuthMiddlware,
     placeRestaurantController.show
 );
+
+router.get(
+    "/api/places/restaurants/:id/reviews", 
+    defaultAuthMiddlware,
+    placeRestaurantController.findReviews
+);
 router.post(
     "/api/places/restaurants/reviews",
     defaultAuthMiddlware,
-    s3Middleware,
+    s3MultiFileMiddleware,
     placeRestaurantController.storeReview
-)
+);
+router.delete(
+    "/api/places/restaurants/reviews/:id",
+    defaultAuthMiddlware,
+    placeRestaurantController.deleteReview
+);
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 

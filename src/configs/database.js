@@ -1,6 +1,7 @@
 "use strict";
 const { Client } = require("pg");
 const dotenv = require("dotenv"); 
+const { infoLog, successLog, errorLog } = require("../utils/log");
 dotenv.config();
 
 const client = new Client({
@@ -18,17 +19,17 @@ const client = new Client({
 exports.connector = () => {
     client.connect(err => { 
         if (err) {
-            console.log(`Failed to connect db => ${err}`);
+            errorLog(`Failed to connect db => ${err}`);
         } else {
-            console.log('Connect to pg-db done!');
+            successLog("Connect to pg-db done!");
         } 
     });
 }
 
 // 재사용성 쿼리빌더 : repository 에서 사용
-exports.queryBuilder = ( query ) => {
+exports.queryBuilder = ( query, values ) => {
     return new Promise((resolve, reject) => {
-        client.query( query, ( err, result ) => {
+        client.query( query, values, ( err, result ) => {
             if(err) reject(err);
             else resolve(result);
         });
