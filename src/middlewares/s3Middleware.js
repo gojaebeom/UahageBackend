@@ -1,4 +1,4 @@
-const { findImagePath, validateImageById, storeImage, editImage } = require("../apis/user/userRepository");
+const { findImagePath, validateImageById, storeImage, editImage, edit } = require("../apis/user/userRepository");
 const { awsS3Upload, awsS3Delete, awsS3ArrayUpload } = require("../configs/awsS3")
 
 exports.s3Middleware = (req, res, next) => {
@@ -34,8 +34,7 @@ exports.s3Middleware = (req, res, next) => {
                     } else {
                         console.log("이미지 없음");
                     }
-                }
-    
+                }   
             } else {
                 // 이미지 파일이 올려진 경우
                 console.log("File Selected!");
