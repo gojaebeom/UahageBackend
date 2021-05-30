@@ -84,11 +84,15 @@ router.get(
     defaultAuthMiddlware,
     placeRestaurantController.show
 );
-
 router.get(
     "/api/places/restaurants/:id/reviews", 
     defaultAuthMiddlware,
     placeRestaurantController.findReviews
+);
+router.get(
+    "/api/places/restaurants/reviews/:id", 
+    defaultAuthMiddlware,
+    placeRestaurantController.findOneReview
 );
 router.post(
     "/api/places/restaurants/reviews",
@@ -100,6 +104,11 @@ router.delete(
     "/api/places/restaurants/reviews/:id",
     defaultAuthMiddlware,
     placeRestaurantController.deleteReview
+);
+router.post(
+    "/api/places/restaurants/reviews/decl",
+    defaultAuthMiddlware,
+    placeRestaurantController.storeReviewDeclarations
 );
 // Place-dayCareCenter
 router.get(

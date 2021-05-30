@@ -68,7 +68,7 @@ exports.show = async (req, res) => {
     res.status(500).json({ message : "Get place detail false", error : error }); 
 }
 
-// 장소 리뷰 보기
+// 리뷰 리스트 보기
 exports.findReviews = async (req, res) => {
     const placeId = req.params.id;
 
@@ -87,6 +87,16 @@ exports.findReviews = async (req, res) => {
     repoObj.success ? 
     res.status(200).json({ message : "get reviews success",  data : repoObj.result }) : 
     res.status(500).json({ message : "get reviews false", error : repoObj.error }); 
+}
+
+// 리뷰 상세보기
+exports.findOneReview = async (req, res) =>{
+    const reviewId = req.params.id;
+    const repoObj = await repository.findOneReview( reviewId );
+
+    repoObj.success ? 
+    res.status(200).json({ message : "get review detail success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "get review detail false", error : repoObj.error }); 
 }
 
 // 장소 리뷰 달기
@@ -134,6 +144,16 @@ exports.storeReview = async (req, res) => {
 exports.deleteReview = async (req, res) => {
     const reviewId = req.params;
     const repoObj = await repository.deleteReviewStepOne( reviewId );
+    
+    repoObj.success ? 
+    res.status(200).json({ message : "review delete success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "review delete false", error : repoObj.error }); 
+}
+
+// 리뷰 신고
+exports.storeReviewDeclarations = async (req, res) =>{
+    const body = req.body;
+    const repoObj = await repository.storeReviewDeclarations( body );
     
     repoObj.success ? 
     res.status(200).json({ message : "review delete success",  data : repoObj.result }) : 

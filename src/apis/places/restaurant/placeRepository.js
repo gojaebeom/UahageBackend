@@ -232,6 +232,31 @@ exports.findReviewsByOption = ( placeId, option ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
+// 리뷰 상세 보기
+exports.findOneReview = ( reviewId ) =>{
+    const query = `
+    select
+        prr.id,
+        prr.restaurant_id,
+        prr.user_id,
+        prr.description,
+        prr.total_rating,
+        prr.taste_rating,
+        prr.cost_rating,
+        prr.service_rating,
+        STRING_AGG(prri.image_path , ',' )
+    from p_restaurant_reviews as prr
+    left join p_restaurant_review_images as prri
+    on prr.id = prri.review_id
+    where prr.id = ${reviewId}
+    group by prr.id;
+    `;
+    infoLog(`=== Query ===\n${query}\n=== End Query ===`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : data.rows[0]  }))
+    .catch( error => ({ success: false, error : error }));
+}
+
 // 사진 리뷰 모아보기
 exports.findReviewImages = ( placeId ) => {
     const query = `
@@ -337,8 +362,26 @@ exports.deleteReviewStepOne = ( reviewId ) => {
     delete from p_restaurant_reviews
     where id = ${ reviewId }
     `;
-    infoLog(`=== Query ===\nquery\n=== End Query ===`);
+    infoLog(`=== Query ===\n${query}\n=== End Query ===`);
 
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+// 리뷰 신고
+exports.storeReviewDeclarations = ( body ) => {
+    const { categoryId, reviewId, userId, desc } = body;
+    const query = `
+    insert into p_restaurant_review_declarations(
+        category_id, 
+        review_id,
+        user_id, 
+        description
+    )
+    values( ${categoryId}, ${reviewId}, ${userId}, '${desc}');
+    `;
+    infoLog(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
