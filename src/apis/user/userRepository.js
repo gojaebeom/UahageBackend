@@ -158,7 +158,7 @@ exports.findIdByEmail = ( email ) => {
 }
 
 // 회원 상세정보
-exports.show = ( userId ) => {
+exports.findOne = ( userId ) => {
     const query = `
     select ui.image_path, u.nickname, ud.age_group_type, ud.baby_gender, ud.baby_birthday
     from users as u

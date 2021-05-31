@@ -68,9 +68,9 @@ exports.validateByEmail = async (req, res) => {
 }
 
 // 회원 상세정보
-exports.show = async (req, res) => {
+exports.findOne = async (req, res) => {
     const userId = req.params.id;
-    const { success, result, error } = await repository.show( userId );
+    const { success, result, error } = await repository.findOne( userId );
     success ? 
     res.status(200).json({ message : "status ok",  data : result }) : 
     res.status(500).json({ message : "server error", error : error }); 
