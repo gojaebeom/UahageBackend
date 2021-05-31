@@ -34,7 +34,7 @@ router.post(
 router.get(
     "/api/users/:id", 
     defaultAuthMiddlware, 
-    userController.show
+    userController.findOne
 );
 // 회원 닉네임 확인 ( 있으면 false, 없으면 true )
 router.get(
@@ -82,7 +82,7 @@ router.get(
 router.get(
     "/api/places/restaurants/:id", 
     defaultAuthMiddlware,
-    placeRestaurantController.show
+    placeRestaurantController.findOne
 );
 router.get(
     "/api/places/restaurants/:id/reviews", 
@@ -119,7 +119,7 @@ router.get(
 router.get(
     "/api/places/day-care-centers/:id", 
     defaultAuthMiddlware,
-    placeDayCareCenterController.show
+    placeDayCareCenterController.findOne
 );
 // Place-hospital
 router.get(
@@ -130,7 +130,8 @@ router.get(
 router.get(
     "/api/places/hospitals/:id", 
     defaultAuthMiddlware,
-    placeHospitalController.show);
+    placeHospitalController.findOne
+);
 // Place-experienceCenter
 router.get(
     "/api/places/experience-centers", 
@@ -140,7 +141,7 @@ router.get(
 router.get(
     "/api/places/experience-centers/:id", 
     defaultAuthMiddlware,
-    placeExperienceCenterController.show
+    placeExperienceCenterController.findOne
 );
 // Place-kidCafe
 router.get(
@@ -151,7 +152,7 @@ router.get(
 router.get(
     "/api/places/kid-cafes/:id", 
     defaultAuthMiddlware,
-    placeKidCafeController.show
+    placeKidCafeController.findOne
 );
 
 module.exports = router;
