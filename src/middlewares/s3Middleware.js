@@ -2,8 +2,6 @@ const { findImagePath, validateImageById, storeImage, editImage, edit } = requir
 const { awsS3Upload, awsS3Delete, awsS3ArrayUpload } = require("../configs/awsS3")
 
 exports.s3Middleware = (req, res, next) => {
-    console.log("미들웨어 방문")
-
     awsS3Upload(req, res, async ( error )=> {
         console.log("파일 채크!!");
         console.log( req.file );
@@ -110,3 +108,4 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
         }
     });
 }
+

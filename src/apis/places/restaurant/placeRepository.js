@@ -412,4 +412,3 @@ exports.storeReviewDeclarations = ( body ) => {
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
 }
-
