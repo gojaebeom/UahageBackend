@@ -95,17 +95,6 @@ exports.findOneReview = async (req, res) =>{
     res.status(500).json({ message : "get review detail false", error : repoObj.error }); 
 }
 
-// 리뷰 수정하기
-exports.updateReview = async (req, res) =>{
-    const reviewId = req.params.id;
-    const body = req.body;
-    const repoObj = await repository.updateReview( reviewId , body );
-
-    repoObj.success ? 
-    res.status(200).json({ message : "get review detail success",  data : repoObj.result }) : 
-    res.status(500).json({ message : "get review detail false", error : repoObj.error }); 
-}
-
 // 장소 리뷰 달기
 exports.storeReview = async (req, res) => {
     const body = req.body;
@@ -145,6 +134,28 @@ exports.storeReview = async (req, res) => {
     repoObj.success ? 
     res.status(200).json({ message : "review store success",  data : repoObj.result }) : 
     res.status(500).json({ message : "review store false", error : repoObj.error }); 
+}
+
+// 리뷰 수정하기
+exports.updateReview = async (req, res) =>{
+    const reviewId = req.params.id;
+    const body = req.body;
+    const tasteRating = Number(body.tasteRating);
+    const costRating = Number(body.costRating);
+    const serviceRating = Number(body.serviceRating);
+    const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+
+    const repoObj = await repository.updateReview( reviewId , {
+        desc : body.desc,
+        totalRating : totalRating,
+        tasteRating : tasteRating,
+        costRating : costRating,
+        serviceRating :serviceRating
+    });
+
+    repoObj.success ? 
+    res.status(200).json({ message : "update review success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "update review false", error : repoObj.error }); 
 }
 
 // 장소 리뷰 삭제

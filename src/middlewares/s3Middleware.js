@@ -68,8 +68,6 @@ exports.s3Middleware = (req, res, next) => {
 }
 
 exports.s3MultiFileMiddleware = (req, res, next) => {
-    console.log("미들웨어 방문")
-
     awsS3ArrayUpload(req, res, async ( error )=> {
         console.log("파일 채크!!");
         console.log( req.file );
@@ -84,46 +82,28 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
             if ( req.file === undefined ){
                 // image 파일을 올리지 않을 경우
                 console.log("No File Selected!");
-                // 이미지 삭제 요청
-                if( req.body.imgInit === "Y" ) {
-                    let repoObject = await validateImageById( userId );
-                    if(!repoObject.success) return res.status(500).json({ message : "image validate error"});
-
-                    if( repoObject.result ){
-                        console.log("이미지 존재");
-                        repoObject = await findImagePath( userId );
-                        if(!repoObject.success) return res.status(500).json({ message : "image select error"});
-                        const key = repoObject.result[0].image_path;
-                        awsS3Delete( key );
-
-                        repoObject = await editImage( userId, null);
-                        if(!repoObject.success) return res.status(500).json({ message : "image update error"});
-                    } else {
-                        console.log("이미지 없음");
-                    }
-                }   
             } else {
                 // 이미지 파일이 올려진 경우
                 console.log("File Selected!");
                 const imagePath = req.file.location;
 
                 let repoObject = await validateImageById( userId );
-                if(!repoObject.success) return res.status(500).json({ message : "image validate error"});
+                if(!repoObject.success) return res.status(500).json({ message: "image validate error"});
 
                 if( repoObject.result ){
                     console.log("이미지 존재, 기존 이미지 수정");
                     repoObject = await findImagePath( userId );
-                    if(!repoObject.success) return res.status(500).json({ message : "image select error"});
+                    if(!repoObject.success) return res.status(500).json({ message: "image select error"});
                     const key = repoObject.result[0].image_path;
 
                     awsS3Delete( key );
 
                     repoObject = await editImage( userId, imagePath );
-                    if(!repoObject.success) return res.status(500).json({ message : "image update error"});
+                    if(!repoObject.success) return res.status(500).json({ message: "image update error"});
                 } else {
                     console.log("이미지 없음, 새로 생성");
                     repoObject = await storeImage( userId, imagePath );
-                    if(!repoObject.success) return res.status(500).json({ message : "image store error"});
+                    if(!repoObject.success) return res.status(500).json({ message: "image store error"});
                 }
             }
             next();

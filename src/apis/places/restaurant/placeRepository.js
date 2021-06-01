@@ -354,6 +354,34 @@ exports.storeReview = ({
     .catch( error => ({ success: false, error : error }));
 }
 
+// 리뷰 수정
+exports.updateReview = ( 
+    reviewId, 
+    {
+        desc,
+        totalRating,
+        tasteRating,
+        costRating,
+        serviceRating
+    }
+) => {
+    const query = `
+    update p_restaurant_reviews
+    set 
+        description = '${desc}', 
+        total_rating = ${totalRating},
+        taste_rating = ${tasteRating},
+        cost_rating = ${costRating}, 
+        service_rating = ${serviceRating},
+        updated_at = now()
+        where id = ${reviewId}
+    `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
 // 리뷰 삭제 
 exports.deleteReviewStepOne = ( reviewId ) => {
     const query = `
@@ -385,6 +413,3 @@ exports.storeReviewDeclarations = ( body ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
-exports.updateReview = ( reviewId, body ) => {
-
-}

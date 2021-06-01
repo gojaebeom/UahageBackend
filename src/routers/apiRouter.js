@@ -100,6 +100,12 @@ router.post(
     s3MultiFileMiddleware,
     placeRestaurantController.storeReview
 );
+router.put(
+    "/api/places/restaurants/reviews/:id",
+    defaultAuthMiddlware,
+    s3MultiFileMiddleware,
+    placeRestaurantController.updateReview
+);
 router.delete(
     "/api/places/restaurants/reviews/:id",
     defaultAuthMiddlware,
@@ -117,7 +123,7 @@ router.get(
     placeDayCareCenterController.findByOptions
 );
 router.get(
-    "/api/places/day-care-centers/:id", 
+    "/api/places/day-care-centers/:id",
     defaultAuthMiddlware,
     placeDayCareCenterController.findOne
 );
