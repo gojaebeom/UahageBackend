@@ -16,7 +16,7 @@ exports.bookmarkToogle = async (req, res) => {
         // 북마크 존재 -> 북마크 관계 제거
         repoObject = await repository.deleteBookmark( bookmarkId );
     }else {
-        // 북마크 없음 -> 북마크 관계 생성
+        // 북마크 없음 -> 북마크 관계 생성`
         repoObject = await repository.storeBookmark( userId, placeId );
         isBookmarked = true;
     }
@@ -28,9 +28,8 @@ exports.bookmarkToogle = async (req, res) => {
 
 // 쿼리스트링 옵션에 따라 모두보기, 북마크된 게시물만 보기, 시설정보 필터에 따라 보기 
 exports.findByOptions = async (req, res) => {
-    console.log( req.query );
     const options = req.query;
-    const {pageNumber, lat, lon} = req.query;
+    const {pageNumber} = options;
     let success , result , error;
     if(!pageNumber){
         console.log("전체보기");
@@ -40,15 +39,12 @@ exports.findByOptions = async (req, res) => {
             }
         }
 
-        console.log(options); 
-
-
         const body = await repository.findAll(options);
         success = body.success;
         result = body.result;
         error = body.error;}
     else{
-        //console.log("10개씩 끊어서 보기");
+        console.log("10개씩 끊어서 보기");
         const body = await repository.findByOptions(options);
         success = body.success;
         result = body.result;
@@ -60,9 +56,9 @@ exports.findByOptions = async (req, res) => {
 }
 
 // 장소 상세보기
-exports.show = async (req, res) => {
+exports.findOne = async (req, res) => {
     const placeId = req.params.id;
-    const { success, result, error } = await repository.show( placeId );
+    const { success, result, error } = await repository.findOne( placeId );
     success ? 
     res.status(200).json({ message : "Get place detail success",  data : result }) : 
     res.status(500).json({ message : "Get place detail false", error : error }); 
@@ -138,6 +134,28 @@ exports.storeReview = async (req, res) => {
     repoObj.success ? 
     res.status(200).json({ message : "review store success",  data : repoObj.result }) : 
     res.status(500).json({ message : "review store false", error : repoObj.error }); 
+}
+
+// 리뷰 수정하기
+exports.updateReview = async (req, res) =>{
+    const reviewId = req.params.id;
+    const body = req.body;
+    const tasteRating = Number(body.tasteRating);
+    const costRating = Number(body.costRating);
+    const serviceRating = Number(body.serviceRating);
+    const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+
+    const repoObj = await repository.updateReview( reviewId , {
+        desc : body.desc,
+        totalRating : totalRating,
+        tasteRating : tasteRating,
+        costRating : costRating,
+        serviceRating :serviceRating
+    });
+
+    repoObj.success ? 
+    res.status(200).json({ message : "update review success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "update review false", error : repoObj.error }); 
 }
 
 // 장소 리뷰 삭제

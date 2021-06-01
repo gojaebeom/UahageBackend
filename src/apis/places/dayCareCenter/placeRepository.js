@@ -30,7 +30,7 @@ exports.findByOptions = (pageNumber,lat,lon) => {
 }
 
 // 장소 상세보기
-exports.show = ( placeId ) => {
+exports.findOne = ( placeId ) => {
     const query = `
     select id, name, address, phone, employees, rooms, type, lat, lon
     from p_day_care_centers

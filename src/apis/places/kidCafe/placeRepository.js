@@ -30,7 +30,7 @@ exports.findByOptions = (pageNumber,lat,lon) => {
 }
 
 // 장소 상세보기
-exports.show = ( placeId   ) => {
+exports.findOne = ( placeId   ) => {
     const query = `
     select id, name, address, phone, admission_fee 
     from p_kid_cafes

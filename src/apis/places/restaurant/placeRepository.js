@@ -73,8 +73,8 @@ exports.findAll =  ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking,
-        coalesce(prb.id, 0) as bookmark
+        prf.parking
+        ${ userId ? ', coalesce(prb.id, 0) as bookmark' : '' }
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
@@ -92,7 +92,6 @@ exports.findAll =  ({
         ${ nursingRoom ? ' and prf.nursing_room = true' : ''}
         ${ playRoom ? ' and prf.play_room = true': '' }
         ${ parking ? ' and prf.parking = true': ''};
-        
     `;
     console.log(query);
     return queryBuilder( query )
@@ -138,8 +137,8 @@ exports.findByOptions = ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking,
-        coalesce(prb.id, 0) as bookmark
+        prf.parking
+        ${ userId ? ', coalesce(prb.id, 0) as bookmark' : '' }
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
@@ -159,7 +158,6 @@ exports.findByOptions = ({
         ${ parking ? ' and prf.parking = true': ''}
     order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
     limit 10 offset ${pageNumber};
-        ;
     `;
 
     infoLog(query);
@@ -169,7 +167,7 @@ exports.findByOptions = ({
 }
 
 // 장소 상세보기
-exports.show = ( placeId ) => {
+exports.findOne = ( placeId ) => {
     const query = `
     select
         pr.id,
@@ -276,7 +274,7 @@ exports.findReviewImages = ( placeId ) => {
 // 리뷰 저장 (이미지가 있는 경우)
 exports.storeReviewWithImages = ({
     images,
-    userId, 
+    userId,
     placeId,
     desc,
     totalRating,
@@ -356,6 +354,34 @@ exports.storeReview = ({
     .catch( error => ({ success: false, error : error }));
 }
 
+// 리뷰 수정
+exports.updateReview = ( 
+    reviewId, 
+    {
+        desc,
+        totalRating,
+        tasteRating,
+        costRating,
+        serviceRating
+    }
+) => {
+    const query = `
+    update p_restaurant_reviews
+    set 
+        description = '${desc}', 
+        total_rating = ${totalRating},
+        taste_rating = ${tasteRating},
+        cost_rating = ${costRating}, 
+        service_rating = ${serviceRating},
+        updated_at = now()
+        where id = ${reviewId}
+    `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
 // 리뷰 삭제 
 exports.deleteReviewStepOne = ( reviewId ) => {
     const query = `
@@ -386,3 +412,4 @@ exports.storeReviewDeclarations = ( body ) => {
     .then( data => ({ success: true, result : true }))
     .catch( error => ({ success: false, error : error }));
 }
+
