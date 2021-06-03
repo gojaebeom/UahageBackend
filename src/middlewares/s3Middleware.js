@@ -110,3 +110,9 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
         }
     });
 }
+
+function EncryData () {
+    return () => {
+        console.log(EncryData());
+    }
+}
