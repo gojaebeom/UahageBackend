@@ -78,7 +78,7 @@ exports.findAll =  ({
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
-    ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
+    ${ userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id='+userId+') prb on pr.id = prb.restaurant_id ': '' }
     where
         pr.created_at is not null
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
@@ -142,7 +142,7 @@ exports.findByOptions = ({
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
-    ${ userId ? 'left outer join p_restaurant_bookmarks prb on pr.id = prb.restaurant_id ': '' }
+    ${ userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id='+userId+') prb on pr.id = prb.restaurant_id ': '' }
     where
         pr.created_at is not null
         ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
