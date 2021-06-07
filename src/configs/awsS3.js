@@ -46,6 +46,8 @@ exports.awsS3ArrayUpload = multer({
         s3: s3,
         bucket: process.env.S3_BUCKET,
         key: (req, files, callback) => {
+            console.log("키 콜백함수 실행");
+            console.log(files);
             const extension = path.extname(files.originalname);
             extension.split(".")[1];
             callback(null, Date.now().toString() + extension);
@@ -53,6 +55,8 @@ exports.awsS3ArrayUpload = multer({
         acl: process.env.S3_ACL,
     }),
     fileFilter : (req, file, callback) => {
+        console.log("멀티파일폼데이터 요청 옴");
+        console.log(file);
         const fileTypes = /jpeg|jpg|png|gif/;
         const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
 
