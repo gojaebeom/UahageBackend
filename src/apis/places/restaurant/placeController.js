@@ -68,7 +68,7 @@ exports.findOne = async (req, res) => {
 exports.findReviews = async (req, res) => {
     const placeId = req.params.id;
 
-    let type = req.query.type || null; // 없거나, img 
+    let type = req.query.type || null; // 없거나, img
     type = type !== null && type.toUpperCase();
     let repoObj;
     if( type === "IMG"){
@@ -100,6 +100,7 @@ exports.storeReview = async (req, res) => {
     const body = req.body;
 
     let images = req.files; // images[n].location -> imagePath
+    console.log(images);
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);

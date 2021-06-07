@@ -2,6 +2,7 @@
 const { queryBuilder } = require("../../../configs/database");
 const { infoLog } = require("../../../utils/log");
 
+ 
 // 북마크 관계 확인 : 있다면 id 리턴
 exports.validateBookmark = ( userId, placeId ) => {
     const query = `

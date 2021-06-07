@@ -68,9 +68,11 @@ exports.s3Middleware = (req, res, next) => {
 }
 
 exports.s3MultiFileMiddleware = (req, res, next) => {
+
+
     awsS3ArrayUpload(req, res, async ( error )=> {
-        console.log("파일 채크!!");
-        console.log( req.file );
+
+        console.log( req.files );
         if( error ) {
             // 업로드 문제 발생
             console.log("Upload Error");

@@ -12,7 +12,7 @@ function getResult(address) {
         if (status === kakao.maps.services.Status.OK) {
          //  result.La, result.Ma.
             console.log(result[0].x);
-            location.href="/maps/show-place?type=filter&option=y&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=";
+            location.href="/maps/show-place?userId="+data["userId"]+"&type=filter&option=y&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=";
          //   location.href="/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
         }
     });
