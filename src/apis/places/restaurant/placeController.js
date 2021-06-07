@@ -1,5 +1,6 @@
 "use strict";
-const { infoLog, warningLog } = require("../../../utils/log");
+const { awsS3Delete } = require("../../../configs/awsS3");
+const { infoLog, warningLog, successLog } = require("../../../utils/log");
 const repository = require("./placeRepository");
 
 // 북마크 관계 생성, 또는 제거
@@ -139,23 +140,58 @@ exports.storeReview = async (req, res) => {
 
 // 리뷰 수정하기
 exports.updateReview = async (req, res) =>{
+    let images = req.files;
     const reviewId = req.params.id;
     const body = req.body;
+
+    const desc = body.desc;
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
     const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+    const deleteImgConcatText = body.deleteImgConcatText;
 
-    const repoObj = await repository.updateReview( reviewId , {
-        desc : body.desc,
-        totalRating : totalRating,
-        tasteRating : tasteRating,
-        costRating : costRating,
-        serviceRating :serviceRating
-    });
+    let repoObj;
+
+    if( deleteImgConcatText ) {
+        infoLog(deleteImgConcatText);
+        const delImgList = deleteImgConcatText.split(",");
+
+        delImgList.map( async (item) => {
+            repoObj = await repository.deleteReviewImage( item );
+            successLog(`${ item } 이미지 삭제 완료`);
+
+            awsS3Delete( item );
+        });
+    }
+
+    
+    if(!images.length){
+        infoLog("이미지 없음, 리뷰만 수정");
+        repoObj = await repository.updateReview( reviewId , {
+            desc : desc,
+            totalRating : totalRating,
+            tasteRating : tasteRating,
+            costRating : costRating,
+            serviceRating :serviceRating
+        });  
+    } else {
+        infoLog("이미지 있음, 리뷰수정 및 이미지 생성");
+        repoObj = await repository.updateReview( reviewId , {
+            desc : desc,
+            totalRating : totalRating,
+            tasteRating : tasteRating,
+            costRating : costRating,
+            serviceRating :serviceRating
+        }); 
+        if( !repoObj.success ) return res.status(500).json({ message : "review update false", data : repoObj.error});
+
+        repoObj = await repository.storeReviewImages( reviewId, images);
+        if( !repoObj.success ) return res.status(500).json({ message : "review image create false", data : repoObj.error});
+    }
 
     repoObj.success ? 
-    res.status(200).json({ message : "update review success",  data : repoObj.result }) : 
+    res.status(200).json({ message : "update review success",  data : repoObj.result }) :  
     res.status(500).json({ message : "update review false", error : repoObj.error }); 
 }
 
@@ -165,8 +201,8 @@ exports.deleteReview = async (req, res) => {
     const repoObj = await repository.deleteReviewStepOne( reviewId );
     
     repoObj.success ? 
-    res.status(200).json({ message : "review delete success",  data : repoObj.result }) : 
-    res.status(500).json({ message : "review delete false", error : repoObj.error }); 
+    res.status(200).json({ message : "delete review success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "delete review false", error : repoObj.error }); 
 }
 
 // 리뷰 신고
@@ -175,6 +211,6 @@ exports.storeReviewDeclarations = async (req, res) =>{
     const repoObj = await repository.storeReviewDeclarations( body );
     
     repoObj.success ? 
-    res.status(200).json({ message : "review delete success",  data : repoObj.result }) : 
-    res.status(500).json({ message : "review delete false", error : repoObj.error }); 
+    res.status(200).json({ message : "store review declarations success",  data : repoObj.result }) : 
+    res.status(500).json({ message : "store review declarations false", error : repoObj.error }); 
 }
