@@ -211,7 +211,7 @@ exports.findReviewsByOption = ( placeId, option ) => {
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD'),
+        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
         STRING_AGG(prri.image_path , ',' ) as image_path
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
@@ -244,7 +244,7 @@ exports.findOneReview = ( reviewId ) =>{
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD'),
+        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
         STRING_AGG(prri.image_path , ',' )
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
