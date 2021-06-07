@@ -172,7 +172,6 @@ exports.findOne = ( placeId ) => {
     const query = `
     select
         pr.id,
-        pr.userId,
         pr.name,
         pr.address,
         pr.phone,
@@ -204,6 +203,7 @@ exports.findReviewsByOption = ( placeId, option ) => {
     const query = `
     select
         prr.id,
+        u.id as user_id,
         u.nickname,
         ui.image_path as profile,
         prr.description,
