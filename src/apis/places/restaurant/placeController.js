@@ -164,7 +164,6 @@ exports.updateReview = async (req, res) =>{
         });
     }
 
-    
     if(!images.length){
         infoLog("이미지 없음, 리뷰만 수정");
         repoObj = await repository.updateReview( reviewId , {
