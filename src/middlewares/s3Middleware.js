@@ -95,7 +95,7 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
                     repoObject = await findImagePath( userId );
                     if(!repoObject.success) return res.status(500).json({ message: "image select error"});
                     const key = repoObject.result[0].image_path;
-
+                    
                     awsS3Delete( key );
 
                     repoObject = await editImage( userId, imagePath );
@@ -109,10 +109,4 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
             next();
         }
     });
-}
-
-function EncryData () {
-    return () => {
-        console.log(EncryData());
-    }
 }

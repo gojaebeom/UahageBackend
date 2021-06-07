@@ -140,21 +140,32 @@ exports.storeReview = async (req, res) => {
 exports.updateReview = async (req, res) =>{
     const reviewId = req.params.id;
     const body = req.body;
+
+    const desc = body.desc;
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
     const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+    const deleteImgConcatText = body.deleteImgPkList;
+
+    if( delImgs ) {
+        infoLog(delImgs);
+        const delImgList = deleteImgConcatText.split(",");
+        delImgList.map( item => {
+            
+        });
+    }
 
     const repoObj = await repository.updateReview( reviewId , {
-        desc : body.desc,
+        desc : desc,
         totalRating : totalRating,
         tasteRating : tasteRating,
         costRating : costRating,
         serviceRating :serviceRating
-    });
+    });  
 
     repoObj.success ? 
-    res.status(200).json({ message : "update review success",  data : repoObj.result }) : 
+    res.status(200).json({ message : "update review success",  data : repoObj.result }) :  
     res.status(500).json({ message : "update review false", error : repoObj.error }); 
 }
 
