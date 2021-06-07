@@ -9,6 +9,7 @@ const imageSize1 = new kakao.maps.Size(23, 32);
 let placeMarkers = [];
 let clusterMarker = [];
 let clickedOverlay = null;
+
 const search = location.search.substring(1);
 const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 
@@ -24,7 +25,7 @@ async function init() {
     if(type==='allsearch'){
         console.log("allsearch");
         let placeName = data["placeName"];
-    url = `/api/places/${placeName}?lat=${lat}&lon=${lon}`;
+        url = `/api/places/${placeName}?lat=${lat}&lon=${lon}`;
     
     }
     else if(type==='filter'){
@@ -148,14 +149,16 @@ async function init() {
             if (CustomOverlay != null) {
             CustomOverlay.setMap(null);
             }
-            });
+        });
     };
+
+
         //클러스터 확대
         kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
-        let level = map.getLevel() - 1;
+            let level = map.getLevel() - 1;
             map.setLevel(level, {
                     anchor: cluster.getCenter()
-                });
+            });
         });
         // 현재위치로 이동
         const setCenterButton = document.querySelector(".btn");
@@ -166,7 +169,7 @@ async function init() {
         // 마커 클러스터 지우기
         function setMarkers() {
             placeMarkers.forEach(function(v, i) {
-            placeMarkers[i].setMap(null);
+                placeMarkers[i].setMap(null);
             });
             clusterer.clear();
         }
@@ -181,14 +184,9 @@ async function init() {
             if(distance<1000){ displayMarker(placeData[i]);};
             });
             clusterer.addMarkers(clusterMarker);
-        
         });
 }
 init();
-
-function getresult(result) {
-    Print.postMessage(result);
-}
 
 // 거리계산 함수   
 function calcDist(lat1, lng1, lat2, lng2) {
@@ -201,6 +199,5 @@ function calcDist(lat1, lng1, lat2, lng2) {
     ) * 1000; //m
     return ret.toFixed(2);
 }
-
 
 
