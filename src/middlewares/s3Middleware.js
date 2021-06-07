@@ -76,34 +76,6 @@ exports.s3MultiFileMiddleware = (req, res, next) => {
             return res.status(500).json({message:"image upload error"});
         } else {
             // 성공
-            const userId = req.params.id;
-            if ( req.file === undefined ){
-                // image 파일을 올리지 않을 경우
-                console.log("No File Selected!");
-            } else {
-                // 이미지 파일이 올려진 경우
-                console.log("File Selected!");
-                const imagePath = req.file.location;
-
-                let repoObject = await validateImageById( userId );
-                if(!repoObject.success) return res.status(500).json({ message: "image validate error"});
-
-                if( repoObject.result ){
-                    console.log("이미지 존재, 기존 이미지 수정");
-                    repoObject = await findImagePath( userId );
-                    if(!repoObject.success) return res.status(500).json({ message: "image select error"});
-                    const key = repoObject.result[0].image_path;
-
-                    awsS3Delete( key );
-
-                    repoObject = await editImage( userId, imagePath );
-                    if(!repoObject.success) return res.status(500).json({ message: "image update error"});
-                } else {
-                    console.log("이미지 없음, 새로 생성");
-                    repoObject = await storeImage( userId, imagePath );
-                    if(!repoObject.success) return res.status(500).json({ message: "image store error"});
-                }
-            }
             next();
         }
     });

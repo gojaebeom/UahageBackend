@@ -271,6 +271,17 @@ exports.findReviewImages = ( placeId ) => {
     .catch( error => ({ success: false, error : error }));
 }
 
+// 리뷰 이미지 PK 구하기
+exports.deleteReviewImage = ( imagePath ) => {
+    const query = `
+    delete from p_restaurant_review_images 
+    where image_path = '${ imagePath }'`;
+
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : { total : data.rowCount, data : data.rows } }))
+    .catch( error => ({ success: false, error : error }));
+}   
+
 // 리뷰 저장 (이미지가 있는 경우)
 exports.storeReviewWithImages = ({
     images,
@@ -347,6 +358,23 @@ exports.storeReview = ({
             ${costRating}, 
             ${serviceRating}
         );
+    `; 
+    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    return queryBuilder( query )
+    .then( data => ({ success: true, result : true }))
+    .catch( error => ({ success: false, error : error }));
+}
+
+exports.storeReviewImages = (reviewId, images) => {
+    const query = `
+        insert into p_restaurant_review_images(
+            review_id,
+            image_path
+        )
+        values
+        ${ images.map((item)=>{
+                return "(" + reviewId + ", '"+ item.location +"')"
+        })};
     `; 
     console.log(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
