@@ -1,9 +1,5 @@
 "use strict";
 
-//import { getQuerystringInfo } from "../utils/qsParser.js";
-
-//const { keyword, lat, lon } = getQuerystringInfo();
-
 const path = location.search.substring( 1 );
 console.log( path );
 if( path === "" ){
@@ -83,13 +79,6 @@ function displayPlaces(places) {
     }
     // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
     listEl.appendChild(fragment);
-    const infoElList = document.querySelectorAll(".info");
-            
-    for(let item of infoElList){
-        item.addEventListener("click", ( ) => {
-            getResult(   );
-        });
-    }
     menuEl.scrollTop = 0;
 }
 
@@ -98,21 +87,25 @@ function getListItem(index, places) {
     const address = "'" + places.address_name + "'";
     console.log(address);
     const el = document.createElement('li');
+
+    let itemStr = `
+    <span class="markerbg marker_' + (index + 1) + '"></span>
+    <div class="info" onclick="getResult()">
+        <h5>'${ places.place_name }'</h5>`;
     
-    let itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-        '<div class="info">' +
-        '<h5 >' + places.place_name + '</h5>';
-        
     if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-            '   <span class="jibun gray">' + places.address_name + '</span>';
+        itemStr += `
+        <span>${ places.road_address_name }</span>
+        <span class="jibun gray">${ places.address_name }</span>`;
     } else {
-        itemStr += '    <span>' + places.address_name + '</span>';
+        itemStr += 
+        `<span>${ places.address_name }</span>`;
     }
-    itemStr += '  <span class="tel">' + places.phone + '</span>' +
-        '</div>';
+    itemStr += 
+        `<span class="tel">${ places.phone }</span>
+    </div>`;
     el.innerHTML = itemStr;
-    el.className = 'item';
+    el.className = "item";
     return el;
 }
 
