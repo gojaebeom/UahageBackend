@@ -8,16 +8,19 @@ exports.authMiddleware = (req, res, next) => {
 
     const result = verifyToken( token );
 
-    // if( result === "INVALID" ){
-    //     return res.status(403).json({
-    //         message :"invalid token",
-    //         data : "INVALID"
-    //     });
-    // }else if( result === "EXPIRED"){
-    //     return res.status(403).json({
-    //         message :"expired token",
-    //         data : "EXPIRED"
-    //     });
-    // }
+    console.log( result );
+
+    if( result === "INVALID" ){
+        return res.status(403).json({
+            message :"invalid token",
+            data : "INVALID"
+        });
+    }else if( result === "EXPIRED"){
+        return res.status(403).json({
+            message :"expired token",
+            data : "EXPIRED"
+        });
+    }
+
     next();
 }
