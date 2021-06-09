@@ -7,7 +7,7 @@ if( path === "" ){
     console.log("쿼리스트링이 없습니다");
     throw new Error("not find querystring");
 }
-const { keyword, lat, lon } = JSON.parse('{"' + decodeURI(path)
+const { keyword, lat, lon ,userId } = JSON.parse('{"' + decodeURI(path)
         .replace(/"/g, '\\"')
         .replace(/&/g, '","')
         .replace(/=/g,'":"') + '"}');
@@ -22,7 +22,7 @@ function getResult(address) {
         if (status === kakao.maps.services.Status.OK) {
          //  result.La, result.Ma.
             console.log(result[0].x);
-            location.href="/maps/show-place?type=filter&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=&placeName=restaurants";
+            location.href="/maps/show-place?type=filter&placeName=restaurants&userId="+userId+"&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=";
          //   location.href="/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
         }
     });
@@ -90,8 +90,8 @@ function getListItem(index, places) {
 
     let itemStr = `
     <span class="markerbg marker_' + (index + 1) + '"></span>
-    <div class="info" onclick="getResult()">
-        <h5>'${ places.place_name }'</h5>`;
+    <div class="info" onclick="getResult(`+address+`)">
+        <h5>${ places.place_name }</h5>`;
     
     if (places.road_address_name) {
         itemStr += `

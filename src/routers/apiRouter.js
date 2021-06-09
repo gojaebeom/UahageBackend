@@ -8,7 +8,7 @@ const placeExperienceCenterController = require("../apis/places/experienceCenter
 const placeKidCafeController = require("../apis/places/kidCafe/placeController");
 
 /**@ImportMiddlewares 🍇 */
-const { defaultAuthMiddlware, userAuthMiddleware } = require("../middlewares/authMiddleware");
+const { defaultAuthMiddlware } = require("../middlewares/authMiddleware");
 const { s3Middleware, s3MultiFileMiddleware } = require("../middlewares/s3Middleware");
 
 const { Router } = require("express");
@@ -51,7 +51,6 @@ router.get(
 // 회원 수정 ( 첫 회원가입 이후 추가정보 입력에도 사용 )
 router.put(
     "/api/users/:id", 
-    userAuthMiddleware,
     s3Middleware, 
     userController.edit
 );
@@ -64,7 +63,6 @@ router.get(
 // 회원 탈퇴
 router.delete(
     "/api/users/:id", 
-    userAuthMiddleware, 
     userController.delete
 );
 
