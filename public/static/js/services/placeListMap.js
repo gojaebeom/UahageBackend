@@ -146,5 +146,6 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
 // 플러터로 데이터를 전달하는 함수
 function getPlaceDetailInfo(result) {
     console.log( result );
-    //Print.postMessage(result);
+    result = JSON.stringify( result );
+    Print.postMessage( result );
 }

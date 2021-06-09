@@ -1,17 +1,32 @@
 "use strict";
 
-import { getQuerystringInfo } from "../utils/qsParser";
+//import { getQuerystringInfo } from "../utils/qsParser.js";
 
-const { keyword, lat, lon } = getQuerystringInfo();
+//const { keyword, lat, lon } = getQuerystringInfo();
+
+const path = location.search.substring( 1 );
+console.log( path );
+if( path === "" ){
+    renderErrorPage();
+    console.log("쿼리스트링이 없습니다");
+    throw new Error("not find querystring");
+}
+const { keyword, lat, lon } = JSON.parse('{"' + decodeURI(path)
+        .replace(/"/g, '\\"')
+        .replace(/&/g, '","')
+        .replace(/=/g,'":"') + '"}');
+
+console.log(keyword);
 
 function getResult(address) {
+    console.log(address);
     var geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function(result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
          //  result.La, result.Ma.
             console.log(result[0].x);
-            location.href="/maps/show-place?type=filter&option=y&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=";
+            location.href="/maps/show-place?type=filter&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=&placeName=restaurants";
          //   location.href="/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
         }
     });
@@ -64,18 +79,30 @@ function displayPlaces(places) {
     for (let i = 0; i < places.length; i++) {
         let  itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
         fragment.appendChild(itemEl);
+
     }
     // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
     listEl.appendChild(fragment);
+    const infoElList = document.querySelectorAll(".info");
+            
+    for(let item of infoElList){
+        item.addEventListener("click", ( ) => {
+            getResult(   );
+        });
+    }
     menuEl.scrollTop = 0;
 }
+
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
-    let address = "'" + places.address_name + "'";
-    let el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
-        '<div class="info" onclick="getResult(' + address + ')" >' +
-        '   <h5 >' + places.place_name + '</h5>';
+    const address = "'" + places.address_name + "'";
+    console.log(address);
+    const el = document.createElement('li');
+    
+    let itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+        '<div class="info">' +
+        '<h5 >' + places.place_name + '</h5>';
+        
     if (places.road_address_name) {
         itemStr += '    <span>' + places.road_address_name + '</span>' +
             '   <span class="jibun gray">' + places.address_name + '</span>';
