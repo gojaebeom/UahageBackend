@@ -65,9 +65,8 @@ exports.s3Middleware = (req, res, next) => {
     });
 }
 
+
 exports.s3MultiFileMiddleware = (req, res, next) => {
-
-
     awsS3ArrayUpload(req, res, async ( error )=> {
 
         console.log( req.files );
