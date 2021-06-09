@@ -4,7 +4,7 @@ const secretKey = process.env.APP_SECRET;
 
 // jwt 토큰 발행
 exports.createToken = ( userId ) => {
-    //return jwt.sign({ uid: userId }, secretKey, { expiresIn: '30s' });
+    // return jwt.sign({ uid: userId }, secretKey, { expiresIn: '30s' });
     // roles : 'SUPER' / 'MANAGER' / 'GENERAL' / 'USER'
     return jwt.sign({ uid: userId }, secretKey); // not time setting
 }
@@ -28,4 +28,11 @@ exports.verifyToken = ( token ) => {
         }
     }
     return decoded;
+}
+
+
+exports.createRefreshToken = ( ) => {
+        // return jwt.sign({ uid: userId }, secretKey, { expiresIn: '30s' });
+    // roles : 'SUPER' / 'MANAGER' / 'GENERAL' / 'USER'
+    return jwt.sign({ uid: userId }, secretKey); // not time setting
 }
