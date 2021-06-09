@@ -4,7 +4,7 @@ const data = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&
 let keyword = data["keyword"];
 let lat  = data["lat"];
 let lon = data["lon"]; 
-
+console.log(data);
 function getResult(address) {
     var geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function(result, status) {

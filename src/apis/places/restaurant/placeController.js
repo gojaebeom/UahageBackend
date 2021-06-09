@@ -196,7 +196,7 @@ exports.updateReview = async (req, res) =>{
 
 // 장소 리뷰 삭제
 exports.deleteReview = async (req, res) => {
-    const reviewId = req.params;
+    const reviewId = req.params.id;
     const repoObj = await repository.deleteReviewStepOne( reviewId );
     
     repoObj.success ? 
