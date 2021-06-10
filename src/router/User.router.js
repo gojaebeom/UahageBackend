@@ -38,13 +38,11 @@ router.get(
 // 회원 닉네임 확인 ( 있으면 false, 없으면 true )
 router.get(
     "/api/users/validate-nickname/:nickname", 
-    authMiddleware, 
     userController.validateByNickname
 );
 // 회원 이메일 확인
 router.get(
-    "/api/users/validate-email/:email", 
-    authMiddleware, 
+    "/api/users/validate-email/:email",  
     userController.validateByEmail
 );
 // 회원 수정 ( 첫 회원가입 이후 추가정보 입력에도 사용 )
