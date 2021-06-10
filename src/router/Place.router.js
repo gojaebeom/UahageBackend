@@ -5,6 +5,7 @@ const restaurantController = require("../app/controller/place/Restaurant.ctrl");
 const restaurantBookmarkController = require("../app/controller/place/RestaurantBookmark.ctrl");
 const restaurantReviewController = require("../app/controller/place/RestaurantReview.ctrl");
 const restaurantReviewDeclController = require("../app/controller/place/RestaurantReviewDecl.ctrl");
+const placeController = require("../app/controller/place/Place.ctrl");
 
 const dayCareCenterController = require("../app//controller/place/DayCareCenter.ctrl");
 const hospitalController = require("../app/controller/place/Hospital.ctrl");
@@ -19,6 +20,14 @@ const { authMiddleware } = require("../middleware/Auth.mdw");
 const router = Router();
 
 
+
+// 정보수정 제안하기
+router.post(
+    "/api/places/propose",
+    authMiddleware,
+    s3MultiFileMiddleware,
+    placeController.store
+)
 
 //? rstr
 router.post(
@@ -70,6 +79,8 @@ router.post(
     authMiddleware,
     restaurantReviewDeclController.store
 );
+
+
 // Place-dayCareCenter
 router.get(
     "/api/places/day-care-centers", 

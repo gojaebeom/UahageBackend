@@ -438,6 +438,7 @@ exports.delete = ( reviewId ) => {
     .catch( error => ({ success: false, message: "delete Restaurant Review false", error : error }));
 }
 
+
 exports.findUserIdByReviewId = (reviewId) => {
     const query = `
     select user_id
@@ -452,7 +453,7 @@ exports.findUserIdByReviewId = (reviewId) => {
 
 //? 리뷰 신고
 exports.storeReviewDeclarations = ( body ) => {
-    const { categoryId, reviewId, userId, desc } = body;
+    const { categoryIdList, reviewId, userId, desc } = body;
     const query = `
     insert into p_restaurant_review_declarations(
         category_id, 
@@ -460,7 +461,10 @@ exports.storeReviewDeclarations = ( body ) => {
         user_id, 
         description
     )
-    values( ${categoryId}, ${reviewId}, ${userId}, '${desc}');
+    values
+    ${ categoryIdList.map( item => {
+        return "("+ item +","+ reviewId +","+ userId +",'"+ desc +"')";
+    })}
     `;
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
