@@ -25,8 +25,19 @@ exports.findOne = async (req, res) => {
 
 // 회원 정보 수정
 exports.update = async (req, res) => {
+    const tokenUserId = req.tokenUserId;
     const userId = req.params.id;
     const body = req.body;
+
+    //? 요청자/작성자 동일 판별
+    if( Number(tokenUserId) !== Number(userId) ){
+        console.log(`tokenUserId: ${userId}\nuserId: ${userId}`);
+        return res.status(403).json({
+            message: "Not metched User",
+            data: false
+        });
+    }
+
     const { success, message, result, error } = await service.update( userId, body ); 
 
     success ? 
@@ -68,7 +79,18 @@ exports.logout = (req, res) => {
 
 // 회원 탈퇴 
 exports.delete = async (req, res) => {
+    const tokenUserId = req.tokenUserId;
     const userId = req.params.id;
+
+    //? 요청자/작성자 동일 판별
+    if( Number(tokenUserId) !== Number(userId) ){
+        console.log(`tokenUserId: ${userId}\nuserId: ${userId}`);
+        return res.status(403).json({
+            message: "Not metched User",
+            data: false
+        });
+    }
+
     const { success, message, result, error } = await service.delete( userId );
 
     success ? 
