@@ -12,15 +12,17 @@ const result = verifyToken( token );
 
     if( result === "INVALID" ){
         return res.status(403).json({
-            message :"invalid token",
-            data : "INVALID"
+            message :"Invalid token",
+            data : "INVALID",
         });
     }else if( result === "EXPIRED"){
         return res.status(403).json({
-            message :"expired token",
-            data : "EXPIRED"
+            message :"Expired token",
+            data : "EXPIRED",
         });
     }
+
+    req.tokenUserId = result.uid;
 
     next();
 }

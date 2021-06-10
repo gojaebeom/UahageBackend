@@ -106,3 +106,5 @@ exports.update = async ( reviewId, body, images ) => {
 exports.delete = async ( reviewId ) => {
     return await repository.delete( reviewId );
 }
+
+exports.findUserIdByReviewId = async ( reviewId )  => await repository.findUserIdByReviewId( reviewId );

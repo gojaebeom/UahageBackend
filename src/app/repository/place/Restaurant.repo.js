@@ -438,6 +438,17 @@ exports.delete = ( reviewId ) => {
     .catch( error => ({ success: false, message: "delete Restaurant Review false", error : error }));
 }
 
+exports.findUserIdByReviewId = (reviewId) => {
+    const query = `
+    select user_id
+    from p_restaurant_reviews 
+    where id = ${ reviewId }`;
+
+    return queryBuilder( query )
+    .then( data => ({ success: true, message: "find Restaurant Review Writer success",  result : data.rows[0].user_id }))
+    .catch( error => ({ success: false, message: "find Restaurant Review Writer false", error : error }));
+}
+
 
 //? 리뷰 신고
 exports.storeReviewDeclarations = ( body ) => {
