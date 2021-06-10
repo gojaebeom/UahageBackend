@@ -51,12 +51,14 @@ exports.store = async ( body, images ) => {
 }
 
 exports.update = async ( reviewId, body, images ) => {
+
     const desc = body.desc;
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
     let totalRating = ( tasteRating + costRating + serviceRating ) / 3;
     totalRating = totalRating.toFixed(1);
+    console.log(reviewId);
     console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
     const deleteImgConcatText = body.deleteImgConcatText;
 
@@ -93,11 +95,12 @@ exports.update = async ( reviewId, body, images ) => {
             costRating : costRating,
             serviceRating :serviceRating
         }); 
-        if( !repoObj.success ) return { success: false, message : "review update false", error : repoObj.error };
+        if( !repoObj.success ) return repoObj;
 
         repoObj = await repository.storeReviewImages( reviewId, images);
-        if( !repoObj.success ) return { success: false, message : "review image create false", error : repoObj.error };
     }
+
+    return repoObj;
 }
 
 exports.delete = async ( reviewId ) => {
