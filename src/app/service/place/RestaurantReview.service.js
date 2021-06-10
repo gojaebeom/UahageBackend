@@ -20,7 +20,9 @@ exports.store = async ( body, images ) => {
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
-    const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+    const totalRating = ( tasteRating + costRating + serviceRating ) / 3;
+
+    console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
 
     if(!images.length){
         console.log("이미지 없음, 리뷰만 저장");
@@ -53,7 +55,8 @@ exports.update = async ( reviewId, body, images ) => {
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
-    const totalRating = Math.floor(( tasteRating + costRating + serviceRating ) / 3);
+    const totalRating = ( tasteRating + costRating + serviceRating ) / 3;
+    console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
     const deleteImgConcatText = body.deleteImgConcatText;
 
     let repoObj;
