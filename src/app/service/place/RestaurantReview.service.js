@@ -20,8 +20,8 @@ exports.store = async ( body, images ) => {
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
-    const totalRating = ( tasteRating + costRating + serviceRating ) / 3;
-
+    let totalRating = ( tasteRating + costRating + serviceRating ) / 3;
+    totalRating = totalRating.toFixed(1);
     console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
 
     if(!images.length){
@@ -55,7 +55,8 @@ exports.update = async ( reviewId, body, images ) => {
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
     const serviceRating = Number(body.serviceRating);
-    const totalRating = ( tasteRating + costRating + serviceRating ) / 3;
+    let totalRating = ( tasteRating + costRating + serviceRating ) / 3;
+    totalRating = totalRating.toFixed(1);
     console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
     const deleteImgConcatText = body.deleteImgConcatText;
 
