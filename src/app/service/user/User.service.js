@@ -29,6 +29,8 @@ exports.oAuthLogin = async ( email ) => {
     const userId = repoObject.result.id;
     const jwtToken = createToken(userId);
 
+    console.log( jwtToken );
+
     return { success: true, message: "User login success", result: { token: jwtToken } };
 }
 
