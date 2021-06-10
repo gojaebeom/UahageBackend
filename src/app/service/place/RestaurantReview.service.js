@@ -60,12 +60,12 @@ exports.update = async ( reviewId, body, images ) => {
     totalRating = totalRating.toFixed(1);
     console.log(reviewId);
     console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
-    const deleteImgList = body.deleteImgConcatText;
+    const deleteImgList = body.deleteImage;
+    console.log( deleteImgList );
 
-    console.log(deleteImgList);
 
     let repoObj;
-    if( deleteImgList.length > 0 ) {
+    if( deleteImgList ) {
         deleteImgList.map( async (item) => {
             repoObj = await repository.deleteReviewImage( item );
             console.log(`${ item } 이미지 삭제 완료`);

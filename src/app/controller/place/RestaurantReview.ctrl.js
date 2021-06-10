@@ -30,6 +30,7 @@ exports.findOne = async (req, res) =>{
 //? 리뷰 생성
 exports.store = async (req, res) => {
     const body = req.body;
+    
     const imgFiles =req.files;
     const { userId } = body;
     const tokenUserId = req.tokenUserId;
@@ -55,6 +56,7 @@ exports.store = async (req, res) => {
 exports.update = async (req, res) =>{
     const reviewId = req.params.id;
     const body = req.body;
+    console.log( body );
     const images = req.files;
 
     const { userId } = body;
