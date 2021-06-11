@@ -65,7 +65,7 @@ exports.update = async ( reviewId, body, images ) => {
     console.log(deleteImgList);
 
     let repoObj;
-    if( deleteImgList.length > 0 ) {
+    if( deleteImgList ) {
         deleteImgList.map( async (item) => {
             repoObj = await repository.deleteReviewImage( item );
             console.log(`${ item } 이미지 삭제 완료`);
