@@ -3,7 +3,7 @@ const repository = require("../../repository/user/User.repo");
 const { createToken } = require("../../../util/jwt");
 
 
-exports.oAuthLogin = async ( email ) => {
+exports.oAuthLogin = async ( email ,body ) => {
     //? 이메일로 저장된 유저 아이디 확인 : 있으면 유저 아이디 반환, 없으면 0 반환
     let repoObject = await repository.findIdByEmail( email );
     if( !repoObject.success ) return repoObject;
@@ -11,7 +11,7 @@ exports.oAuthLogin = async ( email ) => {
     //? 이메일이 저장되지 않은 유저는 회원 정보 저장
     if( repoObject.result === 0 ){
         // store!
-        const { nickname, ageGroupType, babyGender ,babyBirthday } = req.body;
+        const { nickname, ageGroupType, babyGender ,babyBirthday } = body;
         repoObject = await repository.store( 
             email, 
             nickname, 
@@ -31,7 +31,7 @@ exports.oAuthLogin = async ( email ) => {
 
     console.log( jwtToken );
 
-    return { success: true, message: "User login success", result: { token: jwtToken } };
+    return { success: true, message: repoObject.message, result: { token: jwtToken } };
 }
 
 

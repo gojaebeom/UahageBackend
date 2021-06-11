@@ -35,8 +35,8 @@ exports.store = (
     `;
     console.log(query);
     return queryBuilder( query )
-    .then( data => ({ result : data}))
-    .catch( error => ({ error : error }));
+    .then( data => ({ success: true,  message: "User store success", result : data }))
+    .catch( error => ({ success: false, message: "User store false", error : error }));
 }
 
 // 회원 정보 수정 ( 첫 회원가입 이후 추가 정보 입력에도 사용 )
