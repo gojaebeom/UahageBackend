@@ -1,6 +1,7 @@
 "use strict";
 const repository = require("../../repository/user/User.repo");
 const { createToken } = require("../../../util/jwt");
+const log = require("../../../config/Logger");
 
 
 exports.oAuthLogin = async ( email ) => {
@@ -29,7 +30,7 @@ exports.oAuthLogin = async ( email ) => {
     const userId = repoObject.result.id;
     const jwtToken = createToken(userId);
 
-    console.log( jwtToken );
+    log.info( jwtToken );
 
     return { success: true, message: "User login success", result: { token: jwtToken } };
 }

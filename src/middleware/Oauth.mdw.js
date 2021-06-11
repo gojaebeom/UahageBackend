@@ -1,10 +1,11 @@
 const { default: axios } = require("axios");
+const log = require("../config/Logger");
 
 exports.naverLoginMiddleware = async (req, res, next) => {
-    console.log("네이버 로그인 미들웨어 방문");
+    log.info("네이버 로그인 미들웨어 방문");
     try{
         const token = req.headers['authorization'];
-        console.log(token);
+        log.info(token);
         const userInfo = await axios.get("https://openapi.naver.com/v1/nid/me",{
             headers: { 
                 'Authorization': `Bearer ${token}`,
@@ -12,7 +13,7 @@ exports.naverLoginMiddleware = async (req, res, next) => {
             },
         })
         .then( res => res.data );
-        console.log(userInfo);
+        log.info(userInfo);
         // NAVER.[이메일명]
         req.email = `NAVER.${userInfo.response.email}`;
         next();
@@ -24,7 +25,7 @@ exports.naverLoginMiddleware = async (req, res, next) => {
 exports.kakaoLoginMiddleware = async (req, res, next) => {
     try{
         const token = req.headers['authorization'];
-        console.log(token);
+        log.info(token);
         const userInfo = await axios.get("https://kapi.kakao.com/v2/user/me",{
             headers: { 
                 'Authorization': `Bearer ${token}`,

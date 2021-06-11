@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "c:\\Workspaces\\UahageWorkspace\\UahageBackend\\logs\\.0602f963fa67a577056cc66f8d370aa87906d89e-audit.json",
+    "files": [
+        {
+            "date": 1623383884913,
+            "name": "c:\\Workspaces\\UahageWorkspace\\UahageBackend\\logs\\winston.log.2021-06-11",
+            "hash": "f7309431ebf92f5e123230e75f172dd8"
+        }
+    ]
+}

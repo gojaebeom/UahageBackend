@@ -1,5 +1,6 @@
 "use strict";
 const service = require("../../service/place/RestaurantReview.service");
+const log = require("../../../config/Logger");
 
 
 //? 리뷰 리스트 보기
@@ -29,6 +30,8 @@ exports.findOne = async (req, res) =>{
 
 //? 리뷰 생성
 exports.store = async (req, res) => {
+    log.info(`Request Review Store`);
+    
     const body = req.body;
     
     const imgFiles =req.files;
@@ -37,7 +40,7 @@ exports.store = async (req, res) => {
 
     //? 요청자/작성자 동일 판별
     if( Number(tokenUserId) !== Number(userId) ){
-        console.log(`tokenUserId: ${userId}\nuserId: ${userId}`);
+        log.info(`tokenUserId: ${userId}\nuserId: ${userId}`);
         return res.status(403).json({
             message: "Not metched User",
             data: false
@@ -56,7 +59,7 @@ exports.store = async (req, res) => {
 exports.update = async (req, res) =>{
     const reviewId = req.params.id;
     const body = req.body;
-    console.log( body );
+    log.info( body );
     const images = req.files;
 
     const { userId } = body;
@@ -64,7 +67,7 @@ exports.update = async (req, res) =>{
 
     //? 요청자/작성자 동일 판별
     if( Number(tokenUserId) !== Number(userId) ){
-        console.log(`tokenUserId: ${userId}\nuserId: ${userId}`);
+        log.info(`tokenUserId: ${userId}\nuserId: ${userId}`);
         return res.status(403).json({
             message: "Not metched User",
             data: false
@@ -92,7 +95,7 @@ exports.delete = async (req, res) => {
 
     //? 요청자/작성자 동일 판별
     if( Number(tokenUserId) !== Number(serviceObj.result) ){
-        console.log(`tokenUserId: ${userId}\nuserId: ${userId}`);
+        log.info(`tokenUserId: ${userId}\nuserId: ${userId}`);
         return res.status(403).json({
             message: "Not metched User",
             data: false

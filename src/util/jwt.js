@@ -1,5 +1,6 @@
 "use strict";
 const jwt = require("jsonwebtoken");
+const log = require("../config/Logger");
 const secretKey = process.env.APP_SECRET;
 
 // jwt 토큰 발행
@@ -17,13 +18,13 @@ exports.verifyToken = ( token ) => {
         decoded = jwt.verify(token, secretKey);
     } catch (err) {
         if (err.message === 'jwt expired') {
-            console.log('expired token');
+            log.info('expired token');
             return "EXPIRED";
         } else if (err.message === 'invalid token') {
-            console.log('invalid token');
+            log.info('invalid token');
             return "INVALID";
         } else {
-            console.log("invalid token");
+            log.info("invalid token");
             return "INVALID";
         }
     }

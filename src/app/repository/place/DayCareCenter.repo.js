@@ -1,5 +1,6 @@
 "use strict";
 const { queryBuilder } = require("../../../config/Database");
+const log = require("../../../config/Logger");
 
 // 모든 장소 보기
 exports.findAll = () => {
@@ -8,7 +9,7 @@ exports.findAll = () => {
     from p_day_care_centers;
     `;
 
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Get DayCareCenter list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( error => ({ success: false, message: "Get DayCareCenter list false", error : error }));
@@ -23,7 +24,7 @@ exports.findByOptions = (pageNumber,lat,lon) => {
     limit 10 offset ${pageNumber};
     `;
 
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Get DayCareCenter list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( error => ({ success: false, message: "Get DayCareCenter list false", error : error }));

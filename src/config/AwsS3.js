@@ -3,13 +3,14 @@ const AWS = require("aws-sdk");
 const path = require("path");
 const multer = require("multer");
 const multerS3 = require('multer-s3');
+const log= require("./Logger");
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey : process.env.S3_SECRET_ACCESS_KEY,
     region: process.env.S3_REGION,
 });
-console.log("Create Aws S3 instance");
+log.info("Create Aws S3 instance");
 
 
 //? 단일 이미지 처리
@@ -76,10 +77,10 @@ exports.awsS3Delete = ( fullUrlKey ) => {
             Bucket : process.env.S3_BUCKET,
             Key : key
         }, (err, data) => {
-            if(err) console.log(`Image delete false : ${ err }`);
-            else console.log("Image delete success");
+            if(err) log.info(`Image delete false : ${ err }`);
+            else log.info("Image delete success");
         });
     } else {
-        console.log("이미지 id는 있지만, null 값으로 존재");
+        log.info("이미지 id는 있지만, null 값으로 존재");
     }
 }

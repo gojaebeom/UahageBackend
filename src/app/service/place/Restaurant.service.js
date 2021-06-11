@@ -1,12 +1,13 @@
 "use strict";
 
+const log = require("../../../config/Logger");
 const repository = require("../../repository/place/Restaurant.repo");
 
 exports.findByOptions = async ( options ) => {
     const {pageNumber} = options;
 
     if(!pageNumber){
-        console.log("전체 보기");
+        log.info("전체 보기");
         for(let option in options) {
             if(options[option] === "0"){
                 options[option] = false;
@@ -14,7 +15,7 @@ exports.findByOptions = async ( options ) => {
         }
         return await repository.findAll(options);
     } else{
-        console.log("10개씩 끊어서 보기");
+        log.info("10개씩 끊어서 보기");
         return await repository.findByOptions(options);
     }
 }
