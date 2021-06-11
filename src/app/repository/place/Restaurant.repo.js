@@ -1,5 +1,6 @@
 "use strict";
 const { queryBuilder } = require("../../../config/Database");
+const log = require("../../../config/Logger");
 
 
 //? 북마크 관계 확인 : 있다면 id 리턴
@@ -56,7 +57,6 @@ exports.findAll =  ({
     isBookmarked,
     pageNumber,
 }) => {
-    console.log("모든장소보기");
     const query = `
     select
         pr.id,
@@ -94,7 +94,7 @@ exports.findAll =  ({
         ${ playRoom ? ' and prf.play_room = true': '' }
         ${ parking ? ' and prf.parking = true': ''};
     `;
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( error => ({ success: false, message: "Get Restaurant list false", error : error }));
@@ -162,7 +162,7 @@ exports.findByOptions = ({
     limit 10 offset ${pageNumber};
     `;
 
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( error => ({ success: false, message: "Get Restaurant list false", error : error }));
@@ -229,9 +229,18 @@ exports.findReviewsByOption = ( placeId, option ) => {
     ${ option === "TOP" ? 'order by prr.total_rating desc' : '' }
     ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };
     `;
-    console.log(`=== Query ===\n${query}\n=== End Query ===`);
+    log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, data : data.rows } }))
+    .then( data => {
+        const reviews = data.rows;
+        const total = data.rowCount;
+
+        let totalRating = 0;
+        reviews.map( item => totalRating += Number(item.total_rating));
+        const average = Number(( totalRating / total ).toFixed(1));
+
+        return { success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, average : average, data : data.rows } }
+    })
     .catch( error => ({ success: false, message: "Get Restaurant Review list false", error : error }));
 }
 
@@ -256,7 +265,7 @@ exports.findOneReview = ( reviewId ) =>{
     where prr.id = ${reviewId}
     group by prr.id;
     `;
-    console.log(`=== Query ===\n${query}\n=== End Query ===`);
+    log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Get Restaurant Review detail success", result : data.rows[0]  }))
     .catch( error => ({ success: false, message: "Get Restaurant Review detail false", error : error }));
@@ -332,7 +341,7 @@ exports.storeReviewWithImages = ({
             return "( (select id from reviews), '"+ item.location +"')"
     })};
     `; 
-    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    log.info(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "store Restaurant Review success", result : true }))
     .catch( error => ({ success: false, message: "store Restaurant Review false",  error : error }));
@@ -370,7 +379,7 @@ exports.storeReview = ({
             ${serviceRating}
         );
     `; 
-    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    log.info(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "store Restaurant Review success",  result : true }))
     .catch( error => ({ success: false, message: "store Restaurant Review false",  error : error }));
@@ -389,7 +398,7 @@ exports.storeReviewImages = (reviewId, images) => {
                 return "(" + reviewId + ", '"+ item.location +"')"
         })};
     `; 
-    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    log.info(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "store Restaurant Review Images success",  result : true }))
     .catch( error => ({ success: false, message: "store Restaurant Review Images false", error : error }));
@@ -418,7 +427,7 @@ exports.updateReview = (
         updated_at = now()
         where id = ${reviewId}
     `; 
-    console.log(` ======  query  ======\n${query}\n ====== end query ======`);
+    log.info(` ======  query  ======\n${query}\n ====== end query ======`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "Update Restaurant Review success", result : true }))
     .catch( error => ({ success: false, message: "Update Restaurant Review false",  error : error }));
@@ -431,7 +440,7 @@ exports.delete = ( reviewId ) => {
     delete from p_restaurant_reviews
     where id = ${ reviewId }
     `;
-    console.log(`=== Query ===\n${query}\n=== End Query ===`);
+    log.info(`=== Query ===\n${query}\n=== End Query ===`);
 
     return queryBuilder( query )
     .then( data => ({ success: true, message: "delete Restaurant Review success",  result : true }))
@@ -466,7 +475,7 @@ exports.storeReviewDeclarations = ( body ) => {
         return "("+ item +","+ reviewId +","+ userId +",'"+ desc +"')";
     })}
     `;
-    console.log(`=== Query ===\n${query}\n=== End Query ===`);
+    log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "store Restaurant Review Declaration success", result : true }))
     .catch( error => ({ success: false, message: "store Restaurant Review Declaration false",  error : error }));

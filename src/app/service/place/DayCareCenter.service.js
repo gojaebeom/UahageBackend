@@ -1,13 +1,14 @@
 "use strict";
+const log = require("../../../config/Logger");
 const repository = require("../../repository/place/DayCareCenter.repo");
 
 // 장소 리스트 보기
 exports.findByOptions = async ( pageNumber, lat, lon ) => {
     if(!pageNumber){
-       // console.log("전체보기");
+        //log.info("전체보기");
         return await repository.findAll();
     } else{
-        //console.log("10개씩 끊어서 보기");
+        //log.info("10개씩 끊어서 보기");
         return await repository.findByOptions(pageNumber,lat,lon);
     }
 }

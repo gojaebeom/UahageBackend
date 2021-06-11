@@ -1,6 +1,7 @@
 "use strict";
 
 const { awsS3Delete } = require("../../../config/AwsS3");
+const log = require("../../../config/Logger");
 const repository = require("../../repository/place/Restaurant.repo");
 
 exports.findByOptions = async ( placeId, type, order ) => {
@@ -22,10 +23,10 @@ exports.store = async ( body, images ) => {
     const serviceRating = Number(body.serviceRating);
     let totalRating = ( tasteRating + costRating + serviceRating ) / 3;
     totalRating = totalRating.toFixed(1);
-    console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
+    log.info(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
 
     if(!images.length){
-        console.log("이미지 없음, 리뷰만 저장");
+        log.info("이미지 없음, 리뷰만 저장");
         return await repository.storeReview({
             userId : body.userId,
             placeId : body.placeId,
@@ -36,7 +37,7 @@ exports.store = async ( body, images ) => {
             serviceRating :serviceRating
         });
     } else {
-        console.log("이미지 있음, 리뷰, 이미지 저장");
+        log.info("이미지 있음, 리뷰, 이미지 저장");
         return await repository.storeReviewWithImages({
             images : images,
             userId : body.userId,
@@ -58,17 +59,17 @@ exports.update = async ( reviewId, body, images ) => {
     const serviceRating = Number(body.serviceRating);
     let totalRating = ( tasteRating + costRating + serviceRating ) / 3;
     totalRating = totalRating.toFixed(1);
-    console.log(reviewId);
-    console.log(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
-    const deleteImgList = body.deleteImgConcatText;
+    log.info(reviewId);
+    log.info(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
+    const deleteImgList = body.deleteImage;
+    log.info( deleteImgList );
 
-    console.log(deleteImgList);
 
     let repoObj;
     if( deleteImgList ) {
         deleteImgList.map( async (item) => {
             repoObj = await repository.deleteReviewImage( item );
-            console.log(`${ item } 이미지 삭제 완료`);
+            log.info(`${ item } 이미지 삭제 완료`);
 
             awsS3Delete( item );
         });
@@ -76,7 +77,7 @@ exports.update = async ( reviewId, body, images ) => {
 
     if(!images.length){
 
-        console.log("이미지 없음, 리뷰만 수정");
+        log.info("이미지 없음, 리뷰만 수정");
         return await repository.updateReview( reviewId , {
             desc : desc,
             totalRating : totalRating,
@@ -86,7 +87,7 @@ exports.update = async ( reviewId, body, images ) => {
         });  
 
     } else {
-        console.log("이미지 있음, 리뷰수정 및 이미지 생성");
+        log.info("이미지 있음, 리뷰수정 및 이미지 생성");
         repoObj = await repository.updateReview( reviewId , {
             desc : desc,
             totalRating : totalRating,
