@@ -1,4 +1,5 @@
 const { queryBuilder } = require("../../../config/Database");
+const log = require("../../../config/Logger");
 
 // 회원가입
 exports.store = (
@@ -33,7 +34,7 @@ exports.store = (
         ${babyBirthday === null ? null : "'"+babyBirthday+"'"}
     );
     `;
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true,  message: "User store success", result : data }))
     .catch( error => ({ success: false, message: "User store false", error : error }));
@@ -58,7 +59,7 @@ exports.edit = (
     set age_group_type = ${ageGroupType}, baby_gender= '${babyGender}', baby_birthday = '${babyBirthday}'
     where ud.user_id = (select id from users);
     `;
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "User update success", result : true }))
     .catch( error => ({ success: false, message: "User update false", error : error }));
@@ -82,7 +83,7 @@ exports.editImage = ( userId, imagePath ) => {
     set image_path = ${ imagePath ? "'"+imagePath+"'" : null }
     where user_id = ${userId};
     `;
-    console.log(query);
+    log.info(query);
     return queryBuilder( query )
     .then( data => ({ success: true, message: "User Image update success", result : true }))
     .catch( error => ({ success: false, message: "User Image update false", error : error }));
