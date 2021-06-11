@@ -8,7 +8,7 @@ exports.naverLoginMiddleware = async (req, res, next) => {
         log.info(token);
         const userInfo = await axios.get("https://openapi.naver.com/v1/nid/me",{
             headers: { 
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${ token }`,
                 'Content-type' : 'application/x-www-form-urlencoded;charset=utf-8'
             },
         })
@@ -28,7 +28,7 @@ exports.kakaoLoginMiddleware = async (req, res, next) => {
         log.info(token);
         const userInfo = await axios.get("https://kapi.kakao.com/v2/user/me",{
             headers: { 
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${ token }`,
                 'Content-type' : 'application/x-www-form-urlencoded;charset=utf-8'
             },
         })
