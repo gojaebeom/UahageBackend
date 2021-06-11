@@ -231,7 +231,16 @@ exports.findReviewsByOption = ( placeId, option ) => {
     `;
     console.log(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
-    .then( data => ({ success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, data : data.rows } }))
+    .then( data => {
+        const reviews = data.rows;
+        const total = data.rowCount;
+
+        let totalRating = 0;
+        reviews.map( item => totalRating += Number(item.total_rating));
+        const average = Number(( totalRating / total ).toFixed(1));
+
+        return { success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, average : average, data : data.rows } }
+    })
     .catch( error => ({ success: false, message: "Get Restaurant Review list false", error : error }));
 }
 
