@@ -13,16 +13,16 @@ exports.authMiddleware = (req, res, next) => {
 
     if( result === "INVALID" ){
         return res.status(403).json({
-            message :"Invalid token",
-            data : "INVALID",
+            message : "Invalid token",
+            data: "INVALID",
         });
-    }else if( result === "EXPIRED"){
+    }else if( result === "EXPIRED" ){
         return res.status(403).json({
-            message :"Expired token",
-            data : "EXPIRED",
+            message: "Expired token",
+            data: "EXPIRED",
         });
     }
-
+    
     req.tokenUserId = result.uid;
 
     next();
