@@ -248,10 +248,47 @@ exports.findReviewsByOption = ( placeId, option ) => {
         const total = data.rowCount;
 
         let totalRating = 0;
-        reviews.map( item => totalRating += Number(item.total_rating));
+        let fivePointTotal = 0;
+        let fourPointTotal = 0;
+        let threePointTotal = 0;
+        let twoPointTotal = 0;
+        let onePointTotal = 0;
+        reviews.map( item => {
+            const _totalRating = Number(item.total_rating);
+            // 5점짜리 평점 가져오기
+            if( Number(_totalRating.toFixed()) === 5 ){
+                fivePointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 4 ){
+                fourPointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 3 ) {
+                threePointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 2 ) {
+                twoPointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 1 ) {
+                onePointTotal += 1;
+            }
+
+            // 총 평점 가져오기
+            totalRating += _totalRating;
+        });
         const average = Number(( totalRating / total ).toFixed(1));
 
-        return { success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, average : average, data : data.rows } }
+        return { 
+            success: true, 
+            message: "Get Restaurant Review list success", 
+            result : { 
+                total : data.rowCount,
+                totalDetailObj : {
+                    fivePointTotal,
+                    fourPointTotal,
+                    threePointTotal,
+                    twoPointTotal,
+                    onePointTotal
+                }, 
+                average : average, 
+                data : data.rows 
+            }
+        }
     })
     .catch( error => ({ success: false, message: "Get Restaurant Review list false", error : error }));
 }
@@ -420,6 +457,23 @@ exports.storeReviewImages = (reviewId, images) => {
     .catch( error => ({ success: false, message: "store Restaurant Review Images false", error : error }));
 }
 
+//? 사용자별 게시물에 리뷰 작성 상태 확인
+exports.findWriterFromPlace = ({ userId, placeId}) => {
+    const query = `
+    select count(*) 
+    from p_restaurant_reviews
+    where 
+        restaurant_id = ${ placeId } 
+        and user_id = ${ userId };
+    `;
+    return queryBuilder( query )
+    .then( data => {
+        const count = data.rows[0].count;
+        if( count > 0 ) return { success: false, message: "Is Duplicate User. You can write only one review in one post.",  result : false };
+        return { success: true, message: "Is Not Duplicate User. Success",  result : true };
+    })
+    .catch( error => ({ success: false, message: "Find Review Writer Error", error : error }));
+}
 
 //? 리뷰 수정
 exports.updateReview = ( 

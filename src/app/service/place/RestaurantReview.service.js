@@ -17,6 +17,10 @@ exports.findByOptions = async ( placeId, type, order ) => {
 exports.findOne = async ( reviewId ) => await repository.findOneReview( reviewId );
 
 exports.store = async ( body, images ) => {
+    const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId});
+    if( !repoObj.success){
+        return repoObj;
+    }
 
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
