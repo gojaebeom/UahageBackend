@@ -214,7 +214,11 @@ exports.findReviewsByOption = ( placeId, option ) => {
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
+        CASE
+            WHEN prr.updated_at is not null
+                THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD')
+                ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD')
+            END AS created_at,
         STRING_AGG(prri.image_path , ',' ) as image_path
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
@@ -225,10 +229,18 @@ exports.findReviewsByOption = ( placeId, option ) => {
     on u.id = ui.user_id
     where prr.restaurant_id = ${ placeId }
     group by prr.id, u.id, ui.id
-    ${ option === "DATE" ? 'order by prr.created_at desc' : '' }
+    ${ option === "DATE" 
+        ? "order by "+
+            "CASE "+
+                "WHEN prr.updated_at is not null "+
+                "THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD') "+
+                "ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD') "+
+            "END desc " 
+        : ""
+    }
     ${ option === "TOP" ? 'order by prr.total_rating desc' : '' }
-    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };
-    `;
+    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };`;
+    
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
     .then( data => {
@@ -257,7 +269,11 @@ exports.findOneReview = ( reviewId ) =>{
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
+        CASE
+            WHEN prr.updated_at is not null
+                THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD')
+                ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD')
+            END AS created_at,
         STRING_AGG(prri.image_path , ',' )
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
