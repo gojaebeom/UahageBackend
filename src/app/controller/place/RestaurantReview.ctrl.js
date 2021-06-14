@@ -32,6 +32,8 @@ exports.findOne = async (req, res) =>{
 exports.store = async (req, res) => {
     log.info(`Request Review Store`);
     
+    log.error("assdlkfjsdlkfj");
+    
     const body = req.body;
     
     const imgFiles =req.files;
