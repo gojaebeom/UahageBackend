@@ -35,6 +35,11 @@ router.get(
     authMiddleware, 
     userController.findOne
 );
+//? 회원 닉네임 가져오기
+router.get(
+    "/api/users/:id/nickname",
+    userController.findNickname
+);
 // 회원 닉네임 확인 ( 있으면 false, 없으면 true )
 router.get(
     "/api/users/validate-nickname/:nickname", 

@@ -28,6 +28,17 @@ export const findOne = async (req: Request, res: Response) => {
 }
 
 
+// 회원 닉네임 가져오기
+export const findNickname = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const { success, message, result, error }: any = await service.findNickname( userId );
+
+    success ? 
+    res.status(200).json({ message : message, data : result }) : 
+    res.status(500).json({ message : message, error : error }); 
+}
+
+
 // 회원 정보 수정
 export const update = async (req: Request, res: Response) => {
     const tokenUserId = req.query.tokenUserId;

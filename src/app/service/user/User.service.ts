@@ -40,6 +40,11 @@ exports.oAuthLogin = async ( email: any ,body: any ) => {
 exports.findOne = async ( userId: any ) => await repository.findOne( userId );
 
 
+// 회원 닉네임
+exports.findOne = async ( userId: any ) => await repository.findNickname( userId );
+
+
+
 exports.update = async ( userId: any, body: any ) => {
     const { nickname, ageGroupType, babyGender ,babyBirthday } = body;
     return await repository.edit( userId, nickname, ageGroupType, babyGender, babyBirthday );

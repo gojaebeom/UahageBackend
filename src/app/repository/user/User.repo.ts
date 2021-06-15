@@ -90,6 +90,19 @@ export const editImage = ( userId: any, imagePath: any ) => {
 }
 
 
+// 회원 닉네임
+export const findNickname = ( userId: any ) => {
+    const query = `
+    select nickname
+    from users
+    where id = ${ userId }
+    `;
+    return queryBuilder( query, null)
+    .then( (data: any) => ({ success: true, message: "find User detail success", result : data.rows[0] }))
+    .catch( error => ({ success: false, message: "find User detail false", error : error }));
+}
+
+
 // 닉네임 중복 확인
 export const validateByNickname = ( nickname: any ) => {
     const query = `
