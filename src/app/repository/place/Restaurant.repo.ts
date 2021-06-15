@@ -245,15 +245,12 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
         const total = data.rowCount;
 
         let totalRating = 0;
-<<<<<<< HEAD:src/app/repository/place/Restaurant.repo.ts
-        reviews.map( (item: any) => totalRating += Number(item.total_rating));
-=======
         let fivePointTotal = 0;
         let fourPointTotal = 0;
         let threePointTotal = 0;
         let twoPointTotal = 0;
         let onePointTotal = 0;
-        reviews.map( item => {
+        reviews.map( (item: any) => {
             const _totalRating = Number(item.total_rating);
             // 5점짜리 평점 가져오기
             if( Number(_totalRating.toFixed()) === 5 ){
@@ -271,7 +268,6 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
             // 총 평점 가져오기
             totalRating += _totalRating;
         });
->>>>>>> 3a24736fdfc5f12d20c6582104acdd1cb8ad70f7:src/app/repository/place/Restaurant.repo.js
         const average = Number(( totalRating / total ).toFixed(1));
 
         return { 
@@ -459,7 +455,7 @@ export const storeReviewImages = (reviewId: any, images: any) => {
 }
 
 //? 사용자별 게시물에 리뷰 작성 상태 확인
-exports.findWriterFromPlace = ({ userId, placeId}) => {
+export const findWriterFromPlace = ({ userId, placeId}: any) => {
     const query = `
     select count(*) 
     from p_restaurant_reviews
@@ -468,12 +464,12 @@ exports.findWriterFromPlace = ({ userId, placeId}) => {
         and user_id = ${ userId };
     `;
     return queryBuilder( query )
-    .then( data => {
+    .then( (data: any) => {
         const count = data.rows[0].count;
         if( count > 0 ) return { success: false, message: "Is Duplicate User. You can write only one review in one post.",  result : false };
         return { success: true, message: "Is Not Duplicate User. Success",  result : true };
     })
-    .catch( error => ({ success: false, message: "Find Review Writer Error", error : error }));
+    .catch( (error: any) => ({ success: false, message: "Find Review Writer Error", error : error }));
 }
 
 //? 리뷰 수정
