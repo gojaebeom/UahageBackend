@@ -6,7 +6,7 @@ import { verifyToken } from "../util/jwt";
 export const authMiddleware = (req: Request, res: Response, next: any) => {
 
     const token: string = String(req.headers["authorization"]);
-    const result = verifyToken( token );
+    const result: any = verifyToken( token );
 
     log.info( result );
 

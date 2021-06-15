@@ -28,5 +28,5 @@ export const verifyToken = ( token: string ) => {
             return "INVALID";
         }
     }
-    return decoded || { uId : ""};
+    return decoded;
 }
