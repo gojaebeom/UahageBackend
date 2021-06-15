@@ -3,3 +3,4 @@ node_modules
 sessions
 s3.json
 logs
+dist
