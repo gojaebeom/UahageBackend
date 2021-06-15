@@ -14,7 +14,15 @@ export const findByOptions = async ( placeId: any, type: any, order: any ) => {
 
 export const findOne = async ( reviewId: any ) => await repository.findOneReview( reviewId );
 
+<<<<<<< HEAD:src/app/service/place/RestaurantReview.service.ts
 export const store = async ( body: any, images: any ) => {
+=======
+exports.store = async ( body, images ) => {
+    const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId});
+    if( !repoObj.success){
+        return repoObj;
+    }
+>>>>>>> 3a24736fdfc5f12d20c6582104acdd1cb8ad70f7:src/app/service/place/RestaurantReview.service.js
 
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);

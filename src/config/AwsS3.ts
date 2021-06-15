@@ -56,7 +56,6 @@ export const awsS3ArrayUpload = multer({
     fileFilter : (req, file, callback) => {
         const fileTypes = /jpeg|jpg|png|gif/;
         const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
-
         if( extName ) {
             return callback(null, true); 
         } else {

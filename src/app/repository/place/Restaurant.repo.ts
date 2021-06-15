@@ -211,7 +211,11 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
+        CASE
+            WHEN prr.updated_at is not null
+                THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD')
+                ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD')
+            END AS created_at,
         STRING_AGG(prri.image_path , ',' ) as image_path
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
@@ -222,10 +226,18 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
     on u.id = ui.user_id
     where prr.restaurant_id = ${ placeId }
     group by prr.id, u.id, ui.id
-    ${ option === "DATE" ? 'order by prr.created_at desc' : '' }
+    ${ option === "DATE" 
+        ? "order by "+
+            "CASE "+
+                "WHEN prr.updated_at is not null "+
+                "THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD') "+
+                "ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD') "+
+            "END desc " 
+        : ""
+    }
     ${ option === "TOP" ? 'order by prr.total_rating desc' : '' }
-    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };
-    `;
+    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };`;
+    
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query )
     .then( (data: any) => {
@@ -233,10 +245,51 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
         const total = data.rowCount;
 
         let totalRating = 0;
+<<<<<<< HEAD:src/app/repository/place/Restaurant.repo.ts
         reviews.map( (item: any) => totalRating += Number(item.total_rating));
+=======
+        let fivePointTotal = 0;
+        let fourPointTotal = 0;
+        let threePointTotal = 0;
+        let twoPointTotal = 0;
+        let onePointTotal = 0;
+        reviews.map( item => {
+            const _totalRating = Number(item.total_rating);
+            // 5점짜리 평점 가져오기
+            if( Number(_totalRating.toFixed()) === 5 ){
+                fivePointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 4 ){
+                fourPointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 3 ) {
+                threePointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 2 ) {
+                twoPointTotal += 1;
+            } else if( Number(_totalRating.toFixed()) === 1 ) {
+                onePointTotal += 1;
+            }
+
+            // 총 평점 가져오기
+            totalRating += _totalRating;
+        });
+>>>>>>> 3a24736fdfc5f12d20c6582104acdd1cb8ad70f7:src/app/repository/place/Restaurant.repo.js
         const average = Number(( totalRating / total ).toFixed(1));
 
-        return { success: true, message: "Get Restaurant Review list success", result : { total : data.rowCount, average : average, data : data.rows } }
+        return { 
+            success: true, 
+            message: "Get Restaurant Review list success", 
+            result : { 
+                total : data.rowCount,
+                totalDetailObj : {
+                    fivePointTotal,
+                    fourPointTotal,
+                    threePointTotal,
+                    twoPointTotal,
+                    onePointTotal
+                }, 
+                average : average, 
+                data : data.rows 
+            }
+        }
     })
     .catch( (error: any) => ({ success: false, message: "Get Restaurant Review list false", error : error }));
 }
@@ -254,7 +307,11 @@ export const findOneReview = ( reviewId: any ) =>{
         prr.taste_rating,
         prr.cost_rating,
         prr.service_rating,
-        to_char( prr.created_at::timestamp, 'YYYY.MM.DD') as created_at,
+        CASE
+            WHEN prr.updated_at is not null
+                THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD')
+                ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD')
+            END AS created_at,
         STRING_AGG(prri.image_path , ',' )
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
@@ -401,6 +458,23 @@ export const storeReviewImages = (reviewId: any, images: any) => {
     .catch( (error: any) => ({ success: false, message: "store Restaurant Review Images false", error : error }));
 }
 
+//? 사용자별 게시물에 리뷰 작성 상태 확인
+exports.findWriterFromPlace = ({ userId, placeId}) => {
+    const query = `
+    select count(*) 
+    from p_restaurant_reviews
+    where 
+        restaurant_id = ${ placeId } 
+        and user_id = ${ userId };
+    `;
+    return queryBuilder( query )
+    .then( data => {
+        const count = data.rows[0].count;
+        if( count > 0 ) return { success: false, message: "Is Duplicate User. You can write only one review in one post.",  result : false };
+        return { success: true, message: "Is Not Duplicate User. Success",  result : true };
+    })
+    .catch( error => ({ success: false, message: "Find Review Writer Error", error : error }));
+}
 
 //? 리뷰 수정
 export const updateReview = ( 

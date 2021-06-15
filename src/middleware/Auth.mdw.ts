@@ -12,13 +12,13 @@ export const authMiddleware = (req: Request, res: Response, next: any) => {
 
     if( result === "INVALID" ){
         return res.status(403).json({
-            message :"Invalid token",
-            data : "INVALID",
+            message : "Invalid token",
+            data: "INVALID",
         });
-    } else if( result === "EXPIRED"){
+    }else if( result === "EXPIRED" ){
         return res.status(403).json({
-            message :"Expired token",
-            data : "EXPIRED",
+            message: "Expired token",
+            data: "EXPIRED",
         });
     }
 

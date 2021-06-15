@@ -47,7 +47,9 @@ export const store = async (req: Request, res: Response) => {
         });
     }
 
-    const { success, message, result, error } = await service.store( body, imgFiles);
+    const { success, message, result, error } = await service.store( body, imgFiles );
+
+    log.info( result );
 
     success ? 
     res.status(200).json({ message : message,  data : result }) : 
