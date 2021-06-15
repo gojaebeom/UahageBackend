@@ -1,12 +1,12 @@
-"use strict";
-const { queryBuilder } = require("../../../config/Database");
+import { queryBuilder } from "../../../config/Database";
+import log from "../../../config/Logger";
 
 
 export const infoUpdatePropose = ( body: any ) => {
     const query = `
     insert into p_info_propose(user_id, place_category_id, place_id, description)
     values(${body.userId}, ${body.placeCategoryId}, ${body.placeId}, '${body.desc}')`;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Store PlaceInfoPropose success",  result : true}))
     .catch( (error: any) => ({ success: false, message: "Store PlaceInfoPropose false", error : error }));
 }
@@ -24,7 +24,7 @@ export const infoUpdateProposeWithImages = ( body: any, images: any ) => {
     ${ images.map( (item: any) => {
         return "((select id from pipp), '"+item.location+"')";
     })}`;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Store PlaceInfoPropose success",  result : true }))
     .catch( (error: any) => ({ success: false, message: "Store PlaceInfoPropose false", error : error }));
 }

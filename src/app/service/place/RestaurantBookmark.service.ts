@@ -2,7 +2,7 @@ import * as repository from "../../repository/place/Restaurant.repo";
 
 export const bookmarkToggle = async ( userId: any, placeId: any ) => {
 
-    let repoObject = await repository.validateBookmark( userId, placeId );
+    let repoObject: any = await repository.validateBookmark( userId, placeId );
     if( !repoObject.success ){
         return repoObject;
     }

@@ -1,6 +1,6 @@
 "use strict";
-const { queryBuilder } = require("../../../config/Database");
-const log = require("../../../config/Logger");
+import { queryBuilder } from "../../../config/Database";
+import log from "../../../config/Logger";
 
 
 //? 북마크 관계 확인 : 있다면 id 리턴
@@ -9,7 +9,7 @@ export const validateBookmark = ( userId: any, placeId: any ) => {
     select id from p_restaurant_bookmarks
     where user_id = ${userId} and restaurant_id = ${placeId};
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true,  message: "Bookmark validate success", result : data.rowCount !== 0 ? data.rows[0] : 0 }))
     .catch( (error: any) => ({ success: false, message: "Bookmark validate error", error : error }));
 }
@@ -21,7 +21,7 @@ export const storeBookmark = ( userId: any, placeId: any ) => {
     insert into p_restaurant_bookmarks(user_id , restaurant_id)
     values (${userId}, ${placeId});
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Bookmark store success", result : {isBookmarked: true} }))
     .catch( (error: any) => ({ success: false, message: "Bookmark store false", error : error }));
 }
@@ -33,7 +33,7 @@ export const deleteBookmark = ( bookmarkId: any ) => {
     delete from p_restaurant_bookmarks
     where id = ${bookmarkId}
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Bookmark delete success", result : {isBookmarked: false} }))
     .catch( (error: any) => ({ success: false, message: "Bookmark delete false", error : error }));
 }
@@ -92,7 +92,7 @@ export const findAll =  ({
         ${ parking ? ' and prf.parking = true': ''};
     `;
     log.info(query);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( (error: any) => ({ success: false, message: "Get Restaurant list false", error : error }));
 }
@@ -160,7 +160,7 @@ export const findByOptions = ({
     `;
 
     log.info(query);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( (error: any) => ({ success: false, message: "Get Restaurant list false", error : error }));
 }
@@ -192,7 +192,7 @@ export const findOne = ( placeId: any ) => {
     where
         pr.id = ${ placeId };
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get Restaurant detail success", result : data.rows }))
     .catch( (error: any) => ({ success: false, message: "Get Restaurant detail false", error : error }));
 }
@@ -239,7 +239,7 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
     ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };`;
     
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => {
         const reviews = data.rows;
         const total = data.rowCount;
@@ -316,7 +316,7 @@ export const findOneReview = ( reviewId: any ) =>{
     group by prr.id;
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get Restaurant Review detail success", result : data.rows[0]  }))
     .catch( (error: any) => ({ success: false, message: "Get Restaurant Review detail false", error : error }));
 }
@@ -333,7 +333,7 @@ export const findReviewImages = ( placeId: any ) => {
     and prri.image_path is not null
     order by prr.created_at desc;
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get Restaurant Review Image list success", result : { total : data.rowCount, data : data.rows } }))
     .catch( (error: any) => ({ success: false, message: "Get Restaurant Review Image list false", error : error }));
 }
@@ -345,7 +345,7 @@ export const deleteReviewImage = ( imagePath: any ) => {
     delete from p_restaurant_review_images 
     where image_path = '${ imagePath }'`;
 
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "delete Restaurant Review Image success", result : { total : data.rowCount, data : data.rows } }))
     .catch( (error: any) => ({ success: false, message: "delete Restaurant Review Image false", error : error }));
 }   
@@ -392,7 +392,7 @@ export const storeReviewWithImages = ({
     })};
     `; 
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "store Restaurant Review success", result : true }))
     .catch( (error: any) => ({ success: false, message: "store Restaurant Review false",  error : error }));
 }
@@ -430,7 +430,7 @@ export const storeReview = ({
         );
     `; 
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "store Restaurant Review success",  result : true }))
     .catch( (error: any) => ({ success: false, message: "store Restaurant Review false",  error : error }));
 }
@@ -449,7 +449,7 @@ export const storeReviewImages = (reviewId: any, images: any) => {
         })};
     `; 
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "store Restaurant Review Images success",  result : true }))
     .catch( (error: any) => ({ success: false, message: "store Restaurant Review Images false", error : error }));
 }
@@ -463,7 +463,7 @@ export const findWriterFromPlace = ({ userId, placeId}: any) => {
         restaurant_id = ${ placeId } 
         and user_id = ${ userId };
     `;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => {
         const count = data.rows[0].count;
         if( count > 0 ) return { success: false, message: "Is Duplicate User. You can write only one review in one post.",  result : false };
@@ -495,7 +495,7 @@ export const updateReview = (
         where id = ${reviewId}
     `; 
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Update Restaurant Review success", result : true }))
     .catch( (error: any) => ({ success: false, message: "Update Restaurant Review false",  error : error }));
 }
@@ -509,7 +509,7 @@ export const _delete = ( reviewId: any) => {
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
 
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "delete Restaurant Review success",  result : true }))
     .catch( (error: any) => ({ success: false, message: "delete Restaurant Review false", error : error }));
 }
@@ -521,7 +521,7 @@ export const findUserIdByReviewId = (reviewId: any) => {
     from p_restaurant_reviews 
     where id = ${ reviewId }`;
 
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "find Restaurant Review Writer success",  result : data.rows[0].user_id }))
     .catch( (error: any) => ({ success: false, message: "find Restaurant Review Writer false", error : error }));
 }
@@ -543,7 +543,7 @@ export const storeReviewDeclarations = ( body: any ) => {
     })}
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "store Restaurant Review Declaration success", result : true }))
     .catch( (error: any) => ({ success: false, message: "store Restaurant Review Declaration false",  error : error }));
 }

@@ -47,7 +47,7 @@ export const store = async (req: Request, res: Response) => {
         });
     }
 
-    const { success, message, result, error } = await service.store( body, imgFiles );
+    const { success, message, result, error }: any = await service.store( body, imgFiles );
 
     log.info( result );
 
@@ -61,7 +61,6 @@ export const store = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) =>{
     const reviewId = req.params.id;
     const body = req.body;
-    log.info( body );
     const images = req.files;
 
     const { userId } = body;
@@ -88,7 +87,7 @@ export const update = async (req: Request, res: Response) =>{
 export const _delete = async (req: Request, res: Response) => {
     const reviewId = req.params.id;
 
-    let serviceObj = await service.findUserIdByReviewId( reviewId );
+    let serviceObj: any = await service.findUserIdByReviewId( reviewId );
     const userId = serviceObj.result || 0;
 
     if( !serviceObj.success ) return res.status(500).json({ message: serviceObj.message, error: serviceObj.error });
@@ -105,7 +104,7 @@ export const _delete = async (req: Request, res: Response) => {
     }
 
     
-    let { success, message, result, error } = await service._delete( reviewId );
+    let { success, message, result, error }: any = await service._delete( reviewId );
 
     success ? 
     res.status(200).json({ message: message, data: result }) : 

@@ -4,7 +4,7 @@ import * as service from "../../service/place/KidCafe.service";
 // 장소 리스트 보기
 export const findByOptions = async (req: Request, res: Response) => {
     const {pageNumber, lat, lon} = req.query;
-    const {success, message, result, error} = await service.findByOptions( pageNumber, lat, lon );
+    const {success, message, result, error}: any = await service.findByOptions( pageNumber, lat, lon );
     
     success ? 
     res.status(200).json({ message : message,  data : result }): 
@@ -14,7 +14,7 @@ export const findByOptions = async (req: Request, res: Response) => {
 // 장소 상세보기
 export const findOne = async (req: Request, res: Response) => {
     const placeId = req.params.id;
-    const { success, message, result, error } = await service.findOne( placeId );
+    const { success, message, result, error }: any = await service.findOne( placeId );
 
     success ? 
     res.status(200).json({ message : message, data : result }): 

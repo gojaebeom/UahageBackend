@@ -14,7 +14,7 @@ export const findByOptions = async ( placeId: any, type: any, order: any ) => {
 
 export const findOne = async ( reviewId: any ) => await repository.findOneReview( reviewId );
 
-exports.store = async ( body: any, images: any ) => {
+export const store = async ( body: any, images: any ) => {
     const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId});
     if( !repoObj.success){
         return repoObj;

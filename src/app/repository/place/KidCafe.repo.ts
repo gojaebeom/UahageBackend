@@ -1,6 +1,5 @@
-"use strict";
-const { queryBuilder } = require("../../../config/Database");
-const log = require("../../../config/Logger");
+import { queryBuilder } from "../../../config/Database";
+import log from "../../../config/Logger";
 
 // 모든 장소 보기
 export const findAll = () => {
@@ -10,7 +9,7 @@ export const findAll = () => {
     `;
 
     log.info(query);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true, message: "Get KidCafe list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( (error: any) => ({ success: false,  message: "Get KidCafe list false", error : error }));
 }
@@ -25,7 +24,7 @@ export const findByOptions = (pageNumber: any, lat: any, lon: any) => {
     `;
 
     log.info(query);
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true,  message: "Get KidCafe list success", result : { total : data.rowCount, data : data.rows} }))
     .catch( (error: any) => ({ success: false,  message: "Get KidCafe list false", error : error }));
 }
@@ -36,7 +35,7 @@ export const findOne = ( placeId: any ) => {
     select id, name, address, phone, admission_fee 
     from p_kid_cafes
     where id = ${placeId};`;
-    return queryBuilder( query )
+    return queryBuilder( query, null )
     .then( (data: any) => ({ success: true,  message: "Get KidCafe detail success", result : data.rows }))
     .catch( (error: any) => ({ success: false,  message: "Get KidCafe detail false", error : error }));
 }
