@@ -12,7 +12,6 @@ const s3 = new AWS.S3({
 });
 log.info("Create Aws S3 instance");
 
-
 //? 단일 이미지 처리
 exports.awsS3Upload = multer({
     storage: multerS3({
@@ -57,7 +56,6 @@ exports.awsS3ArrayUpload = multer({
     fileFilter : (req, file, callback) => {
         const fileTypes = /jpeg|jpg|png|gif/;
         const extName = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
-
         if( extName ) {
             return callback(null, true); 
         } else {

@@ -17,6 +17,10 @@ exports.findByOptions = async ( placeId, type, order ) => {
 exports.findOne = async ( reviewId ) => await repository.findOneReview( reviewId );
 
 exports.store = async ( body, images ) => {
+    const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId});
+    if( !repoObj.success){
+        return repoObj;
+    }
 
     const tasteRating = Number(body.tasteRating);
     const costRating = Number(body.costRating);
@@ -77,7 +81,7 @@ exports.update = async ( reviewId, body, images ) => {
 
     if(!images.length){
 
-        log.info("이미지 없음, 리뷰만 수정");
+        //log.info("이미지 없음, 리뷰만 수정");
         return await repository.updateReview( reviewId , {
             desc : desc,
             totalRating : totalRating,

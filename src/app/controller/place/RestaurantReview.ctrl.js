@@ -49,7 +49,9 @@ exports.store = async (req, res) => {
         });
     }
 
-    const { success, message, result, error } = await service.store( body, imgFiles);
+    const { success, message, result, error } = await service.store( body, imgFiles );
+
+    log.info( result );
 
     success ? 
     res.status(200).json({ message : message,  data : result }) : 
@@ -61,7 +63,7 @@ exports.store = async (req, res) => {
 exports.update = async (req, res) =>{
     const reviewId = req.params.id;
     const body = req.body;
-    log.info( body );
+    
     const images = req.files;
 
     const { userId } = body;
