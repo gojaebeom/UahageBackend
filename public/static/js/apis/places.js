@@ -18,7 +18,8 @@ export const getPlacesAPI = async ( options ) => {
         meetingRoom,
         nursingRoom,
         playRoom,
-        parking
+        parking,
+        token
     } = options;
 
     // 정보 확인용 로그
@@ -75,6 +76,7 @@ export const getPlacesAPI = async ( options ) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": token
         }
     })
     .then(res => res.json())
