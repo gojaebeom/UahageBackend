@@ -136,8 +136,9 @@ export const findByOptions = ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking
-        ${ userId ? ', coalesce(prb.id, 0) as bookmark' : '' }
+        prf.parking,
+        ${ userId ? ', coalesce(prb.id, 0) as bookmark, ' : '' }
+        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id= pr.id ),2) as total
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
@@ -157,7 +158,7 @@ export const findByOptions = ({
         ${ parking ? ' and prf.parking = true': ''}
     order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
     limit 10 offset ${pageNumber};
-    `;
+`;
 
     log.info(query);
     return queryBuilder( query, null )
@@ -185,7 +186,8 @@ export const findOne = ( placeId: any ) => {
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking
+        prf.parking,
+        (select avg(total_rating) from p_restaurant_reviews where restaurant_id = ${ placeId })
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
