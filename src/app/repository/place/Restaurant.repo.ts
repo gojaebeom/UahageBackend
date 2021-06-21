@@ -4,44 +4,44 @@ import log from "../../../config/Logger";
 
 
 //? 북마크 관계 확인 : 있다면 id 리턴
-export const validateBookmark = ( userId: any, placeId: any ) => {
+export const validateBookmark = (userId: any, placeId: any) => {
     const query = `
     select id from p_restaurant_bookmarks
     where user_id = ${userId} and restaurant_id = ${placeId};
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true,  message: "Bookmark validate success", result : data.rowCount !== 0 ? data.rows[0] : 0 }))
-    .catch( (error: any) => ({ success: false, message: "Bookmark validate error", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Bookmark validate success", result: data.rowCount !== 0 ? data.rows[0] : 0 }))
+        .catch((error: any) => ({ success: false, message: "Bookmark validate error", error: error }));
 }
 
 
 //? 북마크 관계 생성
-export const storeBookmark = ( userId: any, placeId: any ) => {
+export const storeBookmark = (userId: any, placeId: any) => {
     const query = `
     insert into p_restaurant_bookmarks(user_id , restaurant_id)
     values (${userId}, ${placeId});
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Bookmark store success", result : {isBookmarked: true} }))
-    .catch( (error: any) => ({ success: false, message: "Bookmark store false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Bookmark store success", result: { isBookmarked: true } }))
+        .catch((error: any) => ({ success: false, message: "Bookmark store false", error: error }));
 }
 
 
 //? 북마크 관계 제거
-export const deleteBookmark = ( bookmarkId: any ) => {
+export const deleteBookmark = (bookmarkId: any) => {
     const query = `
     delete from p_restaurant_bookmarks
     where id = ${bookmarkId}
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Bookmark delete success", result : {isBookmarked: false} }))
-    .catch( (error: any) => ({ success: false, message: "Bookmark delete false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Bookmark delete success", result: { isBookmarked: false } }))
+        .catch((error: any) => ({ success: false, message: "Bookmark delete false", error: error }));
 }
 
 
 //? 모든 장소 보기
-export const findAll =  ({
-    userId, 
+export const findAll = ({
+    userId,
     babyBed,
     babyChair,
     babyMenu,
@@ -71,30 +71,31 @@ export const findAll =  ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking
-        ${ userId ? ', coalesce(prb.id, 0) as bookmark' : '' }
+        prf.parking,
+        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id= pr.id ),1) as total
+        ${userId ? ', coalesce(prb.id, 0) as bookmark' : ''}
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
-    ${ userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id='+userId+') prb on pr.id = prb.restaurant_id ': '' }
+    ${userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id=' + userId + ') prb on pr.id = prb.restaurant_id ' : ''}
     where
         pr.created_at is not null
-        ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
-        ${ babyBed ? ' and prf.baby_bed = true' : '' }
-        ${ babyChair ? ' and prf.baby_chair = true' : '' }
-        ${ babyMenu ? ' and prf.baby_menu = true': '' }
-        ${ babyTableware ? ' and prf.baby_tableware = true': '' }
-        ${ stroller ? ' and prf.stroller = true': '' }
-        ${ diaperChange ? ' and prf.diaper_change = true': '' }
-        ${ meetingRoom ? ' and prf.meeting_room = true': '' }
-        ${ nursingRoom ? ' and prf.nursing_room = true' : ''}
-        ${ playRoom ? ' and prf.play_room = true': '' }
-        ${ parking ? ' and prf.parking = true': ''};
+        ${isBookmarked ? ' and prb.user_id = ' + userId : ''}
+        ${babyBed ? ' and prf.baby_bed = true' : ''}
+        ${babyChair ? ' and prf.baby_chair = true' : ''}
+        ${babyMenu ? ' and prf.baby_menu = true' : ''}
+        ${babyTableware ? ' and prf.baby_tableware = true' : ''}
+        ${stroller ? ' and prf.stroller = true' : ''}
+        ${diaperChange ? ' and prf.diaper_change = true' : ''}
+        ${meetingRoom ? ' and prf.meeting_room = true' : ''}
+        ${nursingRoom ? ' and prf.nursing_room = true' : ''}
+        ${playRoom ? ' and prf.play_room = true' : ''}
+        ${parking ? ' and prf.parking = true' : ''};
     `;
     log.info(query);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant list false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Get Restaurant list success", result: { total: data.rowCount, data: data.rows } }))
+        .catch((error: any) => ({ success: false, message: "Get Restaurant list false", error: error }));
 }
 
 
@@ -103,9 +104,9 @@ export const findAll =  ({
 //? 북마크한 장소들 보기
 //? 시설 정보 조건에 맞는 장소 보기
 export const findByOptions = ({
-    lat, 
-    lon, 
-    userId, 
+    lat,
+    lon,
+    userId,
     babyBed,
     babyChair,
     babyMenu,
@@ -136,39 +137,39 @@ export const findByOptions = ({
         prf.meeting_room,
         prf.nursing_room,
         prf.play_room,
-        prf.parking,
-        ${ userId ? ', coalesce(prb.id, 0) as bookmark, ' : '' }
-        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id= pr.id ),2) as total
+        prf.parking
+        ${userId ? ', coalesce(prb.id, 0) as bookmark, ' : ''}
+        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id= pr.id ),1) as total
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
-    ${ userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id='+userId+') prb on pr.id = prb.restaurant_id ': '' }
+    ${userId ? 'left outer join (select * from p_restaurant_bookmarks prb where user_id=' + userId + ') prb on pr.id = prb.restaurant_id ' : ''}
     where
         pr.created_at is not null
-        ${ isBookmarked ? ' and prb.user_id = ' + userId : '' }
-        ${ babyBed ? ' and prf.baby_bed = true' : '' }
-        ${ babyChair ? ' and prf.baby_chair = true' : '' }
-        ${ babyMenu ? ' and prf.baby_menu = true': '' }
-        ${ babyTableware ? ' and prf.baby_tableware = true': '' }
-        ${ stroller ? ' and prf.stroller = true': '' }
-        ${ diaperChange ? ' and prf.diaper_change = true': '' }
-        ${ meetingRoom ? ' and prf.meeting_room = true': '' }
-        ${ nursingRoom ? ' and prf.nursing_room = true' : ''}
-        ${ playRoom ? ' and prf.play_room = true': '' }
-        ${ parking ? ' and prf.parking = true': ''}
+        ${isBookmarked ? ' and prb.user_id = ' + userId : ''}
+        ${babyBed ? ' and prf.baby_bed = true' : ''}
+        ${babyChair ? ' and prf.baby_chair = true' : ''}
+        ${babyMenu ? ' and prf.baby_menu = true' : ''}
+        ${babyTableware ? ' and prf.baby_tableware = true' : ''}
+        ${stroller ? ' and prf.stroller = true' : ''}
+        ${diaperChange ? ' and prf.diaper_change = true' : ''}
+        ${meetingRoom ? ' and prf.meeting_room = true' : ''}
+        ${nursingRoom ? ' and prf.nursing_room = true' : ''}
+        ${playRoom ? ' and prf.play_room = true' : ''}
+        ${parking ? ' and prf.parking = true' : ''}
     order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
     limit 10 offset ${pageNumber};
 `;
 
     log.info(query);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Get Restaurant list success", result : { total : data.rowCount, data : data.rows} }))
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant list false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Get Restaurant list success", result: { total: data.rowCount, data: data.rows } }))
+        .catch((error: any) => ({ success: false, message: "Get Restaurant list false", error: error }));
 }
 
 
 //? 장소 상세보기
-export const findOne = ( placeId: any ) => {
+export const findOne = (placeId: any) => {
     const query = `
     select
         pr.id,
@@ -187,21 +188,21 @@ export const findOne = ( placeId: any ) => {
         prf.nursing_room,
         prf.play_room,
         prf.parking,
-        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id = ${ placeId }),2) as total
+        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id = ${placeId}),1) as total
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
     where
-        pr.id = ${ placeId };
+        pr.id = ${placeId};
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Get Restaurant detail success", result : data.rows }))
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant detail false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Get Restaurant detail success", result: data.rows }))
+        .catch((error: any) => ({ success: false, message: "Get Restaurant detail false", error: error }));
 }
 
 
 //? 리뷰 리스트 보기
-export const findReviewsByOption = ( placeId: any, option: any ) => {
+export const findReviewsByOption = (placeId: any, option: any) => {
     const query = `
     select
         prr.id,
@@ -226,75 +227,75 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
     on prr.user_id = u.id
     left join user_images ui
     on u.id = ui.user_id
-    where prr.restaurant_id = ${ placeId }
+    where prr.restaurant_id = ${placeId}
     group by prr.id, u.id, ui.id
-    ${ option.toUpperCase() === "DATE" 
-        ? "order by "+
-            "CASE "+
-                "WHEN prr.updated_at is not null "+
-                "THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD') "+
-                "ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD') "+
-            "END desc " 
-        : ""
-    }
-    ${ option.toUpperCase() === "TOP" ? 'order by prr.total_rating desc' : '' }
-    ${ option.toUpperCase() === "LOW" ? 'order by prr.total_rating asc' : '' };`;
-    
-    log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query, null )
-    .then( (data: any) => {
-        const reviews = data.rows;
-        const total = data.rowCount;
-
-        let totalRating = 0;
-        let fivePointTotal = 0;
-        let fourPointTotal = 0;
-        let threePointTotal = 0;
-        let twoPointTotal = 0;
-        let onePointTotal = 0;
-        reviews.map( (item: any) => {
-            const _totalRating = Number(item.total_rating);
-            // 5점짜리 평점 가져오기
-            if( Number(_totalRating.toFixed()) === 5 ){
-                fivePointTotal += 1;
-            } else if( Number(_totalRating.toFixed()) === 4 ){
-                fourPointTotal += 1;
-            } else if( Number(_totalRating.toFixed()) === 3 ) {
-                threePointTotal += 1;
-            } else if( Number(_totalRating.toFixed()) === 2 ) {
-                twoPointTotal += 1;
-            } else if( Number(_totalRating.toFixed()) === 1 ) {
-                onePointTotal += 1;
-            }
-
-            // 총 평점 가져오기
-            totalRating += _totalRating;
-        });
-        const average = Number(( totalRating / total ).toFixed(1));
-
-        return { 
-            success: true, 
-            message: "Get Restaurant Review list success", 
-            result : { 
-                total : data.rowCount,
-                totalDetailObj : {
-                    fivePointTotal,
-                    fourPointTotal,
-                    threePointTotal,
-                    twoPointTotal,
-                    onePointTotal
-                }, 
-                average : average, 
-                data : data.rows 
-            }
+    ${option.toUpperCase() === "DATE"
+            ? "order by " +
+            "CASE " +
+            "WHEN prr.updated_at is not null " +
+            "THEN to_char(prr.updated_at::timestamp, 'YYYY.MM.DD') " +
+            "ELSE to_char(prr.created_at::timestamp, 'YYYY.MM.DD') " +
+            "END desc "
+            : ""
         }
-    })
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant Review list false", error : error }));
+    ${option.toUpperCase() === "TOP" ? 'order by prr.total_rating desc' : ''}
+    ${option.toUpperCase() === "LOW" ? 'order by prr.total_rating asc' : ''};`;
+
+    log.info(`=== Query ===\n${query}\n=== End Query ===`);
+    return queryBuilder(query, null)
+        .then((data: any) => {
+            const reviews = data.rows;
+            const total = data.rowCount;
+
+            let totalRating = 0;
+            let fivePointTotal = 0;
+            let fourPointTotal = 0;
+            let threePointTotal = 0;
+            let twoPointTotal = 0;
+            let onePointTotal = 0;
+            reviews.map((item: any) => {
+                const _totalRating = Number(item.total_rating);
+                // 5점짜리 평점 가져오기
+                if (Number(_totalRating.toFixed()) === 5) {
+                    fivePointTotal += 1;
+                } else if (Number(_totalRating.toFixed()) === 4) {
+                    fourPointTotal += 1;
+                } else if (Number(_totalRating.toFixed()) === 3) {
+                    threePointTotal += 1;
+                } else if (Number(_totalRating.toFixed()) === 2) {
+                    twoPointTotal += 1;
+                } else if (Number(_totalRating.toFixed()) === 1) {
+                    onePointTotal += 1;
+                }
+
+                // 총 평점 가져오기
+                totalRating += _totalRating;
+            });
+            const average = Number((totalRating / total).toFixed(1));
+
+            return {
+                success: true,
+                message: "Get Restaurant Review list success",
+                result: {
+                    total: data.rowCount,
+                    totalDetailObj: {
+                        fivePointTotal,
+                        fourPointTotal,
+                        threePointTotal,
+                        twoPointTotal,
+                        onePointTotal
+                    },
+                    average: average,
+                    data: data.rows
+                }
+            }
+        })
+        .catch((error: any) => ({ success: false, message: "Get Restaurant Review list false", error: error }));
 }
 
 
 //? 리뷰 상세 보기
-export const findOneReview = ( reviewId: any ) =>{
+export const findOneReview = (reviewId: any) => {
     const query = `
     select
         prr.id,
@@ -318,39 +319,39 @@ export const findOneReview = ( reviewId: any ) =>{
     group by prr.id;
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Get Restaurant Review detail success", result : data.rows[0]  }))
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant Review detail false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Get Restaurant Review detail success", result: data.rows[0] }))
+        .catch((error: any) => ({ success: false, message: "Get Restaurant Review detail false", error: error }));
 }
 
 
 //? 사진 리뷰 모아보기
-export const findReviewImages = ( placeId: any ) => {
+export const findReviewImages = (placeId: any) => {
     const query = `
     select prr.id, prri.image_path
     from p_restaurant_reviews as prr
     left join p_restaurant_review_images as prri
     on prr.id = prri.review_id
-    where prr.restaurant_id = ${ placeId }
+    where prr.restaurant_id = ${placeId}
     and prri.image_path is not null
     order by prr.created_at desc;
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Get Restaurant Review Image list success", result : { total : data.rowCount, data : data.rows } }))
-    .catch( (error: any) => ({ success: false, message: "Get Restaurant Review Image list false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Get Restaurant Review Image list success", result: { total: data.rowCount, data: data.rows } }))
+        .catch((error: any) => ({ success: false, message: "Get Restaurant Review Image list false", error: error }));
 }
 
 
 //? 리뷰 이미지 PK 구하기
-export const deleteReviewImage = ( imagePath: any ) => {
+export const deleteReviewImage = (imagePath: any) => {
     const query = `
     delete from p_restaurant_review_images 
-    where image_path = '${ imagePath }'`;
+    where image_path = '${imagePath}'`;
 
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "delete Restaurant Review Image success", result : { total : data.rowCount, data : data.rows } }))
-    .catch( (error: any) => ({ success: false, message: "delete Restaurant Review Image false", error : error }));
-}   
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "delete Restaurant Review Image success", result: { total: data.rowCount, data: data.rows } }))
+        .catch((error: any) => ({ success: false, message: "delete Restaurant Review Image false", error: error }));
+}
 
 
 //? 리뷰 저장 (이미지가 있는 경우)
@@ -389,20 +390,20 @@ export const storeReviewWithImages = ({
     )
     insert into p_restaurant_review_images( review_id, image_path )
     values
-    ${ images.map((item: any)=>{
-            return "( (select id from reviews), '"+ item.location +"')"
+    ${images.map((item: any) => {
+        return "( (select id from reviews), '" + item.location + "')"
     })};
-    `; 
+    `;
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "store Restaurant Review success", result : true }))
-    .catch( (error: any) => ({ success: false, message: "store Restaurant Review false",  error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "store Restaurant Review success", result: true }))
+        .catch((error: any) => ({ success: false, message: "store Restaurant Review false", error: error }));
 }
 
 
 //? 리뷰 저장
 export const storeReview = ({
-    userId, 
+    userId,
     placeId,
     desc,
     totalRating,
@@ -430,11 +431,11 @@ export const storeReview = ({
             ${costRating}, 
             ${serviceRating}
         );
-    `; 
+    `;
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "store Restaurant Review success",  result : true }))
-    .catch( (error: any) => ({ success: false, message: "store Restaurant Review false",  error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "store Restaurant Review success", result: true }))
+        .catch((error: any) => ({ success: false, message: "store Restaurant Review false", error: error }));
 }
 
 
@@ -446,37 +447,37 @@ export const storeReviewImages = (reviewId: any, images: any) => {
             image_path
         )
         values
-        ${ images.map((item: any)=>{
-                return "(" + reviewId + ", '"+ item.location +"')"
-        })};
-    `; 
+        ${images.map((item: any) => {
+        return "(" + reviewId + ", '" + item.location + "')"
+    })};
+    `;
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "store Restaurant Review Images success",  result : true }))
-    .catch( (error: any) => ({ success: false, message: "store Restaurant Review Images false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "store Restaurant Review Images success", result: true }))
+        .catch((error: any) => ({ success: false, message: "store Restaurant Review Images false", error: error }));
 }
 
 //? 사용자별 게시물에 리뷰 작성 상태 확인
-export const findWriterFromPlace = ({ userId, placeId}: any) => {
+export const findWriterFromPlace = ({ userId, placeId }: any) => {
     const query = `
     select count(*) 
     from p_restaurant_reviews
     where 
-        restaurant_id = ${ placeId } 
-        and user_id = ${ userId };
+        restaurant_id = ${placeId} 
+        and user_id = ${userId};
     `;
-    return queryBuilder( query, null )
-    .then( (data: any) => {
-        const count = data.rows[0].count;
-        if( count > 0 ) return { success: false, message: "Is Duplicate User. You can write only one review in one post.",  result : false };
-        return { success: true, message: "Is Not Duplicate User. Success",  result : true };
-    })
-    .catch( (error: any) => ({ success: false, message: "Find Review Writer Error", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => {
+            const count = data.rows[0].count;
+            if (count > 0) return { success: false, message: "Is Duplicate User. You can write only one review in one post.", result: false };
+            return { success: true, message: "Is Not Duplicate User. Success", result: true };
+        })
+        .catch((error: any) => ({ success: false, message: "Find Review Writer Error", error: error }));
 }
 
 //? 리뷰 수정
-export const updateReview = ( 
-    reviewId: any, 
+export const updateReview = (
+    reviewId: any,
     {
         desc,
         totalRating,
@@ -495,25 +496,25 @@ export const updateReview = (
         service_rating = ${serviceRating},
         updated_at = now()
         where id = ${reviewId}
-    `; 
+    `;
     log.info(` ======  query  ======\n${query}\n ====== end query ======`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "Update Restaurant Review success", result : true }))
-    .catch( (error: any) => ({ success: false, message: "Update Restaurant Review false",  error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "Update Restaurant Review success", result: true }))
+        .catch((error: any) => ({ success: false, message: "Update Restaurant Review false", error: error }));
 }
 
 
 //? 리뷰 삭제 
-export const _delete = ( reviewId: any) => {
+export const _delete = (reviewId: any) => {
     const query = `
     delete from p_restaurant_reviews
-    where id = ${ reviewId }
+    where id = ${reviewId}
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
 
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "delete Restaurant Review success",  result : true }))
-    .catch( (error: any) => ({ success: false, message: "delete Restaurant Review false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "delete Restaurant Review success", result: true }))
+        .catch((error: any) => ({ success: false, message: "delete Restaurant Review false", error: error }));
 }
 
 
@@ -521,16 +522,16 @@ export const findUserIdByReviewId = (reviewId: any) => {
     const query = `
     select user_id
     from p_restaurant_reviews 
-    where id = ${ reviewId }`;
+    where id = ${reviewId}`;
 
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "find Restaurant Review Writer success",  result : data.rows[0].user_id }))
-    .catch( (error: any) => ({ success: false, message: "find Restaurant Review Writer false", error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "find Restaurant Review Writer success", result: data.rows[0].user_id }))
+        .catch((error: any) => ({ success: false, message: "find Restaurant Review Writer false", error: error }));
 }
 
 
 //? 리뷰 신고
-export const storeReviewDeclarations = ( body: any ) => {
+export const storeReviewDeclarations = (body: any) => {
     const { categoryIdList, reviewId, userId, desc } = body;
     const query = `
     insert into p_restaurant_review_declarations(
@@ -540,12 +541,12 @@ export const storeReviewDeclarations = ( body: any ) => {
         description
     )
     values
-    ${ categoryIdList.map( (item: any)  => {
-        return "("+ item +","+ reviewId +","+ userId +",'"+ desc +"')";
+    ${categoryIdList.map((item: any) => {
+        return "(" + item + "," + reviewId + "," + userId + ",'" + desc + "')";
     })}
     `;
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
-    return queryBuilder( query, null )
-    .then( (data: any) => ({ success: true, message: "store Restaurant Review Declaration success", result : true }))
-    .catch( (error: any) => ({ success: false, message: "store Restaurant Review Declaration false",  error : error }));
+    return queryBuilder(query, null)
+        .then((data: any) => ({ success: true, message: "store Restaurant Review Declaration success", result: true }))
+        .catch((error: any) => ({ success: false, message: "store Restaurant Review Declaration false", error: error }));
 }
