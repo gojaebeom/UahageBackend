@@ -187,7 +187,7 @@ export const findOne = ( placeId: any ) => {
         prf.nursing_room,
         prf.play_room,
         prf.parking,
-        (select avg(total_rating) from p_restaurant_reviews where restaurant_id = ${ placeId })
+        ROUND((select avg(total_rating) from p_restaurant_reviews where restaurant_id = ${ placeId }),2) as total
     from p_restaurants as pr
     left outer join p_restaurant_facilities prf
     on pr.id = prf.restaurant_id
