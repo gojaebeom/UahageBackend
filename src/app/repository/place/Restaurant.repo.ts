@@ -226,7 +226,7 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
     on u.id = ui.user_id
     where prr.restaurant_id = ${ placeId }
     group by prr.id, u.id, ui.id
-    ${ option === "DATE" 
+    ${ option.toUpperCase() === "DATE" 
         ? "order by "+
             "CASE "+
                 "WHEN prr.updated_at is not null "+
@@ -235,8 +235,8 @@ export const findReviewsByOption = ( placeId: any, option: any ) => {
             "END desc " 
         : ""
     }
-    ${ option === "TOP" ? 'order by prr.total_rating desc' : '' }
-    ${ option === "LOW" ? 'order by prr.total_rating asc' : '' };`;
+    ${ option.toUpperCase() === "TOP" ? 'order by prr.total_rating desc' : '' }
+    ${ option.toUpperCase() === "LOW" ? 'order by prr.total_rating asc' : '' };`;
     
     log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder( query, null )
