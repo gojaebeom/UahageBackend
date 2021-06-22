@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
 
     // 화면에 모든 마커정보와 이벤트가 생성되었을 때 
     // 로딩 컨테이너를 제거시킵니다.
-    //removeLoadingContainer(loadingContainer);
+    removeLoadingContainer(loadingContainer);
 
     const cluster = createClusterer( map );
     cluster.addMarkers(clusterMakers);
