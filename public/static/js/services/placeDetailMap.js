@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
                     background-color:#f06292;  
                     background: #f06292;" 
                 >
-                    <h1 class=test>${placeName}</h1>
+                    <h1>${placeName}</h1>
                 </div>`,
                 map: map,
                 position: coords,
