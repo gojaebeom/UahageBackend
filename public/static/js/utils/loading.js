@@ -5,7 +5,8 @@ export const createLoadingContainer = ( ) => {
     loadingContainer.setAttribute("class","loadingContainer");
     loadingContainer.innerHTML = `
     <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
-        <img src="https://uahage.s3.ap-northeast-2.amazonaws.com/map/Plant.gif"/>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        <br/>
         <h5>장소 정보를 불러오는 중입니다..</h5>
     </div>`;
     

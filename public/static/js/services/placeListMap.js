@@ -9,6 +9,10 @@ import { createLoadingContainer, removeLoadingContainer } from "../utils/loading
 
 // HTML 파일 내의 DOM을 모두 해석 했을 때 실행되는 이벤트 함수
 document.addEventListener("DOMContentLoaded", async ( event ) => {
+     // 맵이 완전이 로딩 될 때 까지 로딩컨텐츠 보여주기
+     const loadingContainer = createLoadingContainer();
+
+
     // queryObj에는 장소에 관련된 정보들이 키:값 형태로 담겨있습니다. 
     // 현재 파일에서는 type, lat, lon만 쓸 것 이므로, 구조 분해 할당으로 필요한 값만 가져옵니다.
     // 나머지 값들은 getPlacesAPI 함수에서 데이터를 요청할 때 사용됩니다.
@@ -19,8 +23,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     // 요청의 응답이 길어질수록 맵이 화면에 보이기까지 시간이 지연되기 때문입니다.
     const map = kakaoMapInit(lat, lon);
 
-    // 맵이 완전이 로딩 될 때 까지 로딩컨텐츠 보여주기
-    const loadingContainer = createLoadingContainer();
+   
 
     // 장소 리스트 API를 요청하고 정상적으로 응답 받을 경우
     // res.data.data에 데이터를 받아옵니다.
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
 
     // 화면에 모든 마커정보와 이벤트가 생성되었을 때 
     // 로딩 컨테이너를 제거시킵니다.
-    removeLoadingContainer(loadingContainer);
+    //removeLoadingContainer(loadingContainer);
 
     const cluster = createClusterer( map );
     cluster.addMarkers(clusterMakers);
