@@ -10,6 +10,7 @@ import * as dayCareCenterController from "../app//controller/place/DayCareCenter
 import * as hospitalController from "../app/controller/place/Hospital.ctrl";
 import * as experienceCenterController from "../app/controller/place/ExperienceCenter.ctrl";
 import * as kidCafeController from "../app/controller/place/KidCafe.ctrl";
+import * as CraftRoomController from "../app/controller/place/CraftRoom.ctrl";
 
 /**@ImportMiddlewares 🍇 */
 import { s3MultiFileMiddleware } from "../middleware/S3.mdw";
@@ -131,6 +132,18 @@ router.get(
     "/api/places/kid-cafes/:id", 
     authMiddleware,
     kidCafeController.findOne
+);
+
+// Place-CraftRoom
+router.get(
+    "/api/places/craft-rooms", 
+    authMiddleware,
+    CraftRoomController.findByOptions
+);
+router.get(
+    "/api/places/craft-rooms/:id",
+    authMiddleware,
+    CraftRoomController.findOne
 );
 
 export default router;

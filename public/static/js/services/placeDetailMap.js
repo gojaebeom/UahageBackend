@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
                     padding: 1px 20px 1px 20px;  
                     text-align: center;  
                     border-radius:25px;  
-                    box-shadow:0px 3px 2px #888; 
                     background-color:#f06292;  
                     background: #f06292;" 
                 >

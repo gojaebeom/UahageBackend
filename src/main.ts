@@ -8,6 +8,7 @@ import { connector } from "./config/Database";
 import pageRouter from "./router/Page.router";
 import placeRouter from "./router/Place.router";
 import userRouter from "./router/User.router";
+import craftRoomInsertRouter from "./router/CraftRoomInsert.router";
 
 const app: Express = express();
 
@@ -43,6 +44,7 @@ app.use(express.urlencoded({
 app.use(pageRouter);
 app.use(placeRouter);
 app.use(userRouter);
+app.use(craftRoomInsertRouter);
 
 //? AppListening : 8000 포트에서 서버 실행
 const PORT: string = process.env.APP_PORT || String(8000);
