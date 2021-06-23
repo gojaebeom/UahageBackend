@@ -55,8 +55,8 @@ export const findByOptions = (pageNumber: any, lat: any, lon: any) => {
                 const imagePath = data.rows[i].image_path;
                 if(imagePath !== null){
                     const imagePathArray = imagePath.split(",");
-                           // ImagePath Prev
-                data.rows[i].image_path = imagePathArray;
+                    // ImagePath Prev
+                    data.rows[i].image_path = imagePathArray;
                 }
             }
 
@@ -82,6 +82,11 @@ export const findOne = (placeId: any) => {
             const imagePathArray = imagePath.split(",");
             
             data.rows[0].image_path = imagePathArray;
+            if(imagePath !== null){
+                const imagePathArray = imagePath.split(",");
+                // ImagePath Prev
+                data.rows[0].image_path = imagePathArray;
+            }
 
             // console.log(data.rows[0].image_path);
             
