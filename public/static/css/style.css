@@ -39,7 +39,6 @@ h1 {
     color: white;
     margin: 7px 15px 0px 10px;
     height: 100%;
-
 }
 
 div {
@@ -55,7 +54,7 @@ div {
     padding: 0px 28px 0px 15px; 
     border-radius:20px;
     background-color:#f06292;  
-    background: #f06292  url(http://hohoco.dothome.co.kr/img/arrow.png) no-repeat right 4px center; 
+    background: #f06292  url(https://uahage.s3.ap-northeast-2.amazonaws.com/map/arrow.png) no-repeat right 4px center; 
     background-size: 28px 28px;
 }
 .custom-overlay .title{

@@ -8,7 +8,7 @@ export const findByOptions = async (req: Request, res: Response) => {
     
     success ? 
     res.status(200).json({ message : message,  data : result }): 
-    res.status(500).json({ message : message, error : error }); 
+    res.status(500).json({ message : message, error : error });  
 }
 
 // 장소 상세보기

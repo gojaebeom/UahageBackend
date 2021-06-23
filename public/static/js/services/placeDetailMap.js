@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
             new kakao.maps.CustomOverlay({
                 content: 
                 `<div style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
                     padding: 1px 20px 1px 20px;  
                     text-align: center;  
                     border-radius:25px;  
