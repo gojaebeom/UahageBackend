@@ -14,7 +14,22 @@ export const findAll = () => {
 
     log.info(query);
     return queryBuilder(query, null)
-        .then((data: any) => ({ success: true, message: "Get DayCareCenter list success", result: { total: data.rowCount, data: data.rows } }))
+        .then((data: any) => {
+            let rows = data.rows;
+            console.log(rows.length);
+
+            for(let i:number = 0; i < rows.length; i++ ) {
+                // ImagePath Next
+                const imagePath = data.rows[i].image_path;
+                if(imagePath !== null){
+                    const imagePathArray = imagePath.split(",");
+                        // ImagePath Prev
+                data.rows[i].image_path = imagePathArray;
+                }
+            }
+
+            return { success: true, message: "Get DayCareCenter list success", result: { total: data.rowCount, data: data.rows } };
+        })
         .catch(error => ({ success: false, message: "Get DayCareCenter list false", error: error }));
 }
 
@@ -31,7 +46,22 @@ export const findByOptions = (pageNumber: any, lat: any, lon: any) => {
     // limit 10 offset ${pageNumber};
     log.info(query);
     return queryBuilder(query, null)
-        .then((data: any) => ({ success: true, message: "Get DayCareCenter list success", result: { total: data.rowCount, data: data.rows } }))
+        .then((data: any) => {
+            let rows = data.rows;
+            console.log(rows.length);
+
+            for(let i:number = 0; i < rows.length; i++ ) {
+                // ImagePath Next
+                const imagePath = data.rows[i].image_path;
+                if(imagePath !== null){
+                    const imagePathArray = imagePath.split(",");
+                           // ImagePath Prev
+                data.rows[i].image_path = imagePathArray;
+                }
+            }
+
+            return { success: true, message: "Get DayCareCenter list success", result: { total: data.rowCount, data: data.rows } };
+        })
         .catch(error => ({ success: false, message: "Get DayCareCenter list false", error: error }));
 }
 
@@ -47,6 +77,15 @@ export const findOne = (placeId: any) => {
     group by pcr.id;
     `;
     return queryBuilder(query, null)
-        .then((data: any) => ({ success: true, message: "Get DayCareCenter detail success", result: data.rows }))
+        .then((data: any) => {
+            const imagePath = data.rows[0].image_path;
+            const imagePathArray = imagePath.split(",");
+            
+            data.rows[0].image_path = imagePathArray;
+
+            // console.log(data.rows[0].image_path);
+            
+            return { success: true, message: "Get DayCareCenter detail success", result: data.rows };
+        })
         .catch(error => ({ success: false, message: "Get DayCareCenter detail false", error: error }));
 }
