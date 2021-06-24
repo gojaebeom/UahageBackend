@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     console.log(res); 
     const placeList = res.data.data;
 
-    if(type === "filter"){
+    if(type === "destination"){
         new kakao.maps.CustomOverlay({
             content: 
             `<div class="arrive-marker-container"> 

@@ -22,7 +22,7 @@ function getResult(address) {
         if (status === kakao.maps.services.Status.OK) {
          //  result.La, result.Ma.
             console.log(result[0].x);
-            location.href="/maps/show-place?type=filter&placeName=restaurants&userId="+userId+"&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=&token="+token;
+            location.href="/maps/show-place?type=destination&placeName=restaurants&userId="+userId+"&lat="+result[0].y+"&lon="+result[0].x+"&babyBed=&babyChair=&babyMenu=&babyTableware=&stroller=&diaperChange=&meetingRoom=&nursingRoom=&playRoom=&parking=&isBookmarke=&token="+token;
          //   location.href="/maps/show-place?lat="+result[0].y+"&lon="+result[0].x+"&type=destination";
         }
     });
