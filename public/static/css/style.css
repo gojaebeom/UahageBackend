@@ -120,4 +120,34 @@ div {
       transform: translate(24px, 0);
     }
   }
+
+
+.arrive-marker-container{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  animation: arrive-path infinite .8s;
+}
+
+.arrive-marker-container img{
+  height:100%;
+}
+
+@keyframes arrive-path{
+  0%{
+    transform: translatey(0px);
+  }
+  25%{
+    transform: translatey(-10px);
+  }
+  50%{
+    transform: translatey(-10px);
+  }
+  75%{
+    transform: translatey(-10px);
+  }
+  100%{
+    transform: translatey(-0px);
+  }
+}
   

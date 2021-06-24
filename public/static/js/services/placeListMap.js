@@ -31,15 +31,31 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     console.log(res); 
     const placeList = res.data.data;
 
-    new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(lat, lon),
-        image: new kakao.maps.MarkerImage(
-            markerImgObj.userMarker, 
-            markerImgObj.markerSize(34, 34), 
-            markerImgObj.options
-        ),
-    });
+    if(type === "filter"){
+        new kakao.maps.CustomOverlay({
+            content: 
+            `<div class="arrive-marker-container"> 
+                <img src="https://uahage.s3.ap-northeast-2.amazonaws.com/map/arrive.png" />
+            </div>`,
+            position:new kakao.maps.LatLng(lat, lon),
+            map: map,
+            yAnchor: 2.2,
+            xAnchor: 0.5,
+            clickable: true,
+        });
+    } else {
+        new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(lat, lon),
+            image: new kakao.maps.MarkerImage(
+                markerImgObj.userMarker, 
+                markerImgObj.markerSize(34, 34), 
+                markerImgObj.options
+            ),
+        });
+    }
+
+
 
     // 배열에 장소마커들을 모아두고 클러스터에게 전달해줍니다.
     // 클러스터 객체는 장소마커배열을 가지고 구역별로 데이터를 표시해줍니다.
