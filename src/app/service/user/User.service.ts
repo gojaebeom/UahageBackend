@@ -54,17 +54,17 @@ export const update = async (userId: any, body: any) => {
 
 // 닉네임 중복채크
 export const validateByNickname = async (nickname: string) => {
-
+    console.log(nickname);
     // 닉네임 정규식
-    if (!/^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/.test(nickname)){
-        return {success: true, message: "닉네임은 한글, 영문, 숫자만 가능하며 2-10자리로 입력해주세요.", result: { code : 0, isSuccess: false }};
+    if (!/^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/.test(nickname)) {
+        return { success: true, message: "닉네임은 한글, 영문, 숫자만 가능하며 2-10자리로 입력해주세요.", result: { code: 0, isSuccess: false } };
     }
 
     // 비속어 필터링
     const slangList: Array<string> = getSlangList();
-    for(let i: number = 0; i < slangList.length; i++) {
-        if( nickname.includes(slangList[i]) )
-            return {success: true, message: "비속어를 포함할 수 없습니다.", result: { code : -1, isSuccess: false }};
+    for (let i: number = 0; i < slangList.length; i++) {
+        if (nickname.includes(slangList[i]))
+            return { success: true, message: "비속어를 포함할 수 없습니다.", result: { code: -1, isSuccess: false } };
     }
 
     return await repository.validateByNickname(nickname);
