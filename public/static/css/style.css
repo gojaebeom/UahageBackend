@@ -137,17 +137,35 @@ div {
   0%{
     transform: translatey(0px);
   }
-  25%{
-    transform: translatey(-10px);
+  10%{
+    transform: translatey(0px);
+  }
+  20%{
+    transform: translatey(-7px);
+  }
+  30%{
+    transform: translatey(-8px);
+  }
+  40%{
+    transform: translatey(-9px);
   }
   50%{
     transform: translatey(-10px);
   }
-  75%{
+  60%{
     transform: translatey(-10px);
   }
+  70%{
+    transform: translatey(-9px);
+  }
+  80%{
+    transform: translatey(-8px);
+  }
+  90%{
+    transform: translatey(-7px);
+  }
   100%{
-    transform: translatey(-0px);
+    transform: translatey(0px);
   }
 }
   

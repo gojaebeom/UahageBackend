@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
             position: new kakao.maps.LatLng(lat, lon),
             image: new kakao.maps.MarkerImage(
                 markerImgObj.userMarker, 
-                markerImgObj.markerSize(34, 34), 
+                markerImgObj.markerSize(50, 50), 
                 markerImgObj.options
             ),
         });
