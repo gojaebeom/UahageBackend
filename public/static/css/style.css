@@ -127,10 +127,11 @@ div {
   justify-content: center;
   align-items:center;
   animation: arrive-path infinite .8s;
+  z-index: 99;
 }
 
 .arrive-marker-container img{
-  height:100%;
+  height: 130%;
 }
 
 @keyframes arrive-path{
