@@ -111,7 +111,7 @@ export const validateByNickname = (nickname: any) => {
     where nickname = '${nickname}';
     `;
     return queryBuilder(query, null)
-        .then((data: any) => ({ success: true, message: "User Nickname validate success", result: data.rowCount !== 0 ? false : true }))
+        .then((data: any) => ({ success: true, message: "User Nickname validate success", result: { code : 1, isSuccess: data.rowCount !== 0 ? false : true } }))
         .catch(error => ({ success: false, message: "User Nickname validate false", error: error }));
 }
 
