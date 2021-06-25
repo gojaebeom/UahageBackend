@@ -120,4 +120,53 @@ div {
       transform: translate(24px, 0);
     }
   }
+
+
+.arrive-marker-container{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  animation: arrive-path infinite .8s;
+  z-index: 99;
+}
+
+.arrive-marker-container img{
+  height: 130%;
+}
+
+@keyframes arrive-path{
+  0%{
+    transform: translatey(0px);
+  }
+  10%{
+    transform: translatey(0px);
+  }
+  20%{
+    transform: translatey(-7px);
+  }
+  30%{
+    transform: translatey(-8px);
+  }
+  40%{
+    transform: translatey(-9px);
+  }
+  50%{
+    transform: translatey(-10px);
+  }
+  60%{
+    transform: translatey(-10px);
+  }
+  70%{
+    transform: translatey(-9px);
+  }
+  80%{
+    transform: translatey(-8px);
+  }
+  90%{
+    transform: translatey(-7px);
+  }
+  100%{
+    transform: translatey(0px);
+  }
+}
   

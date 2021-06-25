@@ -41,9 +41,9 @@ export const findByOptions = (pageNumber: any, lat: any, lon: any) => {
     from p_craft_rooms as pcr
     left join p_craft_room_images as pcri
     on pcr.id = pcri.place_id
-    group by pcr.id;`;
-    // order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
-    // limit 10 offset ${pageNumber};
+    group by pcr.id
+    order by  ST_DistanceSphere(geom, ST_MakePoint(${lon},${lat}))
+    limit 10 offset ${pageNumber};`;
     log.info(query);
     return queryBuilder(query, null)
         .then((data: any) => {

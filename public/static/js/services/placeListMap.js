@@ -23,6 +23,31 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     // 요청의 응답이 길어질수록 맵이 화면에 보이기까지 시간이 지연되기 때문입니다.
     const map = kakaoMapInit(lat, lon);
 
+
+    if(type === "destination"){
+        new kakao.maps.CustomOverlay({
+            content: 
+            `<div class="arrive-marker-container"> 
+                <img src="https://uahage.s3.ap-northeast-2.amazonaws.com/map/destination.svg" />
+            </div>`,
+            position:new kakao.maps.LatLng(lat, lon),
+            map: map,
+            yAnchor: 2.2,
+            xAnchor: 0.5,
+            clickable: true,
+        });
+    } else {
+        new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(lat, lon),
+            image: new kakao.maps.MarkerImage(
+                markerImgObj.userMarker, 
+                markerImgObj.markerSize(60, 60), 
+                markerImgObj.options
+            ),
+        });
+    }
+
    
 
     // 장소 리스트 API를 요청하고 정상적으로 응답 받을 경우
@@ -31,15 +56,8 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     console.log(res); 
     const placeList = res.data.data;
 
-    new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(lat, lon),
-        image: new kakao.maps.MarkerImage(
-            markerImgObj.userMarker, 
-            markerImgObj.markerSize(34, 34), 
-            markerImgObj.options
-        ),
-    });
+
+
 
     // 배열에 장소마커들을 모아두고 클러스터에게 전달해줍니다.
     // 클러스터 객체는 장소마커배열을 가지고 구역별로 데이터를 표시해줍니다.
@@ -61,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
             position: new kakao.maps.LatLng(placeLat, placeLon),
             image: new kakao.maps.MarkerImage(
                 markerImgObj.placeMarker, 
-                markerImgObj.markerSize(23, 32), 
+                markerImgObj.markerSize(30, 40), 
                 markerImgObj.options
             ),
         });
@@ -114,6 +132,7 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
     // 로딩 컨테이너를 제거시킵니다.
     removeLoadingContainer(loadingContainer);
 
+    
     const cluster = createClusterer( map );
     cluster.addMarkers(clusterMakers);
 
@@ -131,6 +150,9 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
         let moveLatLon = new kakao.maps.LatLng(lat, lon);
         map.panTo(moveLatLon);
     });
+
+  
+
 });
 
 // 플러터로 데이터를 전달하는 함수

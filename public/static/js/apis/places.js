@@ -64,7 +64,7 @@ export const getPlacesAPI = async ( options ) => {
         meetingRoom !== undefined && ( url += `&meetingRoom=${meetingRoom}`);
         parking !== undefined && ( url += `&parking=${parking}`);
     }else{
-        url = `/api/places/${palceName}?lat=${lat}&lon=${lon}`;
+        url = `/api/places/${placeName}?lat=${lat}&lon=${lon}`;
     }
 
     console.log( url );

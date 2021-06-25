@@ -2,6 +2,7 @@
 import * as repository from "../../repository/user/User.repo";
 import { createToken } from "../../../util/jwt";
 import log from "../../../config/Logger";
+import { getSlangList } from "../../../util/slangList";
 
 
 export const oAuthLogin = async (email: any, body: any) => {
@@ -52,7 +53,33 @@ export const update = async (userId: any, body: any) => {
 
 
 // 닉네임 중복채크
-export const validateByNickname = async (nickname: any) => await repository.validateByNickname(nickname);
+export const validateByNickname = async (nickname: any) => {
+
+    const stringArray = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ", "ㅏ", "ㅑ", "ㅓ", "ㅕ", "ㅗ", "ㅛ", "ㅜ", "ㅠ", "ㅡ", "ㅣ", "ㅢ", "ㅔ", "ㅖ"];
+    for (let i: number = 0; i < stringArray.length; i++) {
+        if (nickname.includes(stringArray[i])) {
+            return { success: true, message: "올바르지 않은 형식입니다.", result: { code: 0, isSuccess: false } };
+        }
+    }
+
+    // 닉네임 정규식
+    if (!/^[a-zA-Zㄱ-힣0-9]*$/.test(nickname)) {
+        return { success: true, message: "닉네임에 공백 또는 특수문자를 사용할 수 없습니다.", result: { code: -1, isSuccess: false } };
+    }
+
+    if (nickname.length < 2 || nickname.length > 12) {
+        return { success: true, message: "닉네임은 2-12자리 사이로 입력해주세요.", result: { code: -2, isSuccess: false } };
+    }
+
+    // 비속어 필터링
+    const slangList: Array<string> = getSlangList();
+    for (let i: number = 0; i < slangList.length; i++) {
+        if (nickname.includes(slangList[i]))
+            return { success: true, message: "비속어를 포함할 수 없습니다.", result: { code: -3, isSuccess: false } };
+    }
+
+    return await repository.validateByNickname(nickname);
+};
 
 
 // 이메일 중복채크
