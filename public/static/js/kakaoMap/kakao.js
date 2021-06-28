@@ -2,8 +2,8 @@
 // 마커 이미지 설정
 export const markerImgObj = {
     userMarker: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/path.png",
-    placeMarker: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/maker.png",
-    arriveMarker: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/arrive.png",
+    placeMarker: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/place.svg",
+    arriveMarker: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/destination.svg",
     arriveMarker2: "https://uahage.s3.ap-northeast-2.amazonaws.com/map/placePath.png",
     markerSize: (width, height) => new kakao.maps.Size(width, height),
     options: {

@@ -78,7 +78,6 @@ function displayPlaces(places) {
     for (let i = 0; i < places.length; i++) {
         let  itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
         fragment.appendChild(itemEl);
-
     }
     // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
     listEl.appendChild(fragment);

@@ -30,10 +30,6 @@ export const findOne = async (req: Request, res: Response) => {
 
 //? 리뷰 생성
 export const store = async (req: Request, res: Response) => {
-    log.info(`Request Review Store`);
-
-    log.error("assdlkfjsdlkfj");
-
     const body = req.body;
 
     const imgFiles = req.files;
@@ -51,10 +47,8 @@ export const store = async (req: Request, res: Response) => {
 
     const { success, message, result, error }: any = await service.store(body, imgFiles);
 
-    log.info(result);
-
     success ?
-        res.status(200).json({ message: message, data: result }) :
+        res.status(200).json({ message: message, data: result }):
         res.status(500).json({ message: message, error: error });
 }
 

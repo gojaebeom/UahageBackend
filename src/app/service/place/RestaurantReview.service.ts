@@ -15,8 +15,10 @@ export const findByOptions = async ( placeId: any, type: any, order: any ) => {
 export const findOne = async ( reviewId: any ) => await repository.findOneReview( reviewId );
 
 export const store = async ( body: any, images: any ) => {
-    const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId});
-    if( !repoObj.success){
+
+    const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId });
+    if( !repoObj.success ){
+        log.error("Duplicate review error");
         return repoObj;
     }
 
@@ -25,7 +27,8 @@ export const store = async ( body: any, images: any ) => {
     const serviceRating = Number(body.serviceRating);
     let totalRating: any = ( tasteRating + costRating + serviceRating ) / 3;
     totalRating = totalRating.toFixed(1);
-    log.info(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
+
+    //log.info(`맛:${ tasteRating}\n가격:${costRating}\n서비스레이팅:${serviceRating}\n토탈레이팅:${totalRating}`);
 
     if(!images.length){
         log.info("이미지 없음, 리뷰만 저장");
