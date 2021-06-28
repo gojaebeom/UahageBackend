@@ -475,6 +475,7 @@ export const findWriterFromPlace = ({ userId, placeId }: any) => {
         .catch((error: any) => ({ success: false, message: "Find Review Writer Error", error: error }));
 }
 
+
 //? 리뷰 수정
 export const updateReview = (
     reviewId: any,
@@ -545,7 +546,6 @@ export const storeReviewDeclarations = (body: any) => {
         return "(" + item + "," + reviewId + "," + userId + ",'" + desc + "')";
     })}
     `;
-    log.info(`=== Query ===\n${query}\n=== End Query ===`);
     return queryBuilder(query, null)
         .then((data: any) => ({ success: true, message: "store Restaurant Review Declaration success", result: true }))
         .catch((error: any) => ({ success: false, message: "store Restaurant Review Declaration false", error: error }));

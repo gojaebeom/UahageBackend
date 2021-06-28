@@ -15,8 +15,10 @@ export const findByOptions = async ( placeId: any, type: any, order: any ) => {
 export const findOne = async ( reviewId: any ) => await repository.findOneReview( reviewId );
 
 export const store = async ( body: any, images: any ) => {
+
     const repoObj = await repository.findWriterFromPlace({ userId: body.userId, placeId: body.placeId });
     if( !repoObj.success ){
+        log.error("Duplicate review error");
         return repoObj;
     }
 

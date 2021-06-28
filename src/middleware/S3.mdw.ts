@@ -80,6 +80,7 @@ export const s3MultiFileMiddleware = (req: Request, res: Response, next: any) =>
             return res.status(500).json({message:"image upload error"});
         } else {
             // 성공
+            log.info("Upload Success");
             next();
         }
     });
