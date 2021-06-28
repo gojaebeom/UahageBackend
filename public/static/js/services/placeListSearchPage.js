@@ -14,8 +14,11 @@ const { keyword, lat, lon ,userId, token } = JSON.parse('{"' + decodeURI(path)
 
 console.log(keyword);
 
-function getResult(address) {
-    console.log(address);
+function getResult(address) { 
+    if(address=='null'){
+        Print.postMessage( "null" );
+    }
+ 
     var geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function(result, status) {
         // 정상적으로 검색이 완료됐으면
@@ -85,7 +88,6 @@ function displayPlaces(places) {
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
     const address = "'" + places.address_name + "'";
-    console.log(address);
     const el = document.createElement('li');
 
     let itemStr = `
