@@ -101,7 +101,9 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
             clickable: true,
         });
         const placeTitleOverlayDom = placeTitleOverlay.a.querySelector(".custom-overlay");
-        placeTitleOverlayDom.addEventListener("click", ( event ) => {
+        placeTitleOverlayDom.addEventListener("click", async ( event ) => {
+            const id = 4;
+            const api = await fetch(`/api/places/restaurants/${ id }`);
             getPlaceDetailInfo( item );
         });
 
@@ -150,13 +152,10 @@ document.addEventListener("DOMContentLoaded", async ( event ) => {
         let moveLatLon = new kakao.maps.LatLng(lat, lon);
         map.panTo(moveLatLon);
     });
-
-  
-
 });
 
 // 플러터로 데이터를 전달하는 함수
-function getPlaceDetailInfo(result) {
+function getPlaceDetailInfo( result ) {
     console.log( result );
     result = JSON.stringify( result );
     Print.postMessage( result );

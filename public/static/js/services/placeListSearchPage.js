@@ -65,19 +65,17 @@ function placesSearchCB(data, status, pagination) {
 
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
-    let listEl = document.getElementById('placesList'),
-        menuEl = document.getElementById('menu_wrap'),
-        fragment = document.createDocumentFragment(),
-        bounds = new kakao.maps.LatLngBounds(),
-        listStr = '';
+    let ulEl = document.getElementById('placesList');
+    let menuEl = document.getElementById('menu_wrap');
+
     // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
+
     for (let i = 0; i < places.length; i++) {
-        let  itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-        fragment.appendChild(itemEl);
+        let li = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+        // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+        ulEl.appendChild(li);
     }
-    // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
-    listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
 }
 
